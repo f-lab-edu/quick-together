@@ -17,8 +17,8 @@ public class Founder {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private Founder() {
-    }
+    @Enumerated(EnumType.STRING)
+    private RoleType projectRole;
 
     public Founder(Member member) {
         this.member = member;
