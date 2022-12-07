@@ -22,6 +22,7 @@ class ProjectTest {
     @Autowired
     EntityManager em;
 
+
     @Test
     @Transactional
     @Rollback(value = false)
@@ -30,15 +31,14 @@ class ProjectTest {
         Member member = new Member("승재");
         em.persist(member);
 
-
         Project project = Project.builder()
                 .projectName("첫번째 프로젝트")
                 .startDateTime(LocalDateTime.now())
-                .createDateTime(LocalDateTime.now())
                 .periodDate(100L)
-                .founder(new Founder(member))
                 .meetingMethod(MeetingMethod.SLACK)
-                .projectDescriptionInfo(new ProjectDescriptionInfo("간단한 설명","긴설명~~~~~~~~~~~~~~~~~~~~~~~~"))
+                .projectSummary("간단할 설명~")
+                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .founder(member)
                 .build();
 
         em.persist(project);
