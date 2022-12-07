@@ -45,4 +45,33 @@ class ProjectTest {
 
 
     }
+
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void editProject(){
+
+        Member member = new Member("승재");
+        em.persist(member);
+
+        Project project = Project.builder()
+                .projectName("첫번째 프로젝트")
+                .startDateTime(LocalDateTime.now())
+                .periodDate(100L)
+                .meetingMethod(MeetingMethod.SLACK)
+                .projectSummary("간단할 설명~")
+                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .founder(member)
+                .build();
+
+        em.persist(project);
+
+        project.changeProjectName("변경된 프로젝트");
+
+        Project findProject = em.find(Project.class, project.getId());
+        System.out.println("findProject.getProjectName() = " + findProject.getProjectName());
+
+
+    }
 }

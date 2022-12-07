@@ -23,4 +23,5 @@ public class Founder {
     public Founder(Member member) {
         this.member = member;
     }
+
 }

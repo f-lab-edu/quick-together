@@ -1,6 +1,7 @@
 package com.flab.quicktogether.project.domain;
 
 import com.flab.quicktogether.member.domain.Member;
+import com.flab.quicktogether.project.presentation.EditProjectFormDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.util.Assert;
@@ -65,8 +66,38 @@ public class Project {
         this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, description);
         this.createDateTime = LocalDateTime.now();
     }
+    public void editProject(EditProjectFormDto editProjectForm){
+        this.changeProjectName(editProjectForm.getProjectName());
+        this.projectDescriptionInfo.changeProjectSummary(editProjectForm.getProjectSummary());
+        this.projectDescriptionInfo.changeProjectDescription(editProjectForm.getProjectDescription());
+        this.changeStartDateTime(editProjectForm.getStartDateTime());
+        this.changePeriodDate(editProjectForm.getPeriodDate());
+        this.changeProjectStatus(editProjectForm.getProjectStatus());
+    }
 
-    // 구성원 정보 표현
+    public void changeProjectName(String editProjectName){
+        this.projectName = editProjectName;
+    }
+
+    public void changeStartDateTime(LocalDateTime editStartDateTime) {
+        this.startDateTime = editStartDateTime;
+    }
+
+    public void changePeriodDate(Long editPeriodDate) {
+        this.periodDate = editPeriodDate;
+    }
+
+    public void changeProjectStatus(ProjectStatus editProjectStatus){
+        this.projectStatus = editProjectStatus;
+    }
+
+
+    public void changeProjectFounder(Member changeFounder){
+        this.founder = new Founder(changeFounder);
+    }
+
+
+
 
 }
 

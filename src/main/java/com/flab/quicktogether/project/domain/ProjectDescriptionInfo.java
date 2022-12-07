@@ -23,4 +23,12 @@ public class ProjectDescriptionInfo {
         this.projectSummary = projectSummary;
         this.description = description;
     }
+
+    public void changeProjectSummary(String editProjectSummary){
+        this.projectSummary = editProjectSummary;
+    }
+
+    public void changeProjectDescription(String editProjectDescription) {
+        this.description = editProjectDescription;
+    }
 }
