@@ -1,11 +1,9 @@
 package com.flab.quicktogether.project.domain;
 
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.scheduling.domain.AvailableTimes;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.List;
 
 @Getter
 @Entity

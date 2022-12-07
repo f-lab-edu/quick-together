@@ -17,4 +17,10 @@ public class Founder {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    private Founder() {
+    }
+
+    public Founder(Member member) {
+        this.member = member;
+    }
 }

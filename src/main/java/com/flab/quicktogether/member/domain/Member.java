@@ -17,5 +17,7 @@ public class Member {
 
     private String memberName;
 
-
+    public Member(String memberName) {
+        this.memberName = memberName;
+    }
 }

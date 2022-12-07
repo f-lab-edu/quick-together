@@ -15,4 +15,12 @@ public class ProjectDescriptionInfo {
 
     @Lob
     private String description; // 프로젝트 상세설명
+
+    private ProjectDescriptionInfo() {
+    }
+
+    public ProjectDescriptionInfo(String projectSummary, String description) {
+        this.projectSummary = projectSummary;
+        this.description = description;
+    }
 }
