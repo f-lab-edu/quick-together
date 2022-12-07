@@ -1,15 +1,12 @@
 package com.flab.quicktogether.project.domain;
 
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.scheduling.domain.AvailableTimes;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 @Entity
-public class Participant {
+public class Founder {
 
     @Id
     @GeneratedValue
@@ -19,12 +16,5 @@ public class Participant {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
-
-    @Enumerated(EnumType.STRING)
-    private RoleType projectRole;
 
 }
