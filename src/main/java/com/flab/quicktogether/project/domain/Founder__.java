@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-public class Founder {
+public class Founder__ {
 
     @Id
     @GeneratedValue
@@ -20,7 +20,7 @@ public class Founder {
     @Enumerated(EnumType.STRING)
     private RoleType projectRole;
 
-    public Founder(Member member) {
+    public Founder__(Member member) {
         this.member = member;
     }
 

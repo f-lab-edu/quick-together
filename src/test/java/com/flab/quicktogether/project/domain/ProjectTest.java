@@ -2,6 +2,8 @@ package com.flab.quicktogether.project.domain;
 
 import com.flab.quicktogether.member.domain.Member;
 import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -26,7 +26,8 @@ class ProjectTest {
     @Test
     @Transactional
     @Rollback(value = false)
-    public void createProject(){
+    @DisplayName("프로젝트 생성, 주최자,참여자 엔티티 분리 후")
+    public void createProject() {
 
         Member member = new Member("승재");
         em.persist(member);
@@ -38,10 +39,28 @@ class ProjectTest {
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                .founder(member)
                 .build();
 
         em.persist(project);
+
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    @DisplayName("프로젝트 생성, 주최자, 참여자 엔티티 합친 후")
+    public void createProject2() {
+
+        Member member = new Member("승재");
+        em.persist(member);
+
+        Project project = Project.createProject("첫번째 프로젝트","간단할 설명~","긴설명~~~~~~~~~~~~~~~~~~~~~~~~~",MeetingMethod.SLACK,LocalDateTime.now(),100L);
+
+        em.persist(project);
+
+        Participant participant = new Participant(member, project, ParticipantRole.ROLE_ADMIN);
+        em.persist(participant);
 
 
     }
@@ -50,7 +69,69 @@ class ProjectTest {
     @Test
     @Transactional
     @Rollback(value = false)
-    public void editProject(){
+    @DisplayName("프로젝트 이름 변경")
+    public void changeProjectName() {
+
+        Member member = new Member("승재");
+        em.persist(member);
+
+        String editProjectName = "변경된 프로젝트";
+
+        Project project = Project.builder()
+                .projectName("첫번째 프로젝트")
+                .startDateTime(LocalDateTime.now())
+                .periodDate(100L)
+                .meetingMethod(MeetingMethod.SLACK)
+                .projectSummary("간단할 설명~")
+                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .build();
+
+        em.persist(project);
+
+        project.changeProjectName("변경된 프로젝트");
+
+        Project findProject = em.find(Project.class, project.getId());
+        Assertions.assertEquals(editProjectName, findProject.getProjectName());
+        System.out.println("findProject.getProjectName() = " + findProject.getProjectName());
+
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void changeProjectSummary() {
+
+        Member member = new Member("승재");
+        em.persist(member);
+
+        String editProjectSummary = "간단한 설명 변경";
+
+        Project project = Project.builder()
+                .projectName("첫번째 프로젝트")
+                .startDateTime(LocalDateTime.now())
+                .periodDate(100L)
+                .meetingMethod(MeetingMethod.SLACK)
+                .projectSummary("간단할 설명~")
+                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .build();
+
+        em.persist(project);
+
+        project.changeProjectSummary(editProjectSummary);
+
+
+        Project findProject = em.find(Project.class, project.getId());
+
+        Assertions.assertEquals(editProjectSummary, findProject.getProjectDescriptionInfo().getProjectSummary());
+        System.out.println("findProject.getProjectName() = " + findProject.getProjectDescriptionInfo().getProjectSummary());
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void addProjectParticipant() {
 
         Member member = new Member("승재");
         em.persist(member);
@@ -62,15 +143,17 @@ class ProjectTest {
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                .founder(member)
                 .build();
 
         em.persist(project);
 
-        project.changeProjectName("변경된 프로젝트");
+        Participant participant = Participant.addMember(member,project, ParticipantRole.ROLE_USER);
 
-        Project findProject = em.find(Project.class, project.getId());
-        System.out.println("findProject.getProjectName() = " + findProject.getProjectName());
+        em.persist(participant);
+
+        Participant participants = em.find(Participant.class, participant.getId());
+
+        Assertions.assertEquals(member, participants.getMember());
 
 
     }

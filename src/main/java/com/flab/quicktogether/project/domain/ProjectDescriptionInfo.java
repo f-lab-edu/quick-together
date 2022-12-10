@@ -6,6 +6,8 @@ import jakarta.persistence.Lob;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Embeddable
 @Getter
 public class ProjectDescriptionInfo {
@@ -24,11 +26,17 @@ public class ProjectDescriptionInfo {
         this.description = description;
     }
 
-    public void changeProjectSummary(String editProjectSummary){
-        this.projectSummary = editProjectSummary;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProjectDescriptionInfo that = (ProjectDescriptionInfo) o;
+        return Objects.equals(getProjectSummary(), that.getProjectSummary()) && Objects.equals(getDescription(), that.getDescription());
     }
 
-    public void changeProjectDescription(String editProjectDescription) {
-        this.description = editProjectDescription;
+    @Override
+    public int hashCode() {
+        return Objects.hash(getProjectSummary(), getDescription());
     }
 }

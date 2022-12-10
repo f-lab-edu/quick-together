@@ -21,7 +21,7 @@ public class Project {
 
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "founder_id")
-    private Founder founder;
+    private Founder__ founder;
 
     @Embedded
     private ProjectDescriptionInfo projectDescriptionInfo; // 프로젝트 설명 정보
@@ -46,11 +46,10 @@ public class Project {
     }
 
     @Builder
-    public Project(String projectName, Member founder, String projectSummary, String description,
+    public Project(String projectName, String projectSummary, String description,
                    MeetingMethod meetingMethod, LocalDateTime startDateTime, Long periodDate) {
 
         Assert.hasText(projectName,"projectName must not be empty");
-        Assert.notNull(founder, "founder must not be null");
         Assert.notNull(projectSummary, "projectSummary must not be null");
         Assert.notNull(description, "description must not be null");
         Assert.notNull(meetingMethod, "meetingMethod must not be null");
@@ -62,14 +61,28 @@ public class Project {
         this.startDateTime = startDateTime;
         this.periodDate = periodDate;
 
-        this.founder = new Founder(founder);
         this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, description);
         this.createDateTime = LocalDateTime.now();
     }
+
+    public static Project createProject(String projectName, String projectSummary, String description,
+                              MeetingMethod meetingMethod, LocalDateTime startDateTime, Long periodDate){
+        Project project = new Project();
+
+        project.projectName = projectName;
+        project.meetingMethod = meetingMethod;
+        project.startDateTime = startDateTime;
+        project.periodDate = periodDate;
+
+        project.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, description);
+        project.createDateTime = LocalDateTime.now();
+
+        return project;
+    }
+
     public void editProject(EditProjectFormDto editProjectForm){
         this.changeProjectName(editProjectForm.getProjectName());
-        this.projectDescriptionInfo.changeProjectSummary(editProjectForm.getProjectSummary());
-        this.projectDescriptionInfo.changeProjectDescription(editProjectForm.getProjectDescription());
+        this.projectDescriptionInfo = new ProjectDescriptionInfo(editProjectForm.getProjectSummary(), editProjectForm.getProjectDescription());
         this.changeStartDateTime(editProjectForm.getStartDateTime());
         this.changePeriodDate(editProjectForm.getPeriodDate());
         this.changeProjectStatus(editProjectForm.getProjectStatus());
@@ -91,12 +104,17 @@ public class Project {
         this.projectStatus = editProjectStatus;
     }
 
-
-    public void changeProjectFounder(Member changeFounder){
-        this.founder = new Founder(changeFounder);
+    public void changeProjectSummary(String editProjectSummary){
+        this.projectDescriptionInfo = new ProjectDescriptionInfo(editProjectSummary, projectDescriptionInfo.getDescription());
     }
 
+    public void changeProjectDescription(String editProjectDescription) {
+        this.projectDescriptionInfo = new ProjectDescriptionInfo(projectDescriptionInfo.getProjectSummary(),editProjectDescription);
+    }
 
+    public void changeProjectDescriptionInfo(ProjectDescriptionInfo editProjectDescriptionInfo){
+        this.projectDescriptionInfo = editProjectDescriptionInfo;
+    }
 
 
 }
