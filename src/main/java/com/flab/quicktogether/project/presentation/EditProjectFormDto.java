@@ -13,4 +13,13 @@ public class EditProjectFormDto {
     private LocalDateTime startDateTime;
     private Long periodDate;
     private ProjectStatus projectStatus;
+
+    public EditProjectFormDto(String projectName, String projectSummary, String projectDescription, LocalDateTime startDateTime, Long periodDate, ProjectStatus projectStatus) {
+        this.projectName = projectName;
+        this.projectSummary = projectSummary;
+        this.projectDescription = projectDescription;
+        this.startDateTime = startDateTime;
+        this.periodDate = periodDate;
+        this.projectStatus = projectStatus;
+    }
 }

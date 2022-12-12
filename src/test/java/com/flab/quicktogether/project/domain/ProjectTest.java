@@ -128,33 +128,5 @@ class ProjectTest {
 
     }
 
-    @Test
-    @Transactional
-    @Rollback(value = false)
-    public void addProjectParticipant() {
 
-        Member member = new Member("승재");
-        em.persist(member);
-
-        Project project = Project.builder()
-                .projectName("첫번째 프로젝트")
-                .startDateTime(LocalDateTime.now())
-                .periodDate(100L)
-                .meetingMethod(MeetingMethod.SLACK)
-                .projectSummary("간단할 설명~")
-                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                .build();
-
-        em.persist(project);
-
-        Participant participant = Participant.addMember(member,project, ParticipantRole.ROLE_USER);
-
-        em.persist(participant);
-
-        Participant participants = em.find(Participant.class, participant.getId());
-
-        Assertions.assertEquals(member, participants.getMember());
-
-
-    }
 }

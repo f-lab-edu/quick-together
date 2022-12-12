@@ -19,9 +19,9 @@ public class Project {
     private Long id;
     private String projectName;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    /*@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "founder_id")
-    private Founder__ founder;
+    private Founder__ founder;*/
 
     @Embedded
     private ProjectDescriptionInfo projectDescriptionInfo; // 프로젝트 설명 정보
