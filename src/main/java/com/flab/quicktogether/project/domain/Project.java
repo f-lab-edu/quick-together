@@ -19,9 +19,6 @@ public class Project {
     private Long id;
     private String projectName;
 
-    /*@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "founder_id")
-    private Founder__ founder;*/
 
     @Embedded
     private ProjectDescriptionInfo projectDescriptionInfo; // 프로젝트 설명 정보
@@ -39,7 +36,7 @@ public class Project {
     private LocalDateTime startDateTime; // 시작일
     private LocalDateTime createDateTime; // 생성일
 
-    private Long periodDate; // 모집기간
+    private LocalDateTime periodDate; // 모집기간
 
     private Project(){
 
@@ -47,7 +44,7 @@ public class Project {
 
     @Builder
     public Project(String projectName, String projectSummary, String description,
-                   MeetingMethod meetingMethod, LocalDateTime startDateTime, Long periodDate) {
+                   MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDate) {
 
         Assert.hasText(projectName,"projectName must not be empty");
         Assert.notNull(projectSummary, "projectSummary must not be null");
@@ -66,7 +63,7 @@ public class Project {
     }
 
     public static Project createProject(String projectName, String projectSummary, String description,
-                              MeetingMethod meetingMethod, LocalDateTime startDateTime, Long periodDate){
+                              MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDate){
         Project project = new Project();
 
         project.projectName = projectName;
@@ -96,7 +93,7 @@ public class Project {
         this.startDateTime = editStartDateTime;
     }
 
-    public void changePeriodDate(Long editPeriodDate) {
+    public void changePeriodDate(LocalDateTime editPeriodDate) {
         this.periodDate = editPeriodDate;
     }
 

@@ -3,6 +3,7 @@ package com.flab.quicktogether.project.infrastructure;
 import com.flab.quicktogether.project.domain.Project;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectRepository {
 
+    @Autowired
     private final EntityManager em;
 
     public void save(Project project) {

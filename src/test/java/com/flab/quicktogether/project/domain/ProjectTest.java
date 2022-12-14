@@ -26,7 +26,7 @@ class ProjectTest {
     @Test
     @Transactional
     @Rollback(value = false)
-    @DisplayName("프로젝트 생성, 주최자,참여자 엔티티 분리 후")
+    @DisplayName("프로젝트 생성, 빌더패턴")
     public void createProject() {
 
         Member member = new Member("승재");
@@ -35,7 +35,7 @@ class ProjectTest {
         Project project = Project.builder()
                 .projectName("첫번째 프로젝트")
                 .startDateTime(LocalDateTime.now())
-                .periodDate(100L)
+                .periodDate(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -49,13 +49,13 @@ class ProjectTest {
     @Test
     @Transactional
     @Rollback(value = false)
-    @DisplayName("프로젝트 생성, 주최자, 참여자 엔티티 합친 후")
+    @DisplayName("프로젝트 생성, 생성자")
     public void createProject2() {
 
         Member member = new Member("승재");
         em.persist(member);
 
-        Project project = Project.createProject("첫번째 프로젝트","간단할 설명~","긴설명~~~~~~~~~~~~~~~~~~~~~~~~~",MeetingMethod.SLACK,LocalDateTime.now(),100L);
+        Project project = Project.createProject("첫번째 프로젝트","간단할 설명~","긴설명~~~~~~~~~~~~~~~~~~~~~~~~~",MeetingMethod.SLACK,LocalDateTime.now(),LocalDateTime.now());
 
         em.persist(project);
 
@@ -80,7 +80,7 @@ class ProjectTest {
         Project project = Project.builder()
                 .projectName("첫번째 프로젝트")
                 .startDateTime(LocalDateTime.now())
-                .periodDate(100L)
+                .periodDate(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -110,7 +110,7 @@ class ProjectTest {
         Project project = Project.builder()
                 .projectName("첫번째 프로젝트")
                 .startDateTime(LocalDateTime.now())
-                .periodDate(100L)
+                .periodDate(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")

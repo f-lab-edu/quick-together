@@ -38,7 +38,7 @@ class ParticipantTest {
         Project project = Project.builder()
                 .projectName("첫번째 프로젝트")
                 .startDateTime(LocalDateTime.now())
-                .periodDate(100L)
+                .periodDate(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -73,7 +73,7 @@ class ParticipantTest {
         Project project = Project.builder()
                 .projectName("첫번째 프로젝트")
                 .startDateTime(LocalDateTime.now())
-                .periodDate(100L)
+                .periodDate(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -91,11 +91,12 @@ class ParticipantTest {
 
         Assertions.assertEquals(member1, participants.getMember());
 
-        List<Participant> resultList = em.createQuery("select p from Participant p join p.project t where t.projectId = 1", Participant.class)
+        List<Participant> resultList = em.createQuery("select p from Participant p join p.project t where t.id = :projectId", Participant.class)
+                .setParameter("projectId", 1)
                 .getResultList();
 
         for (Participant participant1 : resultList) {
-            System.out.println("participant1 = " + participant1);
+            System.out.println("participant1 = " + participant1.getMember().getMemberName());
         }
 
 

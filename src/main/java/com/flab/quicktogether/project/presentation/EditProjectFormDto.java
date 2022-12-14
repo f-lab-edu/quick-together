@@ -11,10 +11,10 @@ public class EditProjectFormDto {
     private String projectSummary;
     private String projectDescription;
     private LocalDateTime startDateTime;
-    private Long periodDate;
+    private LocalDateTime periodDate;
     private ProjectStatus projectStatus;
 
-    public EditProjectFormDto(String projectName, String projectSummary, String projectDescription, LocalDateTime startDateTime, Long periodDate, ProjectStatus projectStatus) {
+    public EditProjectFormDto(String projectName, String projectSummary, String projectDescription, LocalDateTime startDateTime, LocalDateTime periodDate, ProjectStatus projectStatus) {
         this.projectName = projectName;
         this.projectSummary = projectSummary;
         this.projectDescription = projectDescription;

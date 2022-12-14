@@ -13,12 +13,14 @@ import com.flab.quicktogether.project.presentation.EditProjectFormDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProjectService {
 
     @Autowired
@@ -30,6 +32,7 @@ public class ProjectService {
     @Autowired
     private final ParticipantRepository participantRepository;
 
+    @Transactional
     public void createProject(Long memberId, CreateProjectFormDto createProjectFormDto){
 
         Member findMember = memberRepository.findOne(memberId);
@@ -51,10 +54,19 @@ public class ProjectService {
 
     }
 
+    @Transactional
     public void deleteProject(Long projectId) {
         Project deleteProject = findProject(projectId);
         projectRepository.deleteProjectById(deleteProject);
     }
+
+    @Transactional
+    public Project editProject(EditProjectFormDto editProjectForm, Long projectId) {
+        Project findProject = findProject(projectId);
+        findProject.editProject(editProjectForm);
+        return findProject;
+    }
+
 
     public Project findProject(Long projectId) {
         Project findProject = projectRepository.findOne(projectId);
@@ -65,9 +77,5 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public Project editProject(EditProjectFormDto editProjectForm, Long projectId) {
-        Project findProject = findProject(projectId);
-        findProject.editProject(editProjectForm);
-        return findProject;
-    }
+
 }
