@@ -18,7 +18,7 @@ public class ProjectDescriptionInfo {
     @Lob
     private String description; // 프로젝트 상세설명
 
-    private ProjectDescriptionInfo() {
+    protected ProjectDescriptionInfo() {
     }
 
     public ProjectDescriptionInfo(String projectSummary, String description) {

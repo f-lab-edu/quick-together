@@ -23,7 +23,7 @@ public class ProjectRepository {
         return em.find(Project.class, id);
     }
 
-    public void deleteProjectById(Project project) {
+    public void delete(Project project) {
         em.remove(project);
     }
 
