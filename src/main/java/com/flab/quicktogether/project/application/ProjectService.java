@@ -2,20 +2,17 @@ package com.flab.quicktogether.project.application;
 
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.domain.MemberRepository;
-import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Participant;
 import com.flab.quicktogether.project.domain.ParticipantRole;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
-import com.flab.quicktogether.project.presentation.CreateProjectFormDto;
 import com.flab.quicktogether.project.presentation.EditProjectFormDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,19 +30,9 @@ public class ProjectService {
     private final ParticipantRepository participantRepository;
 
     @Transactional
-    public void createProject(Long memberId, CreateProjectFormDto createProjectFormDto){
+    public void createProject(Long memberId, Project project){
 
         Member findMember = memberRepository.findOne(memberId);
-
-
-        Project project = Project.builder()
-                .projectName(createProjectFormDto.getProjectName())
-                .startDateTime(createProjectFormDto.getStartDateTime())
-                .periodDate(createProjectFormDto.getPeriodDate())
-                .meetingMethod(createProjectFormDto.getMeetingMethod())
-                .projectSummary(createProjectFormDto.getProjectSummary())
-                .description(createProjectFormDto.getDescription())
-                .build();
 
          projectRepository.save(project);
 
@@ -56,15 +43,14 @@ public class ProjectService {
 
     @Transactional
     public void deleteProject(Long projectId) {
-        Project deleteProject = findProject(projectId);
-        projectRepository.deleteProjectById(deleteProject);
+        Project findProject = projectRepository.findOne(projectId);
+        projectRepository.deleteProjectById(findProject);
     }
 
     @Transactional
-    public Project editProject(EditProjectFormDto editProjectForm, Long projectId) {
-        Project findProject = findProject(projectId);
+    public void editProject(Long projectId, EditProjectFormDto editProjectForm) {
+        Project findProject = projectRepository.findOne(projectId);
         findProject.editProject(editProjectForm);
-        return findProject;
     }
 
 

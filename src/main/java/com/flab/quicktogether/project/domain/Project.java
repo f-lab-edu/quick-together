@@ -1,6 +1,5 @@
 package com.flab.quicktogether.project.domain;
 
-import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.project.presentation.EditProjectFormDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,7 +35,7 @@ public class Project {
     private LocalDateTime startDateTime; // 시작일
     private LocalDateTime createDateTime; // 생성일
 
-    private LocalDateTime periodDate; // 모집기간
+    private LocalDateTime periodDateTime; // 모집기간
 
     private Project(){
 
@@ -44,19 +43,19 @@ public class Project {
 
     @Builder
     public Project(String projectName, String projectSummary, String description,
-                   MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDate) {
+                   MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime) {
 
         Assert.hasText(projectName,"projectName must not be empty");
         Assert.notNull(projectSummary, "projectSummary must not be null");
         Assert.notNull(description, "description must not be null");
         Assert.notNull(meetingMethod, "meetingMethod must not be null");
         Assert.notNull(startDateTime, "startDateTime must not be null");
-        Assert.notNull(periodDate, "periodDate must not be null");
+        Assert.notNull(periodDateTime, "periodDate must not be null");
 
         this.projectName = projectName;
         this.meetingMethod = meetingMethod;
         this.startDateTime = startDateTime;
-        this.periodDate = periodDate;
+        this.periodDateTime = periodDateTime;
 
         this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, description);
         this.createDateTime = LocalDateTime.now();
@@ -69,7 +68,7 @@ public class Project {
         project.projectName = projectName;
         project.meetingMethod = meetingMethod;
         project.startDateTime = startDateTime;
-        project.periodDate = periodDate;
+        project.periodDateTime = periodDate;
 
         project.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, description);
         project.createDateTime = LocalDateTime.now();
@@ -81,7 +80,7 @@ public class Project {
         this.changeProjectName(editProjectForm.getProjectName());
         this.projectDescriptionInfo = new ProjectDescriptionInfo(editProjectForm.getProjectSummary(), editProjectForm.getProjectDescription());
         this.changeStartDateTime(editProjectForm.getStartDateTime());
-        this.changePeriodDate(editProjectForm.getPeriodDate());
+        this.changePeriodDate(editProjectForm.getPeriodDateTime());
         this.changeProjectStatus(editProjectForm.getProjectStatus());
     }
 
@@ -94,7 +93,7 @@ public class Project {
     }
 
     public void changePeriodDate(LocalDateTime editPeriodDate) {
-        this.periodDate = editPeriodDate;
+        this.periodDateTime = editPeriodDate;
     }
 
     public void changeProjectStatus(ProjectStatus editProjectStatus){
