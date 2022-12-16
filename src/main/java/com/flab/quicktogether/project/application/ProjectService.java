@@ -10,7 +10,6 @@ import com.flab.quicktogether.project.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
 import com.flab.quicktogether.project.presentation.EditProjectFormDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,14 +27,14 @@ public class ProjectService {
     private final ParticipantRepository participantRepository;
 
     @Transactional
-    public void createProject(Long memberId, Project project){
+    public void createProject(Long memberId, Project project) {
 
         Member findMember = memberRepository.findOne(memberId);
 
-         projectRepository.save(project);
+        projectRepository.save(project);
 
-         Participant participant = new Participant(findMember, project, ParticipantRole.ROLE_ADMIN);
-         participantRepository.save(participant);
+        Participant participant = project.registerFounder(findMember, project);
+        participantRepository.save(participant);
 
     }
 

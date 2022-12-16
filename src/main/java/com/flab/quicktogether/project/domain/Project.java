@@ -1,5 +1,6 @@
 package com.flab.quicktogether.project.domain;
 
+import com.flab.quicktogether.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.util.Assert;
@@ -108,6 +109,9 @@ public class Project {
     }
 
 
+    public Participant registerFounder(Member findMember, Project project) {
+        return new Participant(findMember, project, ParticipantRole.ROLE_ADMIN);
+    }
 }
 
 
