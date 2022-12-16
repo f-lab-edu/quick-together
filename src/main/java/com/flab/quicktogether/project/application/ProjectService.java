@@ -5,6 +5,7 @@ import com.flab.quicktogether.member.domain.MemberRepository;
 import com.flab.quicktogether.project.domain.Participant;
 import com.flab.quicktogether.project.domain.ParticipantRole;
 import com.flab.quicktogether.project.domain.Project;
+import com.flab.quicktogether.project.domain.ProjectDescriptionInfo;
 import com.flab.quicktogether.project.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
 import com.flab.quicktogether.project.presentation.EditProjectFormDto;
@@ -20,13 +21,10 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ProjectService {
 
-    @Autowired
     private final ProjectRepository projectRepository;
 
-    @Autowired
     private final MemberRepository memberRepository;
 
-    @Autowired
     private final ParticipantRepository participantRepository;
 
     @Transactional
@@ -49,8 +47,15 @@ public class ProjectService {
 
     @Transactional
     public void editProject(Long projectId, EditProjectFormDto editProjectForm) {
+
         Project findProject = projectRepository.findOne(projectId);
-        findProject.editProject(editProjectForm);
+
+        findProject.changeProjectName(editProjectForm.getProjectName());
+        findProject.changeStartDateTime(editProjectForm.getStartDateTime());
+        findProject.changePeriodDate(editProjectForm.getPeriodDateTime());
+        findProject.changeMeetingMethod(editProjectForm.getMeetingMethod());
+        findProject.changeProjectDescriptionInfo(new ProjectDescriptionInfo(editProjectForm.getProjectSummary(), editProjectForm.getProjectDescription()));
+        findProject.changeProjectStatus(editProjectForm.getProjectStatus());
     }
 
 

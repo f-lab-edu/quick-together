@@ -1,6 +1,5 @@
 package com.flab.quicktogether.project.domain;
 
-import com.flab.quicktogether.project.presentation.EditProjectFormDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.util.Assert;
@@ -76,14 +75,6 @@ public class Project {
         return project;
     }
 
-    public void editProject(EditProjectFormDto editProjectForm){
-        this.changeProjectName(editProjectForm.getProjectName());
-        this.projectDescriptionInfo = new ProjectDescriptionInfo(editProjectForm.getProjectSummary(), editProjectForm.getProjectDescription());
-        this.changeStartDateTime(editProjectForm.getStartDateTime());
-        this.changePeriodDate(editProjectForm.getPeriodDateTime());
-        this.changeProjectStatus(editProjectForm.getProjectStatus());
-    }
-
     public void changeProjectName(String editProjectName){
         this.projectName = editProjectName;
     }
@@ -94,6 +85,10 @@ public class Project {
 
     public void changePeriodDate(LocalDateTime editPeriodDate) {
         this.periodDateTime = editPeriodDate;
+    }
+
+    public void changeMeetingMethod(MeetingMethod editMeetingMethod){
+        this.meetingMethod = editMeetingMethod;
     }
 
     public void changeProjectStatus(ProjectStatus editProjectStatus){
