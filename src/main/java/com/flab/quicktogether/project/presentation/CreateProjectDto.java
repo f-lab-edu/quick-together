@@ -1,10 +1,10 @@
 package com.flab.quicktogether.project.presentation;
 
+
 import com.flab.quicktogether.project.domain.MeetingMethod;
-import com.flab.quicktogether.project.domain.ProjectStatus;
+import com.flab.quicktogether.project.domain.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,7 +12,10 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class EditProjectFormDto {
+public class CreateProjectDto {
+
+    @NonNull
+    private Long memberId;
 
     @NonNull
     private String projectName; // 프로젝트 이름
@@ -32,8 +35,7 @@ public class EditProjectFormDto {
     @NonNull
     private String projectDescription; // 프로젝트 상세설명
 
-    @NonNull
-    private ProjectStatus projectStatus; // 프로젝트 상태
+
 
 
 }

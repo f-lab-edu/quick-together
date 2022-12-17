@@ -22,7 +22,7 @@ public class ProjectController {
      * 프로젝트 조회
      */
     @GetMapping("/projects")
-    public Result project() {
+    public Result projects() {
         List<Project> findProjects = projectService.findProjects();
 
         List<ProjectDto> collect = findProjects.stream()
@@ -30,6 +30,16 @@ public class ProjectController {
                 .collect(Collectors.toList());
 
         return new Result(collect);
+    }
+
+    /**
+     * 프로젝트 단일 조회
+     */
+    @GetMapping("/projects/{id}")
+    public Result project(@PathVariable("id") Long id) {
+        Project findProject = projectService.findProject(id);
+        ProjectDto projectDto = new ProjectDto(findProject);
+        return new Result(projectDto);
     }
 
     @Data
@@ -42,18 +52,11 @@ public class ProjectController {
      * 프로젝트 등록
      */
     @PostMapping("/projects")
-    public HttpStatus addProject(@RequestBody @Validated CreateProjectFormDto createProjectFormDto) {
+    public HttpStatus registerProject(@RequestBody @Validated CreateProjectDto createProjectDto) {
 
-        Project project = Project.builder()
-                .projectName(createProjectFormDto.getProjectName())
-                .startDateTime(createProjectFormDto.getStartDateTime())
-                .periodDateTime(createProjectFormDto.getPeriodDateTime())
-                .meetingMethod(createProjectFormDto.getMeetingMethod())
-                .projectSummary(createProjectFormDto.getProjectSummary())
-                .description(createProjectFormDto.getProjectDescription())
-                .build();
+        Long projectId = projectService.createProject(createProjectDto);
 
-        projectService.createProject(1L, project);
+        Project findProject = projectService.findProject(projectId);
 
         return HttpStatus.CREATED;
     }
@@ -62,9 +65,9 @@ public class ProjectController {
      * 프로젝트 수정
      */
     @PutMapping("/projects/{id}")
-    public HttpStatus editProject(@PathVariable("id") Long id, @RequestBody @Validated EditProjectFormDto editProjectFormDto) {
+    public HttpStatus editProject(@PathVariable("id") Long id, @RequestBody @Validated EditProjectDto editProjectDto) {
 
-        projectService.editProject(id, editProjectFormDto);
+        projectService.editProject(id, editProjectDto);
         Project findProject = projectService.findProject(id);
 
         return HttpStatus.OK;

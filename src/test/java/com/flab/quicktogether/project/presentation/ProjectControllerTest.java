@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
@@ -20,13 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -96,8 +92,8 @@ class ProjectControllerTest {
 
         //when
 
-        CreateProjectFormDto createProjectFormDto = new CreateProjectFormDto(projectName,startDateTime,periodDate,meetingMethod,projectSummary,description);
-        String body = mapper.writeValueAsString(createProjectFormDto);
+        CreateProjectDto createProjectDto = new CreateProjectDto(1L,projectName,startDateTime,periodDate,meetingMethod,projectSummary,description);
+        String body = mapper.writeValueAsString(createProjectDto);
 
         //then
         mockMvc.perform(post("/projects")
