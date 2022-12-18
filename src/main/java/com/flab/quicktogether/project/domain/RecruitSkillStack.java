@@ -5,22 +5,22 @@ import lombok.Getter;
 
 @Getter
 @Entity
-public class ParticipantSkill {
+public class RecruitSkillStack {
 
     @Id
     @GeneratedValue
-    @Column(name = "participantSkill_id")
+    @Column(name = "recruitSkillStack_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "participant_id")
-    private Participant participant;
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     @Enumerated(EnumType.STRING)
     private SkillStack skillStack;
 
-    public ParticipantSkill(Participant participant, SkillStack skillStack) {
-        this.participant = participant;
+    public RecruitSkillStack(Project project, SkillStack skillStack) {
+        this.project = project;
         this.skillStack = skillStack;
     }
 }
