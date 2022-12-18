@@ -10,7 +10,7 @@ public class Participant {
 
     @Id
     @GeneratedValue
-    @Column(name = "participants_id")
+    @Column(name = "participant_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
