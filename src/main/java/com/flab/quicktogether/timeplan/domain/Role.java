@@ -1,7 +1,7 @@
-package com.flab.quicktogether.matching.domain;
+package com.flab.quicktogether.timeplan.domain;
 
-import com.flab.quicktogether.project.domain.RoleType;
-import com.flab.quicktogether.project.domain.SkillStack;
+import com.flab.quicktogether.role.RoleType;
+import com.flab.quicktogether.role.SkillStack;
 import jakarta.persistence.*;
 import lombok.Getter;
 
