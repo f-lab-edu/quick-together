@@ -55,7 +55,6 @@ public class ProjectController {
     public HttpStatus registerProject(@RequestBody @Validated CreateProjectDto createProjectDto) {
 
         Long projectId = projectService.createProject(createProjectDto);
-
         Project findProject = projectService.findProject(projectId);
 
         return HttpStatus.CREATED;

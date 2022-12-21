@@ -3,6 +3,7 @@ package com.flab.quicktogether.project.domain;
 import com.flab.quicktogether.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
@@ -33,6 +34,8 @@ public class Project {
     private Integer views = 0; // 조회 수
 
     private LocalDateTime startDateTime; // 시작일
+
+    @CreationTimestamp
     private LocalDateTime createDateTime; // 생성일
 
     private LocalDateTime periodDateTime; // 모집기간
@@ -58,7 +61,6 @@ public class Project {
         this.periodDateTime = periodDateTime;
 
         this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, description);
-        this.createDateTime = LocalDateTime.now();
     }
 
     public static Project createProject(String projectName, String projectSummary, String description,
@@ -71,7 +73,6 @@ public class Project {
         project.periodDateTime = periodDate;
 
         project.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, description);
-        project.createDateTime = LocalDateTime.now();
 
         return project;
     }

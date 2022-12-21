@@ -1,6 +1,10 @@
-package com.flab.quicktogether.project.domain;
+package com.flab.quicktogether.project.infrastructure;
 
 import com.flab.quicktogether.member.domain.Member;
+import com.flab.quicktogether.project.domain.MeetingMethod;
+import com.flab.quicktogether.project.domain.Participant;
+import com.flab.quicktogether.project.domain.ParticipantRole;
+import com.flab.quicktogether.project.domain.Project;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -16,19 +20,25 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class ParticipantTest {
+class ParticipantRepositoryTest {
 
 
     @Autowired
     EntityManager em;
 
+    @Autowired
+    ParticipantRepository participantRepository;
+
 
     @Test
     @Transactional
     @Rollback(value = false)
-    public void addProjectParticipant() {
+    @DisplayName("회원이 참여하고 있는 프로젝트 정보들")
+    public void findParticipants() {
 
         Member member1 = new Member("승재");
         Member member2 = new Member("승재2");
@@ -46,15 +56,29 @@ class ParticipantTest {
 
         em.persist(project);
 
+        Project project2 = Project.builder()
+                .projectName("두번째 프로젝트")
+                .startDateTime(LocalDateTime.now())
+                .periodDateTime(LocalDateTime.now())
+                .meetingMethod(MeetingMethod.SLACK)
+                .projectSummary("간단할 설명~")
+                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .build();
+
+        em.persist(project2);
+
         Participant participant = Participant.addMember(member1,project);
-        Participant participant2 = Participant.addMember(member2,project);
+        Participant participant2 = Participant.addMember(member1,project2);
 
         em.persist(participant);
         em.persist(participant2);
 
-        Participant participants = em.find(Participant.class, participant.getId());
+        List<Participant> findParticipant = participantRepository.findParticipantsByMemberId(member1.getId());
 
-        Assertions.assertEquals(member1, participants.getMember());
+        for (Participant participant1 : findParticipant) {
+            System.out.println("participant1 = " + participant1.getProject().getProjectName());
+
+        }
 
 
     }
@@ -62,7 +86,7 @@ class ParticipantTest {
     @Test
     @Transactional
     @Rollback(value = false)
-    @DisplayName("프로젝트 1에 참여하고 있는 멤버")
+    @DisplayName("특정 회원의 특정 프로젝트")
     public void findParticipant() {
 
         Member member1 = new Member("승재");
@@ -81,38 +105,8 @@ class ParticipantTest {
 
         em.persist(project);
 
-        Participant participant = Participant.addMember(member1,project);
-        Participant participant2 = Participant.addMember(member2,project);
-
-        em.persist(participant);
-        em.persist(participant2);
-
-        Participant participants = em.find(Participant.class, participant.getId());
-
-        Assertions.assertEquals(member1, participants.getMember());
-
-        List<Participant> resultList = em.createQuery("select p from Participant p join p.project t where t.id = :projectId", Participant.class)
-                .setParameter("projectId", 1)
-                .getResultList();
-
-        for (Participant participant1 : resultList) {
-            System.out.println("participant1 = " + participant1.getMember().getMemberName());
-        }
-
-
-    }
-
-    @Test
-    @Transactional
-    @Rollback(value = false)
-    @DisplayName("구성원 포지션 추가")
-    public void addParticipantPosition() {
-
-        Member member1 = new Member("승재");
-        em.persist(member1);
-
-        Project project = Project.builder()
-                .projectName("첫번째 프로젝트")
+        Project project2 = Project.builder()
+                .projectName("두번째 프로젝트")
                 .startDateTime(LocalDateTime.now())
                 .periodDateTime(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
@@ -120,19 +114,19 @@ class ParticipantTest {
                 .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 .build();
 
-        em.persist(project);
+        em.persist(project2);
 
         Participant participant = Participant.addMember(member1,project);
+        Participant participant2 = Participant.addMember(member1,project2);
 
         em.persist(participant);
+        em.persist(participant2);
 
-        participant.getPositions().add(Position.BACKEND);
+        Participant byMemberIdAndProjectId = participantRepository.findByMemberIdAndProjectId(member1.getId(), project.getId());
 
-        Participant participant1 = em.find(Participant.class, participant.getId());
-        System.out.println("participant1.getPosition().get(0) = " + participant1.getPositions().get(0));
+            System.out.println("participant1 = " + byMemberIdAndProjectId.getProject().getProjectName());
 
 
     }
-
 
 }
