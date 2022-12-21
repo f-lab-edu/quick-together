@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -67,8 +68,8 @@ class ParticipantRepositoryTest {
 
         em.persist(project2);
 
-        Participant participant = Participant.addMember(member1,project);
-        Participant participant2 = Participant.addMember(member1,project2);
+        Participant participant = Participant.addMember(project,member1);
+        Participant participant2 = Participant.addMember(project2,member1);
 
         em.persist(participant);
         em.persist(participant2);
@@ -116,15 +117,15 @@ class ParticipantRepositoryTest {
 
         em.persist(project2);
 
-        Participant participant = Participant.addMember(member1,project);
-        Participant participant2 = Participant.addMember(member1,project2);
+        Participant participant = Participant.addMember(project,member1);
+        Participant participant2 = Participant.addMember(project2,member1);
 
         em.persist(participant);
         em.persist(participant2);
 
-        Participant byMemberIdAndProjectId = participantRepository.findByMemberIdAndProjectId(member1.getId(), project.getId());
+        Optional<Participant> byMemberIdAndProjectId1 = participantRepository.findByMemberIdAndProjectId(project.getId(), member1.getId());
 
-            System.out.println("participant1 = " + byMemberIdAndProjectId.getProject().getProjectName());
+            System.out.println("participant1 = " + byMemberIdAndProjectId1.get().getProject().getProjectName());
 
 
     }

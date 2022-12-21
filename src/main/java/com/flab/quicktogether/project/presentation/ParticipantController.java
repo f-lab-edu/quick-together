@@ -19,83 +19,52 @@ public class ParticipantController {
 
     private final ParticipantService participantService;
 
+    /**
+     * 해당 프로젝트에 참여하고 있는 멤버들
+     */
+    @GetMapping("/projects/{id}/members")
+    public Result<ParticipantResponseDto> retrieveAllParticipants(@PathVariable("id") Long id){
 
-    @PostMapping("/participants")
-    public HttpStatus joinProject(@RequestBody @Validated ParticipantDto participantDto){
+        List<Participant> findParticipants = participantService.retrieveAllParticipants(id);
 
-        participantService.joinProject(participantDto);
-
-        return HttpStatus.CREATED;
-    }
-
-    @DeleteMapping("/participants")
-    public HttpStatus leaveProject(@RequestBody @Validated ParticipantDto participantDto){
-
-        participantService.leaveProject(participantDto);
-
-        return HttpStatus.OK;
-    }
-
-    @GetMapping("/participants/role")
-    public Result role(@RequestBody @Validated ParticipantDto participantDto){
-
-        ///==================================
-
-        return new Result("");
-    }
-
-    @PutMapping("/participants/role")
-    public HttpStatus changeRole(@RequestBody @Validated ChangeParticipantRoleDto changeParticipantRoleDto){
-
-        participantService.changeRole(changeParticipantRoleDto);
-
-        return HttpStatus.OK;
-    }
-
-    @GetMapping("/participants/position")
-    public Result position(@RequestBody @Validated ParticipantDto participantDto){
-
-        Participant participant = participantService.findParticipant(participantDto);
-        List<ParticipantPositionDto> collect = participant.getPositions().stream()
-                .map(p -> new ParticipantPositionDto(p))
-                .collect(Collectors.toList());
-        return new Result(collect);
-    }
-
-
-    @PostMapping("/participants/position")
-    public HttpStatus addPosition(@RequestBody @Validated EditParticipantPositionDto editParticipantPositionDto){
-        participantService.addPosition(editParticipantPositionDto);
-
-        return HttpStatus.CREATED;
-    }
-
-    @DeleteMapping("/participants/position")
-    public HttpStatus removePosition(@RequestBody @Validated EditParticipantPositionDto editParticipantPositionDto){
-        participantService.removePosition(editParticipantPositionDto);
-        return HttpStatus.OK;
-    }
-
-    @GetMapping("/participants/skillstack")
-    public Result skillStack(@RequestBody @Validated ParticipantDto participantDto){
-        Participant participant = participantService.findParticipant(participantDto);
-        List<ParticipantSkillStackDto> collect = participant.getSkillStacks().stream()
-                .map(p -> new ParticipantSkillStackDto(p))
+        List<ParticipantResponseDto> collect = findParticipants.stream()
+                .map(p -> new ParticipantResponseDto(p))
                 .collect(Collectors.toList());
 
         return new Result(collect);
     }
 
-    @PostMapping("/participants/skillstack")
-    public HttpStatus addSkillStack(@RequestBody @Validated EditParticipantSkillStackDto editParticipantSkillStackDto) {
-        participantService.addSkillStack(editParticipantSkillStackDto);
+    /**
+     * 해당 프로젝트에 참여하고 있는 멤버
+     */
+    @GetMapping("/projects/{projectId}/members/{id}")
+    public ParticipantResponseDto retrieveParticipant(@PathVariable("projectId") Long projectId, @PathVariable("memberId)") Long memberId){
+
+        Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
+        ParticipantResponseDto participantResponseDto = new ParticipantResponseDto(findParticipant);
+
+        return participantResponseDto;
+    }
+
+    /**
+     * 해당 프로젝트에 멤버 추가
+     */
+    @PostMapping("/projects/{projectId}/members/{id}")
+    public HttpStatus joinProject(@PathVariable("projectId") Long projectId, @PathVariable("memberId)") Long memberId){
+
+        participantService.joinProject(projectId,memberId);
 
         return HttpStatus.CREATED;
     }
 
-    @DeleteMapping("/participants/skillstack")
-    public HttpStatus removeSkillStack(@RequestBody @Validated EditParticipantSkillStackDto editParticipantSkillStackDto){
-        participantService.removeSkillStack(editParticipantSkillStackDto);
+    /**
+     * 해당 프로젝트에 멤버 삭제
+     */
+    @DeleteMapping("/projects/{projectId}/members/{id}")
+    public HttpStatus leaveProject(@PathVariable("projectId") Long projectId, @PathVariable("memberId)") Long memberId){
+
+        participantService.leaveProject(projectId,memberId);
+
         return HttpStatus.OK;
     }
 

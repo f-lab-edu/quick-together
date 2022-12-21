@@ -29,7 +29,7 @@ public class ProjectService {
 
 
     public Project retrieveProject(Long projectId) {
-        return findProject(projectId).get();
+        return findProject(projectId);
     }
 
 
@@ -63,14 +63,14 @@ public class ProjectService {
 
     @Transactional
     public void deleteProject(Long projectId) {
-        Project findProject = findProject(projectId).get();
+        Project findProject = findProject(projectId);
         findProject.changeProjectStatus(ProjectStatus.DELETED);
     }
 
     @Transactional
     public void editProject(Long projectId, EditProjectDto editProjectForm) {
 
-        Project findProject = findProject(projectId).get();
+        Project findProject = findProject(projectId);
 
         findProject.changeProjectName(editProjectForm.getProjectName());
         findProject.changeStartDateTime(editProjectForm.getStartDateTime());
@@ -79,11 +79,11 @@ public class ProjectService {
         findProject.changeProjectDescriptionInfo(new ProjectDescriptionInfo(editProjectForm.getProjectSummary(), editProjectForm.getProjectDescription()));
         findProject.changeProjectStatus(editProjectForm.getProjectStatus());
     }
-    private Optional<Project> findProject(Long projectId) {
+    private Project findProject(Long projectId) {
         Optional<Project> project = projectRepository.findOne(projectId);
         if (!project.isPresent()) {
             throw new ProjectNotFoundException(String.format("ProjectId[%s] not found", projectId));
         }
-        return project;
+        return project.get();
     }
 }

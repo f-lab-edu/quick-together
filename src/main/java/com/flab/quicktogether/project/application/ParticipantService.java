@@ -5,6 +5,9 @@ import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.domain.MemberRepository;
 import com.flab.quicktogether.project.domain.Participant;
 import com.flab.quicktogether.project.domain.Project;
+import com.flab.quicktogether.project.exception.MemberNotFoundException;
+import com.flab.quicktogether.project.exception.ParticipantNotFoundException;
+import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import com.flab.quicktogether.project.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
 import com.flab.quicktogether.project.presentation.EditParticipantPositionDto;
@@ -15,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,58 +33,63 @@ public class ParticipantService {
     private final MemberRepository memberRepository;
 
 
-    public Participant findParticipant(ParticipantDto participantDto) {
-        Participant participant = participantRepository.findByMemberIdAndProjectId(participantDto.getMemberId(), participantDto.getProjectId());
+    /**
+     * 구성원들 조회
+     */
+    public List<Participant> retrieveAllParticipants(Long projectId) {
+        return participantRepository.findByProjectId(projectId);
+    }
+
+    /**
+     * 구성원 조회
+     */
+    public Participant retrieveParticipant(Long projectId, Long memberId) {
+        Participant participant = findParticipant(projectId, memberId);
         return participant;
     }
 
-    @Transactional
-    public void joinProject(ParticipantDto participantDto){
-
-        Optional<Member> member = memberRepository.findOne(participantDto.getMemberId());
-        Optional<Project> project = projectRepository.findOne(participantDto.getProjectId());
-
-        Participant.addMember(member.get(), project.get());
-
+    private Participant findParticipant(Long projectId, Long memberId) {
+        Optional<Participant> participant = participantRepository.findByMemberIdAndProjectId(projectId, memberId);
+        if (!participant.isPresent()) {
+            throw new ParticipantNotFoundException(String.format(("Participant not found by projectId[%s] and memberId[%s]"),projectId,memberId));
+        }
+        return participant.get();
     }
 
-    @Transactional
-    public void leaveProject(ParticipantDto participantDto){
-        Participant participant = participantRepository.findByMemberIdAndProjectId(participantDto.getMemberId(), participantDto.getProjectId());
+    /**
+     * 구성원 추가
+     */
+    public void joinProject(Long projectId, Long memberId) {
+        Project project = findProject(projectId);
+        Member member = findMember(memberId);
+        Participant.addMember(project, member);
+    }
+
+    /**
+     * 구성원 삭제
+     */
+    public void leaveProject(Long projectId, Long memberId) {
+        Participant participant = findParticipant(projectId, memberId);
         participantRepository.delete(participant);
-
     }
 
-    @Transactional
-    public void changeRole(ChangeParticipantRoleDto changeParticipantRoleDto) {
-        Participant participant = participantRepository.findByMemberIdAndProjectId(changeParticipantRoleDto.getMemberId(), changeParticipantRoleDto.getProjectId());
-        participant.changeParticipantRole(changeParticipantRoleDto.getParticipantRole());
+
+    private Project findProject(Long projectId) {
+        Optional<Project> project = projectRepository.findOne(projectId);
+        if (!project.isPresent()) {
+            throw new ProjectNotFoundException(String.format("ProjectId[%s] not found", projectId));
+        }
+        return project.get();
     }
 
-    @Transactional
-    public void addPosition(EditParticipantPositionDto editParticipantPositionDto){
-        Participant participant = participantRepository.findByMemberIdAndProjectId(editParticipantPositionDto.getMemberId(), editParticipantPositionDto.getProjectId());
-        participant.addPosition(editParticipantPositionDto.getPosition());
+    private Member findMember(Long memberId) {
+        Optional<Member> member = memberRepository.findOne(memberId);
+        if (!member.isPresent()) {
+            throw new MemberNotFoundException(String.format("MemberId[%s] not found", memberId));
+        }
+        return member.get();
     }
 
-    @Transactional
-    public void addSkillStack(EditParticipantSkillStackDto editParticipantSkillStackDto){
-        Participant participant = participantRepository.findByMemberIdAndProjectId(editParticipantSkillStackDto.getMemberId(), editParticipantSkillStackDto.getProjectId());
-        participant.addSkillStack(editParticipantSkillStackDto.getSkillStack());
-    }
-
-    @Transactional
-    public void removePosition(EditParticipantPositionDto editParticipantPositionDto){
-        Participant participant = participantRepository.findByMemberIdAndProjectId(editParticipantPositionDto.getMemberId(), editParticipantPositionDto.getProjectId());
-        participant.removePosition(editParticipantPositionDto.getPosition());
-    }
-
-    @Transactional
-    public void removeSkillStack(EditParticipantSkillStackDto editParticipantSkillStackDto) {
-        Participant participant = participantRepository.findByMemberIdAndProjectId(editParticipantSkillStackDto.getMemberId(), editParticipantSkillStackDto.getProjectId());
-        participant.removeSkillStack(editParticipantSkillStackDto.getSkillStack());
-
-    }
 
 
 }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,13 +27,14 @@ public class ParticipantRepository {
     }
 
     /**
-     * 특정 회원의 특정 프로젝트 정보
+     * 특정 프로젝트에 특정 구성원 정보
      */
-    public Participant findByMemberIdAndProjectId(Long memberId, Long projectId) {
-        return em.createQuery("select p from Participant p " + "where p.member.id = :memberId and p.project.id = :projectId", Participant.class)
+    public Optional<Participant> findByMemberIdAndProjectId(Long projectId, Long memberId) {
+        Participant participant = em.createQuery("select p from Participant p " + "where p.member.id = :memberId and p.project.id = :projectId", Participant.class)
                 .setParameter("memberId", memberId)
                 .setParameter("projectId", projectId)
                 .getSingleResult();
+        return Optional.ofNullable(participant);
     }
 
 
@@ -49,7 +51,7 @@ public class ParticipantRepository {
     /**
      * 특정 프로젝트에 참여하고 있는 구성원들
      */
-    public List<Participant> findParticipantsByProjectId(Long projectId){
+    public List<Participant> findByProjectId(Long projectId){
         return em.createQuery("select p from Participant p join p.project t where t.id = :projectId", Participant.class)
                 .setParameter("projectId", projectId)
                 .getResultList();

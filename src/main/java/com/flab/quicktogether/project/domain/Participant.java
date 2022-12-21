@@ -43,7 +43,7 @@ public class Participant {
         this.participantRole = participantRole;
     }
 
-    public static Participant addMember(Member member, Project project){
+    public static Participant addMember(Project project, Member member){
         return new Participant(member, project, ParticipantRole.ROLE_USER);
     }
 
