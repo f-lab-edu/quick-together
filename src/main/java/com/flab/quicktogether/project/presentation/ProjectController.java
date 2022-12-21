@@ -19,11 +19,11 @@ public class ProjectController {
     private final ProjectService projectService;
 
     /**
-     * 프로젝트 조회
+     * 프로젝트 전체 조회
      */
     @GetMapping("/projects")
     public Result projects() {
-        List<Project> findProjects = projectService.findProjects();
+        List<Project> findProjects = projectService.retrieveAllProjects();
 
         List<ProjectDto> collect = findProjects.stream()
                 .map(p -> new ProjectDto(p))
@@ -37,7 +37,7 @@ public class ProjectController {
      */
     @GetMapping("/projects/{id}")
     public Result project(@PathVariable("id") Long id) {
-        Project findProject = projectService.findProject(id);
+        Project findProject = projectService.retrieveProject(id);
         ProjectDto projectDto = new ProjectDto(findProject);
         return new Result(projectDto);
     }
@@ -55,7 +55,7 @@ public class ProjectController {
     public HttpStatus registerProject(@RequestBody @Validated CreateProjectDto createProjectDto) {
 
         Long projectId = projectService.createProject(createProjectDto);
-        Project findProject = projectService.findProject(projectId);
+        Project findProject = projectService.retrieveProject(projectId);
 
         return HttpStatus.CREATED;
     }
@@ -67,7 +67,7 @@ public class ProjectController {
     public HttpStatus editProject(@PathVariable("id") Long id, @RequestBody @Validated EditProjectDto editProjectDto) {
 
         projectService.editProject(id, editProjectDto);
-        Project findProject = projectService.findProject(id);
+        Project findProject = projectService.retrieveProject(id);
 
         return HttpStatus.OK;
     }

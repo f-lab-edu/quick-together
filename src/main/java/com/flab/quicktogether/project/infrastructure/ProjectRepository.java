@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,8 +20,8 @@ public class ProjectRepository {
         em.persist(project);
     }
 
-    public Project findOne(Long id) {
-        return em.find(Project.class, id);
+    public Optional<Project> findOne(Long id) {
+        return Optional.ofNullable(em.find(Project.class, id));
     }
 
     public void delete(Project project) {

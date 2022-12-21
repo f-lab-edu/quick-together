@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -35,10 +37,10 @@ public class ParticipantService {
     @Transactional
     public void joinProject(ParticipantDto participantDto){
 
-        Member member = memberRepository.findOne(participantDto.getMemberId());
-        Project project = projectRepository.findOne(participantDto.getProjectId());
+        Optional<Member> member = memberRepository.findOne(participantDto.getMemberId());
+        Optional<Project> project = projectRepository.findOne(participantDto.getProjectId());
 
-        Participant.addMember(member, project);
+        Participant.addMember(member.get(), project.get());
 
     }
 
