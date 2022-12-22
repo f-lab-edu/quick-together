@@ -1,9 +1,7 @@
 package com.flab.quicktogether.project.presentation.participant.dto;
 
 import com.flab.quicktogether.project.domain.Participant;
-import com.flab.quicktogether.project.domain.ParticipantPosition;
 import com.flab.quicktogether.project.domain.Position;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
