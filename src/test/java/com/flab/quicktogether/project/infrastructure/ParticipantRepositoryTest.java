@@ -3,10 +3,8 @@ package com.flab.quicktogether.project.infrastructure;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Participant;
-import com.flab.quicktogether.project.domain.ParticipantRole;
 import com.flab.quicktogether.project.domain.Project;
 import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -52,7 +48,7 @@ class ParticipantRepositoryTest {
                 .periodDateTime(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
-                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 .build();
 
         em.persist(project);
@@ -63,7 +59,7 @@ class ParticipantRepositoryTest {
                 .periodDateTime(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
-                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 .build();
 
         em.persist(project2);
@@ -101,7 +97,7 @@ class ParticipantRepositoryTest {
                 .periodDateTime(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
-                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 .build();
 
         em.persist(project);
@@ -112,7 +108,7 @@ class ParticipantRepositoryTest {
                 .periodDateTime(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
-                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 .build();
 
         em.persist(project2);
@@ -123,7 +119,7 @@ class ParticipantRepositoryTest {
         em.persist(participant);
         em.persist(participant2);
 
-        Optional<Participant> byMemberIdAndProjectId1 = participantRepository.findByMemberIdAndProjectId(project.getId(), member1.getId());
+        Optional<Participant> byMemberIdAndProjectId1 = participantRepository.findByProjectIdAndMemberId(project.getId(), member1.getId());
 
             System.out.println("participant1 = " + byMemberIdAndProjectId1.get().getProject().getProjectName());
 

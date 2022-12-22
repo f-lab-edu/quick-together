@@ -2,6 +2,7 @@ package com.flab.quicktogether.project.infrastructure;
 
 import com.flab.quicktogether.project.domain.Participant;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -29,12 +30,21 @@ public class ParticipantRepository {
     /**
      * 특정 프로젝트에 특정 구성원 정보
      */
-    public Optional<Participant> findByMemberIdAndProjectId(Long projectId, Long memberId) {
-        Participant participant = em.createQuery("select p from Participant p " + "where p.member.id = :memberId and p.project.id = :projectId", Participant.class)
-                .setParameter("memberId", memberId)
-                .setParameter("projectId", projectId)
-                .getSingleResult();
-        return Optional.ofNullable(participant);
+    public Optional<Participant> findByProjectIdAndMemberId(Long projectId, Long memberId) {
+        // 결과 값 없을 시 getSingleResult()에서 NoResultException 발생,, 특정 프로젝트에 중복 참여를 막기 위해 해당 exception catch 후 Optional.ofNullable값 반환시키기위해
+        Participant participant = null;
+        try {
+            participant = em.createQuery("select p from Participant p " + "where p.member.id = :memberId and p.project.id = :projectId", Participant.class)
+                    .setParameter("memberId", memberId)
+                    .setParameter("projectId", projectId)
+                    .getSingleResult();
+            return Optional.ofNullable(participant);
+        } catch (NoResultException ignore) {
+            return Optional.ofNullable(participant);
+        }
+
+
+
     }
 
 

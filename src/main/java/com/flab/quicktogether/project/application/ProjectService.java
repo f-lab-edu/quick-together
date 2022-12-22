@@ -40,10 +40,7 @@ public class ProjectService {
     @Transactional
     public Long createProject(CreateProjectDto createProjectDto) {
 
-        Optional<Member> findMember = memberRepository.findOne(createProjectDto.getMemberId());
-        if (!findMember.isPresent()) {
-            throw new MemberNotFoundException(String.format("MemberId[%s] not found", createProjectDto.getMemberId()));
-        }
+        Member member = findMember(createProjectDto.getMemberId());
 
         Project project = Project.builder()
                 .projectName(createProjectDto.getProjectName())
@@ -51,14 +48,22 @@ public class ProjectService {
                 .periodDateTime(createProjectDto.getPeriodDateTime())
                 .meetingMethod(createProjectDto.getMeetingMethod())
                 .projectSummary(createProjectDto.getProjectSummary())
-                .description(createProjectDto.getProjectDescription())
+                .projectDescription(createProjectDto.getProjectDescription())
                 .build();
         projectRepository.save(project);
 
-        Participant participant = project.registerFounder(findMember.get(), project);
+        Participant participant = project.registerFounder(member, project);
         participantRepository.save(participant);
 
         return project.getId();
+    }
+
+    private Member findMember(Long memberId) {
+        Optional<Member> member = memberRepository.findOne(memberId);
+        if (!member.isPresent()) {
+            throw new MemberNotFoundException(String.format("MemberId[%s] not found", memberId));
+        }
+        return member.get();
     }
 
     @Transactional

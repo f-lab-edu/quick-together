@@ -41,13 +41,13 @@ class ParticipantTest {
                 .periodDateTime(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
-                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 .build();
 
         em.persist(project);
 
-        Participant participant = Participant.addMember(member1,project);
-        Participant participant2 = Participant.addMember(member2,project);
+        Participant participant = Participant.addMember(project,member1);
+        Participant participant2 = Participant.addMember(project,member2);
 
         em.persist(participant);
         em.persist(participant2);
@@ -76,13 +76,13 @@ class ParticipantTest {
                 .periodDateTime(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
-                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 .build();
 
         em.persist(project);
 
-        Participant participant = Participant.addMember(member1,project);
-        Participant participant2 = Participant.addMember(member2,project);
+        Participant participant = Participant.addMember(project,member1);
+        Participant participant2 = Participant.addMember(project,member2);
 
         em.persist(participant);
         em.persist(participant2);
@@ -117,12 +117,12 @@ class ParticipantTest {
                 .periodDateTime(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
-                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 .build();
 
         em.persist(project);
 
-        Participant participant = Participant.addMember(member1,project);
+        Participant participant = Participant.addMember(project,member1);
 
         em.persist(participant);
 

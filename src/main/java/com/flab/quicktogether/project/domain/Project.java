@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Project {
 
     @Id
@@ -40,17 +41,13 @@ public class Project {
 
     private LocalDateTime periodDateTime; // 모집기간
 
-    private Project(){
-
-    }
-
     @Builder
-    public Project(String projectName, String projectSummary, String description,
+    public Project(String projectName, String projectSummary, String projectDescription,
                    MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime) {
 
         Assert.hasText(projectName,"projectName must not be empty");
         Assert.notNull(projectSummary, "projectSummary must not be null");
-        Assert.notNull(description, "description must not be null");
+        Assert.notNull(projectDescription, "description must not be null");
         Assert.notNull(meetingMethod, "meetingMethod must not be null");
         Assert.notNull(startDateTime, "startDateTime must not be null");
         Assert.notNull(periodDateTime, "periodDate must not be null");
@@ -60,7 +57,7 @@ public class Project {
         this.startDateTime = startDateTime;
         this.periodDateTime = periodDateTime;
 
-        this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, description);
+        this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, projectDescription);
     }
 
     public static Project createProject(String projectName, String projectSummary, String description,
@@ -98,7 +95,7 @@ public class Project {
     }
 
     public void changeProjectSummary(String editProjectSummary){
-        this.projectDescriptionInfo = new ProjectDescriptionInfo(editProjectSummary, projectDescriptionInfo.getDescription());
+        this.projectDescriptionInfo = new ProjectDescriptionInfo(editProjectSummary, projectDescriptionInfo.getProjectDescription());
     }
 
     public void changeProjectDescription(String editProjectDescription) {

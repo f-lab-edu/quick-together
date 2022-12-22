@@ -1,10 +1,13 @@
 package com.flab.quicktogether.project.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Entity
+//@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ParticipantSkillStack {
 
     @Id

@@ -2,13 +2,17 @@ package com.flab.quicktogether.project.presentation;
 
 import com.flab.quicktogether.project.application.ProjectService;
 import com.flab.quicktogether.project.domain.Project;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,19 +56,23 @@ public class ProjectController {
      * 프로젝트 등록
      */
     @PostMapping("/projects")
-    public HttpStatus registerProject(@RequestBody @Validated CreateProjectDto createProjectDto) {
+    public ResponseEntity registerProject(@RequestBody @Valid CreateProjectDto createProjectDto) {
 
         Long projectId = projectService.createProject(createProjectDto);
-        Project findProject = projectService.retrieveProject(projectId);
 
-        return HttpStatus.CREATED;
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(projectId)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
     /**
      * 프로젝트 수정
      */
     @PutMapping("/projects/{id}")
-    public HttpStatus editProject(@PathVariable("id") Long id, @RequestBody @Validated EditProjectDto editProjectDto) {
+    public HttpStatus editProject(@PathVariable("id") Long id, @RequestBody @Valid EditProjectDto editProjectDto) {
 
         projectService.editProject(id, editProjectDto);
         Project findProject = projectService.retrieveProject(id);

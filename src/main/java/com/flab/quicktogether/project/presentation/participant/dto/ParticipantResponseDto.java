@@ -1,6 +1,5 @@
-package com.flab.quicktogether.project.presentation;
+package com.flab.quicktogether.project.presentation.participant.dto;
 
-import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.project.domain.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,12 +15,18 @@ import java.util.List;
 public class ParticipantResponseDto {
 
     @NonNull
-    private Member member;
+    private Long MemberId;
 
     @NonNull
-    private Project project;
+    private String MemberName;
 
     @NonNull
+    private Long projectId;
+
+    @NonNull
+    private String projectName;
+    @NonNull
+    @Enumerated(EnumType.STRING)
     private ParticipantRole participantRole;
 
     @NonNull
@@ -31,8 +36,10 @@ public class ParticipantResponseDto {
     private List<SkillStack> skillStacks = new ArrayList<>();
 
     public ParticipantResponseDto(Participant participant) {
-        this.member = participant.getMember();
-        this.project = participant.getProject();
+        this.MemberId = participant.getMember().getId();
+        this.MemberName = participant.getMember().getMemberName();
+        this.projectId = participant.getProject().getId();
+        this.projectName = participant.getProject().getProjectName();
         this.participantRole = participant.getParticipantRole();
         this.positions = participant.getPositions();
         this.skillStacks = participant.getSkillStacks();

@@ -53,7 +53,7 @@ class ProjectControllerTest {
                 .periodDateTime(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
-                .description("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 .build();
 
         em.persist(project);

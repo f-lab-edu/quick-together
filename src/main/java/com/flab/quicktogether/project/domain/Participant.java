@@ -2,13 +2,16 @@ package com.flab.quicktogether.project.domain;
 
 import com.flab.quicktogether.member.domain.Member;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Participant {
 
     @Id
@@ -36,6 +39,7 @@ public class Participant {
     @CollectionTable(name = "ParticipantSkillStack", joinColumns = @JoinColumn(name = "participant_id"))
     @Enumerated(EnumType.STRING)
     private List<SkillStack> skillStacks = new ArrayList<>();
+
 
     public Participant(Member member, Project project, ParticipantRole participantRole) {
         this.member = member;
