@@ -79,4 +79,16 @@ public class ProjectController {
 
         return HttpStatus.OK;
     }
+
+    /**
+     * 프로젝트 삭제
+     */
+    @DeleteMapping("/projects/{id}")
+    public HttpStatus removeProject(@PathVariable("id") Long id) {
+
+        projectService.deleteProject(id);
+        Project findProject = projectService.retrieveProject(id);
+
+        return HttpStatus.OK;
+    }
 }
