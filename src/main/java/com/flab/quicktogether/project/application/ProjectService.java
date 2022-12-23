@@ -99,7 +99,6 @@ public class ProjectService {
     @Transactional
     public void addSkillStack(Long projectId, EditProjectSkillStackDto editProjectSkillStackDto){
         Project findProject = findProject(projectId);
-
         validateDuplicateSkillStack(findProject, editProjectSkillStackDto.getSkillStack());
 
         findProject.addSkillStack(editProjectSkillStackDto.getSkillStack());

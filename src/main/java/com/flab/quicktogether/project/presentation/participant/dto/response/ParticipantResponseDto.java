@@ -2,6 +2,7 @@ package com.flab.quicktogether.project.presentation.participant.dto.response;
 
 import com.flab.quicktogether.project.domain.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -14,25 +15,25 @@ import java.util.List;
 @AllArgsConstructor
 public class ParticipantResponseDto {
 
-    @NonNull
+    @NotNull
     private Long MemberId;
 
-    @NonNull
+    @NotNull
     private String MemberName;
 
-    @NonNull
+    @NotNull
     private Long projectId;
 
-    @NonNull
+    @NotNull
     private String projectName;
-    @NonNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     private ParticipantRole participantRole;
 
-    @NonNull
+    @NotNull
     private List<Position> positions = new ArrayList<>();
 
-    @NonNull
+    @NotNull
     private List<SkillStack> skillStacks = new ArrayList<>();
 
     public ParticipantResponseDto(Participant participant) {

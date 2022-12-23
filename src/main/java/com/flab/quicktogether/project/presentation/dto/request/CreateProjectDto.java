@@ -3,6 +3,7 @@ package com.flab.quicktogether.project.presentation.dto.request;
 
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Project;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -14,25 +15,25 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CreateProjectDto {
 
-    @NonNull
+    @NotNull
     private Long memberId;
 
-    @NonNull
+    @NotNull
     private String projectName; // 프로젝트 이름
 
-    @NonNull @DateTimeFormat
+    @NotNull @DateTimeFormat
     private LocalDateTime startDateTime; // 시작일
 
-    @NonNull @DateTimeFormat
+    @NotNull @DateTimeFormat
     private LocalDateTime periodDateTime; // 모집기간
 
-    @NonNull
+    @NotNull
     private MeetingMethod meetingMethod; // 미팅 방법
 
-    @NonNull
+    @NotNull
     private String projectSummary; // 프로젝트 간단 설명
 
-    @NonNull
+    @NotNull
     private String projectDescription; // 프로젝트 상세설명
 
 

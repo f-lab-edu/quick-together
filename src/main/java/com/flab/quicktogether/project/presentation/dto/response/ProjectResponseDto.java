@@ -2,6 +2,7 @@ package com.flab.quicktogether.project.presentation.dto.response;
 
 import com.flab.quicktogether.project.domain.*;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,31 +14,31 @@ import java.util.List;
 @Data
 public class ProjectResponseDto {
 
-    @NonNull
+    @NotNull
     private String projectName; // 프로젝트 이름
 
-    @NonNull
+    @NotNull
     private ProjectDescriptionInfo projectDescriptionInfo; // 프로젝트 설명 정보
 
-    @NonNull
+    @NotNull
     private ProjectStatus projectStatus; // 프로젝트 상태
 
-    @NonNull
+    @NotNull
     private MeetingMethod meetingMethod; // 진행방식
 
-    @NonNull
+    @NotNull
     private Integer likes; // 좋아요 수
 
-    @NonNull
+    @NotNull
     private Integer views; // 조회 수
 
-    @NonNull @DateTimeFormat
+    @NotNull @DateTimeFormat
     private LocalDateTime startDateTime; // 시작일
 
-    @NonNull @DateTimeFormat
+    @NotNull @DateTimeFormat
     private LocalDateTime periodDateTime; // 모집기간
 
-    @NonNull
+    @NotNull
     private List<SkillStack> skillStacks = new ArrayList<>();
 
 

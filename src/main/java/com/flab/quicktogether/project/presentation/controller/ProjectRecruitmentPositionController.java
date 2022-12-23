@@ -8,12 +8,17 @@ import com.flab.quicktogether.project.presentation.dto.response.ProjectRecruitme
 import com.flab.quicktogether.project.presentation.dto.response.ProjectSkillStackResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
 public class ProjectRecruitmentPositionController {
 
+    private final String LOCATION_URL = "/projects/%d/recruitment/positions";
     private final ProjectService projectService;
 
     /**
@@ -29,23 +34,26 @@ public class ProjectRecruitmentPositionController {
      * 프로젝트 모집 포지션 추가
      */
     @PostMapping("/projects/{id}/recruitment/positions")
-    public ProjectRecruitmentPositionsResponseDto addProjectRecruitmentPositions(@PathVariable("id") Long id,
+    public ResponseEntity<ProjectRecruitmentPositionsResponseDto> addProjectRecruitmentPositions(@PathVariable("id") Long id,
                                                                                  @RequestBody @Valid EditProjectRecruitmentPositionsDto editProjectRecruitmentPositionsDto) {
         projectService.addRecruitmentPosition(id, editProjectRecruitmentPositionsDto);
         Project findProject = projectService.retrieveProject(id);
 
-        return new ProjectRecruitmentPositionsResponseDto(id, findProject);
+        URI location = URI.create(String.format(LOCATION_URL, id));
+
+        return ResponseEntity.created(location).body(new ProjectRecruitmentPositionsResponseDto(id, findProject));
+
     }
 
     /**
      * 프로젝트 모집 포지션 삭제
      */
     @DeleteMapping("/projects/{id}/recruitment/positions")
-    public ProjectRecruitmentPositionsResponseDto removeProjectRecruitmentPositions(@PathVariable("id") Long id,
+    public ResponseEntity<ProjectRecruitmentPositionsResponseDto> removeProjectRecruitmentPositions(@PathVariable("id") Long id,
                                                                                     @RequestBody @Valid EditProjectRecruitmentPositionsDto editProjectRecruitmentPositionsDto) {
         projectService.removeRecruitmentPosition(id, editProjectRecruitmentPositionsDto);
         Project findProject = projectService.retrieveProject(id);
 
-        return new ProjectRecruitmentPositionsResponseDto(id, findProject);
+        return ResponseEntity.ok(new ProjectRecruitmentPositionsResponseDto(id, findProject));
     }
 }

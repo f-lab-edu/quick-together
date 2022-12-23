@@ -2,19 +2,20 @@ package com.flab.quicktogether.project.presentation.participant.dto.response;
 
 import com.flab.quicktogether.project.domain.Participant;
 import com.flab.quicktogether.project.domain.ParticipantRole;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ParticipantRoleResponseDto {
 
-    @NonNull
+    @NotNull
     private Long memberId;
 
-    @NonNull
+    @NotNull
     private Long projectId;
 
-    @NonNull
+    @NotNull
     private ParticipantRole participantRole;
 
 
