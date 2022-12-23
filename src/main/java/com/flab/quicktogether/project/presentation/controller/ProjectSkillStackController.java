@@ -2,12 +2,9 @@ package com.flab.quicktogether.project.presentation.controller;
 
 import com.flab.quicktogether.project.application.ProjectService;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.project.presentation.dto.EditProjectSkillStackDto;
-import com.flab.quicktogether.project.presentation.dto.ProjectDto;
-import com.flab.quicktogether.project.presentation.dto.ProjectSkillStackResponseDto;
+import com.flab.quicktogether.project.presentation.dto.request.EditProjectSkillStackDto;
+import com.flab.quicktogether.project.presentation.dto.response.ProjectSkillStackResponseDto;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

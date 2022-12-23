@@ -3,14 +3,13 @@ package com.flab.quicktogether.project.application;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.domain.MemberRepository;
 import com.flab.quicktogether.project.domain.*;
-import com.flab.quicktogether.project.exception.DuplicateParticipantSkillStackException;
-import com.flab.quicktogether.project.exception.MemberNotFoundException;
-import com.flab.quicktogether.project.exception.ProjectNotFoundException;
+import com.flab.quicktogether.project.exception.*;
 import com.flab.quicktogether.project.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
-import com.flab.quicktogether.project.presentation.dto.CreateProjectDto;
-import com.flab.quicktogether.project.presentation.dto.EditProjectDto;
-import com.flab.quicktogether.project.presentation.dto.EditProjectSkillStackDto;
+import com.flab.quicktogether.project.presentation.dto.request.CreateProjectDto;
+import com.flab.quicktogether.project.presentation.dto.request.EditProjectDto;
+import com.flab.quicktogether.project.presentation.dto.request.EditProjectRecruitmentPositionsDto;
+import com.flab.quicktogether.project.presentation.dto.request.EditProjectSkillStackDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,7 +110,7 @@ public class ProjectService {
         skillStacks.stream()
                 .filter(skillStack -> skillStack.equals(newSkillStack))
                 .forEach(skillStack -> {
-                    throw new DuplicateParticipantSkillStackException("이미 존재하는 스킬입니다.");
+                    throw new DuplicateProjectSkillStackException("이미 존재하는 스킬입니다.");
                 });
     }
 
@@ -122,7 +121,35 @@ public class ProjectService {
     public void removeSkillStack(Long projectId, EditProjectSkillStackDto editProjectSkillStackDto) {
         Project findProject = findProject(projectId);
         findProject.removeSkillStack(editProjectSkillStackDto.getSkillStack());
-
     }
 
+    /**
+     * 프로젝트 모집 포지션 추가
+     */
+    @Transactional
+    public void addRecruitmentPosition(Long projectId, EditProjectRecruitmentPositionsDto editProjectRecruitmentPositionsDto) {
+        Project findProject = findProject(projectId);
+
+        validateDuplicateRecruitmentPosition(findProject, editProjectRecruitmentPositionsDto.getRecruitmentPosition());
+
+        findProject.addRecruitmentPosition(editProjectRecruitmentPositionsDto.getRecruitmentPosition());
+    }
+
+    private void validateDuplicateRecruitmentPosition(Project project, Position newRecruitmentPosition) {
+        List<Position> positions = project.getRecruitmentPositions();
+        positions.stream()
+                .filter(skillStack -> skillStack.equals(positions))
+                .forEach(skillStack -> {
+                    throw new DuplicateProjectPositionException("이미 존재하는 포지션입니다.");
+                });
+    }
+
+    /**
+     * 프로젝트 모집 포지션 삭제
+     */
+    @Transactional
+    public void removeRecruitmentPosition(Long projectId, EditProjectRecruitmentPositionsDto editProjectRecruitmentPositionsDto) {
+        Project findProject = findProject(projectId);
+        findProject.removeRecruitmentPosition(editProjectRecruitmentPositionsDto.getRecruitmentPosition());
+    }
 }

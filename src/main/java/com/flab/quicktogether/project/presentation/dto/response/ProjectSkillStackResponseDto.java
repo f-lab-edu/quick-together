@@ -1,4 +1,4 @@
-package com.flab.quicktogether.project.presentation.dto;
+package com.flab.quicktogether.project.presentation.dto.response;
 
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.domain.SkillStack;

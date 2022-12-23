@@ -1,4 +1,4 @@
-package com.flab.quicktogether.project.presentation.dto;
+package com.flab.quicktogether.project.presentation.dto.request;
 
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.ProjectStatus;

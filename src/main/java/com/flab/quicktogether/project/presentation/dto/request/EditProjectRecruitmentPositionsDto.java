@@ -1,4 +1,4 @@
-package com.flab.quicktogether.project.presentation.participant.dto;
+package com.flab.quicktogether.project.presentation.dto.request;
 
 import com.flab.quicktogether.project.domain.Position;
 import lombok.AccessLevel;
@@ -9,8 +9,8 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EditParticipantPositionDto {
+public class EditProjectRecruitmentPositionsDto {
     @NonNull
-    private Position position;
+    private Position recruitmentPosition;
 
 }

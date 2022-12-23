@@ -1,4 +1,4 @@
-package com.flab.quicktogether.project.presentation.dto;
+package com.flab.quicktogether.project.presentation.participant.dto.request;
 
 import com.flab.quicktogether.project.domain.SkillStack;
 import lombok.AccessLevel;
@@ -9,8 +9,9 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EditProjectSkillStackDto {
+public class EditParticipantSkillStackDto {
     @NonNull
     private SkillStack skillStack;
+
 
 }

@@ -3,7 +3,7 @@ package com.flab.quicktogether.project.presentation.participant.controller;
 
 import com.flab.quicktogether.project.application.ParticipantService;
 import com.flab.quicktogether.project.domain.Participant;
-import com.flab.quicktogether.project.presentation.participant.dto.ParticipantResponseDto;
+import com.flab.quicktogether.project.presentation.participant.dto.response.ParticipantResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.flab.quicktogether.project.presentation.participant.dto;
+package com.flab.quicktogether.project.presentation.participant.dto.request;
 
 import com.flab.quicktogether.project.domain.ParticipantRole;
 import jakarta.persistence.Enumerated;

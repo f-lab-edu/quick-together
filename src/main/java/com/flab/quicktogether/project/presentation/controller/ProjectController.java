@@ -2,9 +2,9 @@ package com.flab.quicktogether.project.presentation.controller;
 
 import com.flab.quicktogether.project.application.ProjectService;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.project.presentation.dto.CreateProjectDto;
-import com.flab.quicktogether.project.presentation.dto.EditProjectDto;
-import com.flab.quicktogether.project.presentation.dto.ProjectDto;
+import com.flab.quicktogether.project.presentation.dto.request.CreateProjectDto;
+import com.flab.quicktogether.project.presentation.dto.request.EditProjectDto;
+import com.flab.quicktogether.project.presentation.dto.response.ProjectResponseDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,8 +31,8 @@ public class ProjectController {
     public Result projects() {
         List<Project> findProjects = projectService.retrieveAllProjects();
 
-        List<ProjectDto> collect = findProjects.stream()
-                .map(p -> new ProjectDto(p))
+        List<ProjectResponseDto> collect = findProjects.stream()
+                .map(p -> new ProjectResponseDto(p))
                 .collect(Collectors.toList());
 
         return new Result(collect);
@@ -44,8 +44,8 @@ public class ProjectController {
     @GetMapping("/projects/{id}")
     public Result project(@PathVariable("id") Long id) {
         Project findProject = projectService.retrieveProject(id);
-        ProjectDto projectDto = new ProjectDto(findProject);
-        return new Result(projectDto);
+        ProjectResponseDto projectResponseDto = new ProjectResponseDto(findProject);
+        return new Result(projectResponseDto);
     }
 
     @Data

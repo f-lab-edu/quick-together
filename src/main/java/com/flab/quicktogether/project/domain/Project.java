@@ -48,6 +48,11 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private List<SkillStack> skillStacks = new ArrayList<>();
 
+    @ElementCollection
+    @CollectionTable(name = "ProjectRecruitmentPosition", joinColumns = @JoinColumn(name = "project_id"))
+    @Enumerated(EnumType.STRING)
+    private List<Position> RecruitmentPositions = new ArrayList<>();
+
     @Builder
     public Project(String projectName, String projectSummary, String projectDescription,
                    MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime) {
@@ -124,6 +129,14 @@ public class Project {
 
     public void removeSkillStack(SkillStack skillStack) {
         this.getSkillStacks().remove(skillStack);
+    }
+
+    public void addRecruitmentPosition(Position recruitmentPosition) {
+        this.getRecruitmentPositions().add(recruitmentPosition);
+    }
+
+    public void removeRecruitmentPosition(Position recruitmentPosition) {
+        this.getRecruitmentPositions().remove(recruitmentPosition);
     }
 }
 

@@ -1,18 +1,17 @@
-package com.flab.quicktogether.project.presentation.dto;
+package com.flab.quicktogether.project.presentation.dto.response;
 
-import com.flab.quicktogether.project.domain.MeetingMethod;
-import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.project.domain.ProjectDescriptionInfo;
-import com.flab.quicktogether.project.domain.ProjectStatus;
+import com.flab.quicktogether.project.domain.*;
 
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-public class ProjectDto {
+public class ProjectResponseDto {
 
     @NonNull
     private String projectName; // 프로젝트 이름
@@ -38,9 +37,11 @@ public class ProjectDto {
     @NonNull @DateTimeFormat
     private LocalDateTime periodDateTime; // 모집기간
 
+    @NonNull
+    private List<SkillStack> skillStacks = new ArrayList<>();
 
-    public ProjectDto(Project p) {
 
+    public ProjectResponseDto(Project p) {
         projectName = p.getProjectName();
         startDateTime = p.getStartDateTime();
         periodDateTime = p.getPeriodDateTime();
@@ -49,6 +50,6 @@ public class ProjectDto {
         projectStatus = p.getProjectStatus();
         likes = p.getLikes();
         views = p.getViews();
-
+        skillStacks = p.getSkillStacks();
     }
 }

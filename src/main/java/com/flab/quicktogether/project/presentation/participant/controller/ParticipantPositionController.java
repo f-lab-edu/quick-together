@@ -3,9 +3,8 @@ package com.flab.quicktogether.project.presentation.participant.controller;
 
 import com.flab.quicktogether.project.application.ParticipantService;
 import com.flab.quicktogether.project.domain.Participant;
-import com.flab.quicktogether.project.presentation.participant.dto.EditParticipantPositionDto;
-import com.flab.quicktogether.project.presentation.participant.dto.ParticipantPositionResponseDto;
-import com.flab.quicktogether.project.presentation.participant.dto.ParticipantResponseDto;
+import com.flab.quicktogether.project.presentation.participant.dto.request.EditParticipantPositionDto;
+import com.flab.quicktogether.project.presentation.participant.dto.response.ParticipantPositionResponseDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
