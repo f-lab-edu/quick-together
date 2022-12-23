@@ -19,9 +19,11 @@ public class ExceptionResponse {
     private String message;
     private String path;
 
-    public ExceptionResponse(String code, String message) {
-        this.code = code;
+    public ExceptionResponse(int status,String error, String message,String path) {
+        this.status = status;
+        this.error = error;
         this.message = message;
+        this.path = path;
     }
 
     public ExceptionResponse(ErrorCode errorCode, String path) {

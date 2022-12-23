@@ -37,7 +37,7 @@ public class ProjectResponseEntityExceptionHandler extends ResponseEntityExcepti
                                                                   WebRequest request) {
 
         log.warn(ex.getClass().getSimpleName(), ex.getMessage());
-        ExceptionResponse exceptionResponse = new ExceptionResponse("Validation Failed", ex.getBindingResult().toString());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(status.value(),"Validation Failed", ex.getBindingResult().toString(),request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
@@ -49,7 +49,7 @@ public class ProjectResponseEntityExceptionHandler extends ResponseEntityExcepti
                                                                   WebRequest request) {
 
         log.warn(ex.getClass().getSimpleName(), ex.getMessage());
-        ExceptionResponse exceptionResponse = new ExceptionResponse("Failed to read request", ex.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(status.value(),"Failed to read request", ex.getMessage(),request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
