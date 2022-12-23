@@ -4,24 +4,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class ProjectNotFoundException extends RuntimeException{
+public class ProjectNotFoundException extends ApplicationException{
 
-    public ProjectNotFoundException() {
+    public ProjectNotFoundException(ErrorCode errorCode) {
+        super(errorCode);
     }
 
-    public ProjectNotFoundException(String message) {
-        super(message);
+    public ProjectNotFoundException(String message, ErrorCode errorCode) {
+        super(message, errorCode);
     }
 
-    public ProjectNotFoundException(String message, Throwable cause) {
-        super(message, cause);
+    public ProjectNotFoundException(String message, Throwable cause, ErrorCode errorCode) {
+        super(message, cause, errorCode);
     }
 
-    public ProjectNotFoundException(Throwable cause) {
-        super(cause);
-    }
-
-    public ProjectNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public ProjectNotFoundException(Throwable cause, ErrorCode errorCode) {
+        super(cause, errorCode);
     }
 }

@@ -1,22 +1,19 @@
 package com.flab.quicktogether.project.exception;
 
-public class DuplicateProjectSkillStackException extends RuntimeException {
-    public DuplicateProjectSkillStackException() {
+public class DuplicateProjectSkillStackException extends ApplicationException{
+    public DuplicateProjectSkillStackException(ErrorCode errorCode) {
+        super(errorCode);
     }
 
-    public DuplicateProjectSkillStackException(String message) {
-        super(message);
+    public DuplicateProjectSkillStackException(String message, ErrorCode errorCode) {
+        super(message, errorCode);
     }
 
-    public DuplicateProjectSkillStackException(String message, Throwable cause) {
-        super(message, cause);
+    public DuplicateProjectSkillStackException(String message, Throwable cause, ErrorCode errorCode) {
+        super(message, cause, errorCode);
     }
 
-    public DuplicateProjectSkillStackException(Throwable cause) {
-        super(cause);
-    }
-
-    public DuplicateProjectSkillStackException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public DuplicateProjectSkillStackException(Throwable cause, ErrorCode errorCode) {
+        super(cause, errorCode);
     }
 }

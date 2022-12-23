@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.flab.quicktogether.project.exception.ErrorCode.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -62,7 +64,8 @@ public class ProjectService {
     private Member findMember(Long memberId) {
         Optional<Member> member = memberRepository.findOne(memberId);
         if (!member.isPresent()) {
-            throw new MemberNotFoundException(String.format("MemberId[%s] not found", memberId));
+            //throw new MemberNotFoundException(String.format("MemberId[%s] not found", memberId));
+            throw new MemberNotFoundException(MEMBER_NOT_FOUND);
         }
         return member.get();
     }
@@ -88,7 +91,7 @@ public class ProjectService {
     private Project findProject(Long projectId) {
         Optional<Project> project = projectRepository.findOne(projectId);
         if (!project.isPresent()) {
-            throw new ProjectNotFoundException(String.format("ProjectId[%s] not found", projectId));
+            throw new ProjectNotFoundException(PROJECT_NOT_FOUND);
         }
         return project.get();
     }
@@ -109,7 +112,7 @@ public class ProjectService {
         skillStacks.stream()
                 .filter(skillStack -> skillStack.equals(newSkillStack))
                 .forEach(skillStack -> {
-                    throw new DuplicateProjectSkillStackException("이미 존재하는 스킬입니다.");
+                    throw new DuplicateProjectSkillStackException(DUPLICATE_PROJECT_SKILLSTACK);
                 });
     }
 
@@ -139,7 +142,7 @@ public class ProjectService {
         positions.stream()
                 .filter(skillStack -> skillStack.equals(positions))
                 .forEach(skillStack -> {
-                    throw new DuplicateProjectPositionException("이미 존재하는 포지션입니다.");
+                    throw new DuplicateProjectPositionException(DUPLICATE_PROJECT_POSITION);
                 });
     }
 

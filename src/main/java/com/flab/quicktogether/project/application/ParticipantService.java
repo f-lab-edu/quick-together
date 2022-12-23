@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.flab.quicktogether.project.exception.ErrorCode.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -63,7 +65,7 @@ public class ParticipantService {
     private void checkProjectParticipation(Long projectId, Long memberId){
         Optional<Participant> participant = participantRepository.findByProjectIdAndMemberId(projectId, memberId);
         if (participant.isPresent()) {
-            throw new DuplicateProjectParticipationException("해당 멤버는 이미 프로젝트에 참여중 입니다.");
+            throw new DuplicateProjectParticipationException(DUPLICATE_PROJECT_PARTICIPATION);
         }
     }
 
@@ -103,7 +105,7 @@ public class ParticipantService {
         positions.stream()
                 .filter(position -> position.equals(newPosition))
                 .forEach(position -> {
-            throw new DuplicateParticipantPositionException("이미 존재하는 포지션입니다.");
+            throw new DuplicateParticipantPositionException(DUPLICATE_PARTICIPANT_POSITION);
         });
     }
 
@@ -133,7 +135,7 @@ public class ParticipantService {
         skillStacks.stream()
                 .filter(skillStack -> skillStack.equals(newSkillStack))
                 .forEach(skillStack -> {
-                    throw new DuplicateParticipantSkillStackException("이미 존재하는 스킬입니다.");
+                    throw new DuplicateParticipantSkillStackException(DUPLICATE_PARTICIPANT_SKILLSTACK);
                 });
     }
 
@@ -152,7 +154,7 @@ public class ParticipantService {
         findMember(memberId);
         Optional<Participant> participant = participantRepository.findByProjectIdAndMemberId(projectId, memberId);
         if (!participant.isPresent()) {
-            throw new ParticipantNotFoundException(String.format(("Participant not found by projectId[%s] and memberId[%s]"),projectId,memberId));
+            throw new ParticipantNotFoundException(PARTICIPANT_NOT_FOUND);
         }
         return participant.get();
     }
@@ -160,7 +162,7 @@ public class ParticipantService {
     private Project findProject(Long projectId) {
         Optional<Project> project = projectRepository.findOne(projectId);
         if (!project.isPresent()) {
-            throw new ProjectNotFoundException(String.format("ProjectId[%s] not found", projectId));
+            throw new ProjectNotFoundException(PROJECT_NOT_FOUND);
         }
         return project.get();
     }
@@ -168,7 +170,8 @@ public class ParticipantService {
     private Member findMember(Long memberId) {
         Optional<Member> member = memberRepository.findOne(memberId);
         if (!member.isPresent()) {
-            throw new MemberNotFoundException(String.format("MemberId[%s] not found", memberId));
+            //throw new MemberNotFoundException(String.format("MemberId[%s] not found", memberId));
+            throw new MemberNotFoundException(MEMBER_NOT_FOUND);
         }
         return member.get();
     }

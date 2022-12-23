@@ -1,23 +1,20 @@
 package com.flab.quicktogether.project.exception;
 
-public class DuplicateProjectParticipationException extends RuntimeException {
+public class DuplicateProjectParticipationException extends ApplicationException {
 
-    public DuplicateProjectParticipationException() {
+    public DuplicateProjectParticipationException(ErrorCode errorCode) {
+        super(errorCode);
     }
 
-    public DuplicateProjectParticipationException(String message) {
-        super(message);
+    public DuplicateProjectParticipationException(String message, ErrorCode errorCode) {
+        super(message, errorCode);
     }
 
-    public DuplicateProjectParticipationException(String message, Throwable cause) {
-        super(message, cause);
+    public DuplicateProjectParticipationException(String message, Throwable cause, ErrorCode errorCode) {
+        super(message, cause, errorCode);
     }
 
-    public DuplicateProjectParticipationException(Throwable cause) {
-        super(cause);
-    }
-
-    public DuplicateProjectParticipationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public DuplicateProjectParticipationException(Throwable cause, ErrorCode errorCode) {
+        super(cause, errorCode);
     }
 }

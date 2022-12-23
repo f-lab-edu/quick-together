@@ -1,22 +1,19 @@
 package com.flab.quicktogether.project.exception;
 
-public class DuplicateProjectPositionException extends RuntimeException {
-    public DuplicateProjectPositionException() {
+public class DuplicateProjectPositionException extends ApplicationException {
+    public DuplicateProjectPositionException(ErrorCode errorCode) {
+        super(errorCode);
     }
 
-    public DuplicateProjectPositionException(String message) {
-        super(message);
+    public DuplicateProjectPositionException(String message, ErrorCode errorCode) {
+        super(message, errorCode);
     }
 
-    public DuplicateProjectPositionException(String message, Throwable cause) {
-        super(message, cause);
+    public DuplicateProjectPositionException(String message, Throwable cause, ErrorCode errorCode) {
+        super(message, cause, errorCode);
     }
 
-    public DuplicateProjectPositionException(Throwable cause) {
-        super(cause);
-    }
-
-    public DuplicateProjectPositionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public DuplicateProjectPositionException(Throwable cause, ErrorCode errorCode) {
+        super(cause, errorCode);
     }
 }
