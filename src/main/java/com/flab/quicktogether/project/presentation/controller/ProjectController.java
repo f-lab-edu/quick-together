@@ -42,10 +42,10 @@ public class ProjectController {
      * 프로젝트 단일 조회
      */
     @GetMapping("/projects/{id}")
-    public Result project(@PathVariable("id") Long id) {
+    public ProjectResponseDto project(@PathVariable("id") Long id) {
         Project findProject = projectService.retrieveProject(id);
         ProjectResponseDto projectResponseDto = new ProjectResponseDto(findProject);
-        return new Result(projectResponseDto);
+        return projectResponseDto;
     }
 
     @Data

@@ -9,7 +9,11 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +25,7 @@ public class ParticipantPositionController {
      * 구성원 포지션 조회
      */
     @GetMapping("/projects/{projectId}/members/{memberId}/positions")
-    public ParticipantPositionResponseDto retrieveParticipantPosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId){
+    public ParticipantPositionResponseDto retrieveParticipantPosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId) {
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
         return new ParticipantPositionResponseDto(projectId, memberId, findParticipant);
     }
@@ -30,13 +34,14 @@ public class ParticipantPositionController {
      * 구성원 포지션 추가
      */
     @PostMapping("/projects/{projectId}/members/{memberId}/positions")
-    public ParticipantPositionResponseDto addPosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId,
-                                                      @RequestBody @Valid EditParticipantPositionDto editParticipantPositionDto){
+    public ResponseEntity<ParticipantPositionResponseDto> addPosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId,
+                                                                      @RequestBody @Valid EditParticipantPositionDto editParticipantPositionDto) {
 
         participantService.addPosition(projectId, memberId, editParticipantPositionDto);
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
 
-        return new ParticipantPositionResponseDto(projectId, memberId, findParticipant);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ResponseEntity.created(location).body(new ParticipantPositionResponseDto(projectId, memberId, findParticipant));
     }
 
     /**
@@ -44,7 +49,7 @@ public class ParticipantPositionController {
      */
     @DeleteMapping("/projects/{projectId}/members/{memberId}/positions")
     public ParticipantPositionResponseDto removePosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId,
-                                                  @RequestBody @Valid EditParticipantPositionDto editParticipantPositionDto){
+                                                         @RequestBody @Valid EditParticipantPositionDto editParticipantPositionDto) {
 
         participantService.removePosition(projectId, memberId, editParticipantPositionDto);
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
@@ -54,7 +59,7 @@ public class ParticipantPositionController {
 
     @Data
     @AllArgsConstructor
-    static class Result<T>{
+    static class Result<T> {
         private T data;
     }
 }

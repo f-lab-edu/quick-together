@@ -18,7 +18,6 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class ProjectRecruitmentPositionController {
 
-    private final String LOCATION_URL = "/projects/%d/recruitment/positions";
     private final ProjectService projectService;
 
     /**
@@ -39,8 +38,7 @@ public class ProjectRecruitmentPositionController {
         projectService.addRecruitmentPosition(id, editProjectRecruitmentPositionsDto);
         Project findProject = projectService.retrieveProject(id);
 
-        URI location = URI.create(String.format(LOCATION_URL, id));
-
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.created(location).body(new ProjectRecruitmentPositionsResponseDto(id, findProject));
 
     }

@@ -8,8 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,11 +54,12 @@ public class ParticipantController {
      * 해당 프로젝트에 멤버 추가
      */
     @PostMapping("/projects/{projectId}/members/{memberId}")
-    public HttpStatus joinProject(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId){
+    public ResponseEntity joinProject(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId){
 
         participantService.joinProject(projectId,memberId);
 
-        return HttpStatus.CREATED;
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ResponseEntity.created(location).build();
     }
 
     /**

@@ -9,7 +9,11 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,13 +34,14 @@ public class ParticipantSkillStackController {
      * 구성원 스킬스택 추가
      */
     @PostMapping("/projects/{projectId}/members/{memberId}/skillstacks")
-    public ParticipantSkillStackResponseDto addPosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId,
+    public ResponseEntity<ParticipantSkillStackResponseDto> addPosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId,
                                                         @RequestBody @Valid EditParticipantSkillStackDto editParticipantSkillStackDto){
 
         participantService.addSkillStack(projectId, memberId, editParticipantSkillStackDto);
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
 
-        return new ParticipantSkillStackResponseDto(projectId, memberId, findParticipant);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ResponseEntity.created(location).body(new ParticipantSkillStackResponseDto(projectId, memberId, findParticipant));
     }
 
     /**

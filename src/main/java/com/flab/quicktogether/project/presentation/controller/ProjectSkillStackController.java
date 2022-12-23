@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
@@ -15,7 +16,6 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class ProjectSkillStackController {
 
-    private final String LOCATION_URL = "/projects/%d/skillstacks";
     private final ProjectService projectService;
 
     /**
@@ -37,8 +37,7 @@ public class ProjectSkillStackController {
         projectService.addSkillStack(id, editProjectSkillStackDto);
         Project findProject = projectService.retrieveProject(id);
 
-        URI location = URI.create(String.format(LOCATION_URL, id));
-
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.created(location).body(new ProjectSkillStackResponseDto(id, findProject));
     }
 
