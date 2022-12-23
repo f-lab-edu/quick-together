@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
 @RestController
 @ControllerAdvice
 @Slf4j
@@ -25,7 +26,7 @@ public class ProjectResponseEntityExceptionHandler extends ResponseEntityExcepti
 
     @ExceptionHandler(ApplicationException.class)
     public final ResponseEntity<Object> handleApplicationException(ApplicationException ex, WebRequest request) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getErrorCode(),request.getDescription(false));
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getErrorCode(), request.getDescription(false));
         return new ResponseEntity(exceptionResponse, ex.getErrorCode().getHttpStatus());
     }
 
@@ -35,9 +36,10 @@ public class ProjectResponseEntityExceptionHandler extends ResponseEntityExcepti
                                                                   HttpHeaders headers,
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
-
         log.warn(ex.getClass().getSimpleName(), ex.getMessage());
-        ExceptionResponse exceptionResponse = new ExceptionResponse(status.value(),"Validation Failed", ex.getBindingResult().toString(),request.getDescription(false));
+
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.VALIDATION_FAILED, request.getDescription(false), ex.getAllErrors());
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
@@ -47,13 +49,12 @@ public class ProjectResponseEntityExceptionHandler extends ResponseEntityExcepti
                                                                   HttpHeaders headers,
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
+        log.warn(ex.fillInStackTrace().getMessage());
 
-        log.warn(ex.getClass().getSimpleName(), ex.getMessage());
-        ExceptionResponse exceptionResponse = new ExceptionResponse(status.value(),"Failed to read request", ex.getMessage(),request.getDescription(false));
-
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.MESSAGE_NOT_READABLE, ex.getMessage(),request.getDescription(false));
+        HttpInputMessage httpInputMessage = ex.getHttpInputMessage();
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
-
 
 
 }

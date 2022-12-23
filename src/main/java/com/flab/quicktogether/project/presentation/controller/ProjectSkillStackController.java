@@ -7,6 +7,7 @@ import com.flab.quicktogether.project.presentation.dto.response.ProjectSkillStac
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,8 +32,8 @@ public class ProjectSkillStackController {
      * 프로젝트 스킬 스택 추가
      */
     @PostMapping("/projects/{id}/skillstacks")
-    public ResponseEntity<ProjectSkillStackResponseDto> addProjectSkillStacks(@PathVariable("id") Long id,
-                                                                              @RequestBody @Valid EditProjectSkillStackDto editProjectSkillStackDto) {
+    public ResponseEntity addProjectSkillStacks(@PathVariable("id") Long id,
+                                                @RequestBody @Valid EditProjectSkillStackDto editProjectSkillStackDto) {
 
         projectService.addSkillStack(id, editProjectSkillStackDto);
         Project findProject = projectService.retrieveProject(id);
