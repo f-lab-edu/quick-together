@@ -1,14 +1,16 @@
-package com.flab.quicktogether.project.presentation;
+package com.flab.quicktogether.project.presentation.controller;
 
 import com.flab.quicktogether.project.application.ProjectService;
 import com.flab.quicktogether.project.domain.Project;
+import com.flab.quicktogether.project.presentation.dto.CreateProjectDto;
+import com.flab.quicktogether.project.presentation.dto.EditProjectDto;
+import com.flab.quicktogether.project.presentation.dto.ProjectDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

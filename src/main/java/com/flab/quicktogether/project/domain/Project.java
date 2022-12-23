@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -40,6 +42,11 @@ public class Project {
     private LocalDateTime createDateTime; // 생성일
 
     private LocalDateTime periodDateTime; // 모집기간
+
+    @ElementCollection
+    @CollectionTable(name = "ProjectSkillStack", joinColumns = @JoinColumn(name = "project_id"))
+    @Enumerated(EnumType.STRING)
+    private List<SkillStack> skillStacks = new ArrayList<>();
 
     @Builder
     public Project(String projectName, String projectSummary, String projectDescription,
@@ -109,6 +116,14 @@ public class Project {
 
     public Participant registerFounder(Member findMember, Project project) {
         return new Participant(findMember, project, ParticipantRole.ROLE_ADMIN);
+    }
+
+    public void addSkillStack(SkillStack skillStack) {
+        this.getSkillStacks().add(skillStack);
+    }
+
+    public void removeSkillStack(SkillStack skillStack) {
+        this.getSkillStacks().remove(skillStack);
     }
 }
 

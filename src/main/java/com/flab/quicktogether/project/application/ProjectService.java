@@ -3,12 +3,14 @@ package com.flab.quicktogether.project.application;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.domain.MemberRepository;
 import com.flab.quicktogether.project.domain.*;
+import com.flab.quicktogether.project.exception.DuplicateParticipantSkillStackException;
 import com.flab.quicktogether.project.exception.MemberNotFoundException;
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import com.flab.quicktogether.project.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
-import com.flab.quicktogether.project.presentation.CreateProjectDto;
-import com.flab.quicktogether.project.presentation.EditProjectDto;
+import com.flab.quicktogether.project.presentation.dto.CreateProjectDto;
+import com.flab.quicktogether.project.presentation.dto.EditProjectDto;
+import com.flab.quicktogether.project.presentation.dto.EditProjectSkillStackDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,4 +93,36 @@ public class ProjectService {
         }
         return project.get();
     }
+
+    /**
+     * 프로젝트 스킬스택 추가
+     */
+    @Transactional
+    public void addSkillStack(Long projectId, EditProjectSkillStackDto editProjectSkillStackDto){
+        Project findProject = findProject(projectId);
+
+        validateDuplicateSkillStack(findProject, editProjectSkillStackDto.getSkillStack());
+
+        findProject.addSkillStack(editProjectSkillStackDto.getSkillStack());
+    }
+
+    private void validateDuplicateSkillStack(Project project, SkillStack newSkillStack) {
+        List<SkillStack> skillStacks = project.getSkillStacks();
+        skillStacks.stream()
+                .filter(skillStack -> skillStack.equals(newSkillStack))
+                .forEach(skillStack -> {
+                    throw new DuplicateParticipantSkillStackException("이미 존재하는 스킬입니다.");
+                });
+    }
+
+    /**
+     * 프로젝트 스킬스택 삭제
+     */
+    @Transactional
+    public void removeSkillStack(Long projectId, EditProjectSkillStackDto editProjectSkillStackDto) {
+        Project findProject = findProject(projectId);
+        findProject.removeSkillStack(editProjectSkillStackDto.getSkillStack());
+
+    }
+
 }
