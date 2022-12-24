@@ -27,7 +27,7 @@ public class ProjectResponse {
     private MeetingMethod meetingMethod; // 진행방식
 
     @NotNull
-    private Integer likes; // 좋아요 수
+    private Long likes; // 좋아요 수
 
     @NotNull
     private Integer views; // 조회 수

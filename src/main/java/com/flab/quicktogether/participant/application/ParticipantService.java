@@ -174,7 +174,6 @@ public class ParticipantService {
     private Member findMember(Long memberId) {
         Optional<Member> member = memberRepository.findOne(memberId);
         if (!member.isPresent()) {
-            //throw new MemberNotFoundException(String.format("MemberId[%s] not found", memberId));
             throw new MemberNotFoundException(MEMBER_NOT_FOUND);
         }
         return member.get();

@@ -36,7 +36,7 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private MeetingMethod meetingMethod; // 진행방식
 
-    private Integer likes = 0; // 좋아요 수
+    private Long likes = 0L; // 좋아요 수
 
     private Integer views = 0; // 조회 수
 
@@ -56,6 +56,8 @@ public class Project {
     @CollectionTable(name = "ProjectRecruitmentPosition", joinColumns = @JoinColumn(name = "project_id"))
     @Enumerated(EnumType.STRING)
     private List<Position> RecruitmentPositions = new ArrayList<>();
+
+
 
     @Builder
     public Project(String projectName, String projectSummary, String projectDescription,
@@ -120,6 +122,10 @@ public class Project {
 
     public void changeProjectDescriptionInfo(ProjectDescriptionInfo editProjectDescriptionInfo){
         this.projectDescriptionInfo = editProjectDescriptionInfo;
+    }
+
+    public void changeProjectLikes(Long likes) {
+        this.likes = likes;
     }
 
 

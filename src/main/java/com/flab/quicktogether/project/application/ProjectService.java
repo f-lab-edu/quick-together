@@ -9,6 +9,7 @@ import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.project.domain.*;
 import com.flab.quicktogether.project.exception.*;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
+import com.flab.quicktogether.project.infrastructure.ProjectLikeRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
 import com.flab.quicktogether.project.presentation.dto.request.CreateProjectRequest;
 import com.flab.quicktogether.project.presentation.dto.request.EditProjectRequest;
@@ -34,9 +35,13 @@ public class ProjectService {
 
     private final ParticipantRepository participantRepository;
 
+    private final ProjectLikeRepository projectLikeRepository;
+
 
     public Project retrieveProject(Long projectId) {
-        return findProject(projectId);
+        Project project = findProject(projectId);
+        project.changeProjectLikes(projectLikeRepository.findTotalLikesByProjectId(projectId));
+        return project;
     }
 
 
@@ -68,7 +73,6 @@ public class ProjectService {
     private Member findMember(Long memberId) {
         Optional<Member> member = memberRepository.findOne(memberId);
         if (!member.isPresent()) {
-            //throw new MemberNotFoundException(String.format("MemberId[%s] not found", memberId));
             throw new MemberNotFoundException(MEMBER_NOT_FOUND);
         }
         return member.get();
