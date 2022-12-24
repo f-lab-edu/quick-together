@@ -1,8 +1,9 @@
 package com.flab.quicktogether.project.infrastructure;
 
 import com.flab.quicktogether.member.domain.Member;
+import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.domain.MeetingMethod;
-import com.flab.quicktogether.project.domain.Participant;
+import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.project.domain.Project;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;

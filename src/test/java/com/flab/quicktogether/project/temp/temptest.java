@@ -1,7 +1,7 @@
 package com.flab.quicktogether.project.temp;
 
 
-import com.flab.quicktogether.project.domain.Position;
+import com.flab.quicktogether.globalsetting.domain.Position;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

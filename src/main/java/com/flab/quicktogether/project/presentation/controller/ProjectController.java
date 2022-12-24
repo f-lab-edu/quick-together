@@ -2,9 +2,9 @@ package com.flab.quicktogether.project.presentation.controller;
 
 import com.flab.quicktogether.project.application.ProjectService;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.project.presentation.dto.request.CreateProjectDto;
-import com.flab.quicktogether.project.presentation.dto.request.EditProjectDto;
-import com.flab.quicktogether.project.presentation.dto.response.ProjectResponseDto;
+import com.flab.quicktogether.project.presentation.dto.request.CreateProjectRequest;
+import com.flab.quicktogether.project.presentation.dto.request.EditProjectRequest;
+import com.flab.quicktogether.project.presentation.dto.response.ProjectResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,8 +31,8 @@ public class ProjectController {
     public Result projects() {
         List<Project> findProjects = projectService.retrieveAllProjects();
 
-        List<ProjectResponseDto> collect = findProjects.stream()
-                .map(p -> new ProjectResponseDto(p))
+        List<ProjectResponse> collect = findProjects.stream()
+                .map(p -> new ProjectResponse(p))
                 .collect(Collectors.toList());
 
         return new Result(collect);
@@ -42,10 +42,10 @@ public class ProjectController {
      * 프로젝트 단일 조회
      */
     @GetMapping("/projects/{id}")
-    public ProjectResponseDto project(@PathVariable("id") Long id) {
+    public ProjectResponse project(@PathVariable("id") Long id) {
         Project findProject = projectService.retrieveProject(id);
-        ProjectResponseDto projectResponseDto = new ProjectResponseDto(findProject);
-        return projectResponseDto;
+        ProjectResponse projectResponse = new ProjectResponse(findProject);
+        return projectResponse;
     }
 
     @Data
@@ -58,9 +58,9 @@ public class ProjectController {
      * 프로젝트 등록
      */
     @PostMapping("/projects")
-    public ResponseEntity registerProject(@RequestBody @Valid CreateProjectDto createProjectDto) {
+    public ResponseEntity registerProject(@RequestBody @Valid CreateProjectRequest createProjectRequest) {
 
-        Long projectId = projectService.createProject(createProjectDto);
+        Long projectId = projectService.createProject(createProjectRequest);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -74,9 +74,9 @@ public class ProjectController {
      * 프로젝트 수정
      */
     @PutMapping("/projects/{id}")
-    public HttpStatus editProject(@PathVariable("id") Long id, @RequestBody @Valid EditProjectDto editProjectDto) {
+    public HttpStatus editProject(@PathVariable("id") Long id, @RequestBody @Valid EditProjectRequest editProjectRequest) {
 
-        projectService.editProject(id, editProjectDto);
+        projectService.editProject(id, editProjectRequest);
         Project findProject = projectService.retrieveProject(id);
 
         return HttpStatus.OK;

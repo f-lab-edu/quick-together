@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.project.presentation.dto.request.CreateProjectDto;
+import com.flab.quicktogether.project.presentation.dto.request.CreateProjectRequest;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -93,8 +93,8 @@ class ProjectControllerTest {
 
         //when
 
-        CreateProjectDto createProjectDto = new CreateProjectDto(1L,projectName,startDateTime,periodDate,meetingMethod,projectSummary,description);
-        String body = mapper.writeValueAsString(createProjectDto);
+        CreateProjectRequest createProjectRequest = new CreateProjectRequest(1L,projectName,startDateTime,periodDate,meetingMethod,projectSummary,description);
+        String body = mapper.writeValueAsString(createProjectRequest);
 
         //then
         mockMvc.perform(post("/projects")

@@ -1,15 +1,19 @@
 package com.flab.quicktogether.project.application;
 
+import com.flab.quicktogether.globalsetting.domain.Position;
+import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.domain.MemberRepository;
+import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.project.domain.*;
 import com.flab.quicktogether.project.exception.*;
-import com.flab.quicktogether.project.infrastructure.ParticipantRepository;
+import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
-import com.flab.quicktogether.project.presentation.dto.request.CreateProjectDto;
-import com.flab.quicktogether.project.presentation.dto.request.EditProjectDto;
-import com.flab.quicktogether.project.presentation.dto.request.EditProjectRecruitmentPositionsDto;
-import com.flab.quicktogether.project.presentation.dto.request.EditProjectSkillStackDto;
+import com.flab.quicktogether.project.presentation.dto.request.CreateProjectRequest;
+import com.flab.quicktogether.project.presentation.dto.request.EditProjectRequest;
+import com.flab.quicktogether.project.presentation.dto.request.EditProjectRecruitmentPositionsRequest;
+import com.flab.quicktogether.project.presentation.dto.request.EditProjectSkillStackRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.flab.quicktogether.project.exception.ErrorCode.*;
+import static com.flab.quicktogether.globalsetting.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,17 +45,17 @@ public class ProjectService {
     }
 
     @Transactional
-    public Long createProject(CreateProjectDto createProjectDto) {
+    public Long createProject(CreateProjectRequest createProjectRequest) {
 
-        Member member = findMember(createProjectDto.getMemberId());
+        Member member = findMember(createProjectRequest.getMemberId());
 
         Project project = Project.builder()
-                .projectName(createProjectDto.getProjectName())
-                .startDateTime(createProjectDto.getStartDateTime())
-                .periodDateTime(createProjectDto.getPeriodDateTime())
-                .meetingMethod(createProjectDto.getMeetingMethod())
-                .projectSummary(createProjectDto.getProjectSummary())
-                .projectDescription(createProjectDto.getProjectDescription())
+                .projectName(createProjectRequest.getProjectName())
+                .startDateTime(createProjectRequest.getStartDateTime())
+                .periodDateTime(createProjectRequest.getPeriodDateTime())
+                .meetingMethod(createProjectRequest.getMeetingMethod())
+                .projectSummary(createProjectRequest.getProjectSummary())
+                .projectDescription(createProjectRequest.getProjectDescription())
                 .build();
         projectRepository.save(project);
 
@@ -77,7 +81,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public void editProject(Long projectId, EditProjectDto editProjectForm) {
+    public void editProject(Long projectId, EditProjectRequest editProjectForm) {
 
         Project findProject = findProject(projectId);
 
@@ -100,11 +104,11 @@ public class ProjectService {
      * 프로젝트 스킬스택 추가
      */
     @Transactional
-    public void addSkillStack(Long projectId, EditProjectSkillStackDto editProjectSkillStackDto){
+    public void addSkillStack(Long projectId, EditProjectSkillStackRequest editProjectSkillStackRequest){
         Project findProject = findProject(projectId);
-        validateDuplicateSkillStack(findProject, editProjectSkillStackDto.getSkillStack());
+        validateDuplicateSkillStack(findProject, editProjectSkillStackRequest.getSkillStack());
 
-        findProject.addSkillStack(editProjectSkillStackDto.getSkillStack());
+        findProject.addSkillStack(editProjectSkillStackRequest.getSkillStack());
     }
 
     private void validateDuplicateSkillStack(Project project, SkillStack newSkillStack) {
@@ -120,21 +124,21 @@ public class ProjectService {
      * 프로젝트 스킬스택 삭제
      */
     @Transactional
-    public void removeSkillStack(Long projectId, EditProjectSkillStackDto editProjectSkillStackDto) {
+    public void removeSkillStack(Long projectId, EditProjectSkillStackRequest editProjectSkillStackRequest) {
         Project findProject = findProject(projectId);
-        findProject.removeSkillStack(editProjectSkillStackDto.getSkillStack());
+        findProject.removeSkillStack(editProjectSkillStackRequest.getSkillStack());
     }
 
     /**
      * 프로젝트 모집 포지션 추가
      */
     @Transactional
-    public void addRecruitmentPosition(Long projectId, EditProjectRecruitmentPositionsDto editProjectRecruitmentPositionsDto) {
+    public void addRecruitmentPosition(Long projectId, EditProjectRecruitmentPositionsRequest editProjectRecruitmentPositionsRequest) {
         Project findProject = findProject(projectId);
 
-        validateDuplicateRecruitmentPosition(findProject, editProjectRecruitmentPositionsDto.getRecruitmentPosition());
+        validateDuplicateRecruitmentPosition(findProject, editProjectRecruitmentPositionsRequest.getRecruitmentPosition());
 
-        findProject.addRecruitmentPosition(editProjectRecruitmentPositionsDto.getRecruitmentPosition());
+        findProject.addRecruitmentPosition(editProjectRecruitmentPositionsRequest.getRecruitmentPosition());
     }
 
     private void validateDuplicateRecruitmentPosition(Project project, Position newRecruitmentPosition) {
@@ -150,8 +154,8 @@ public class ProjectService {
      * 프로젝트 모집 포지션 삭제
      */
     @Transactional
-    public void removeRecruitmentPosition(Long projectId, EditProjectRecruitmentPositionsDto editProjectRecruitmentPositionsDto) {
+    public void removeRecruitmentPosition(Long projectId, EditProjectRecruitmentPositionsRequest editProjectRecruitmentPositionsRequest) {
         Project findProject = findProject(projectId);
-        findProject.removeRecruitmentPosition(editProjectRecruitmentPositionsDto.getRecruitmentPosition());
+        findProject.removeRecruitmentPosition(editProjectRecruitmentPositionsRequest.getRecruitmentPosition());
     }
 }

@@ -1,6 +1,8 @@
 package com.flab.quicktogether.project.domain;
 
 import com.flab.quicktogether.member.domain.Member;
+import com.flab.quicktogether.participant.domain.Participant;
+import com.flab.quicktogether.participant.domain.ParticipantRole;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

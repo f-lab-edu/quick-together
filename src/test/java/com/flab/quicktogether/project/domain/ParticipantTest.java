@@ -1,6 +1,8 @@
 package com.flab.quicktogether.project.domain;
 
+import com.flab.quicktogether.globalsetting.domain.Position;
 import com.flab.quicktogether.member.domain.Member;
+import com.flab.quicktogether.participant.domain.Participant;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class ParticipantTest {

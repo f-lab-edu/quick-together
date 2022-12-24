@@ -2,12 +2,11 @@ package com.flab.quicktogether.project.presentation.controller;
 
 import com.flab.quicktogether.project.application.ProjectService;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.project.presentation.dto.request.EditProjectSkillStackDto;
-import com.flab.quicktogether.project.presentation.dto.response.ProjectSkillStackResponseDto;
+import com.flab.quicktogether.project.presentation.dto.request.EditProjectSkillStackRequest;
+import com.flab.quicktogether.project.presentation.dto.response.ProjectSkillStackResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,9 +22,9 @@ public class ProjectSkillStackController {
      * 프로젝트 스킬 스택 조회
      */
     @GetMapping("/projects/{id}/skillstacks")
-    public ProjectSkillStackResponseDto retrieveProjectSkillStacks(@PathVariable("id") Long id) {
+    public ProjectSkillStackResponse retrieveProjectSkillStacks(@PathVariable("id") Long id) {
         Project findProject = projectService.retrieveProject(id);
-        return new ProjectSkillStackResponseDto(id, findProject);
+        return new ProjectSkillStackResponse(id, findProject);
     }
 
     /**
@@ -33,24 +32,24 @@ public class ProjectSkillStackController {
      */
     @PostMapping("/projects/{id}/skillstacks")
     public ResponseEntity addProjectSkillStacks(@PathVariable("id") Long id,
-                                                @RequestBody @Valid EditProjectSkillStackDto editProjectSkillStackDto) {
+                                                @RequestBody @Valid EditProjectSkillStackRequest editProjectSkillStackRequest) {
 
-        projectService.addSkillStack(id, editProjectSkillStackDto);
+        projectService.addSkillStack(id, editProjectSkillStackRequest);
         Project findProject = projectService.retrieveProject(id);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.created(location).body(new ProjectSkillStackResponseDto(id, findProject));
+        return ResponseEntity.created(location).body(new ProjectSkillStackResponse(id, findProject));
     }
 
     /**
      * 프로젝트 스킬 스택 삭제
      */
     @DeleteMapping("/projects/{id}/skillstacks")
-    public ResponseEntity<ProjectSkillStackResponseDto> removeProjectSkillStacks(@PathVariable("id") Long id,
-                                                                                 @RequestBody @Valid EditProjectSkillStackDto editProjectSkillStackDto) {
-        projectService.removeSkillStack(id, editProjectSkillStackDto);
+    public ResponseEntity<ProjectSkillStackResponse> removeProjectSkillStacks(@PathVariable("id") Long id,
+                                                                              @RequestBody @Valid EditProjectSkillStackRequest editProjectSkillStackRequest) {
+        projectService.removeSkillStack(id, editProjectSkillStackRequest);
         Project findProject = projectService.retrieveProject(id);
 
-        return ResponseEntity.ok(new ProjectSkillStackResponseDto(id, findProject));
+        return ResponseEntity.ok(new ProjectSkillStackResponse(id, findProject));
     }
 }

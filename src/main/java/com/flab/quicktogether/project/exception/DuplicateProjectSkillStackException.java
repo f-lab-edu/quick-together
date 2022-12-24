@@ -1,6 +1,9 @@
 package com.flab.quicktogether.project.exception;
 
-public class DuplicateProjectSkillStackException extends ApplicationException{
+import com.flab.quicktogether.globalsetting.exception.ApplicationException;
+import com.flab.quicktogether.globalsetting.exception.ErrorCode;
+
+public class DuplicateProjectSkillStackException extends ApplicationException {
     public DuplicateProjectSkillStackException(ErrorCode errorCode) {
         super(errorCode);
     }

@@ -1,6 +1,5 @@
 package com.flab.quicktogether.member.domain;
 
-import com.flab.quicktogether.project.domain.Participant;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
