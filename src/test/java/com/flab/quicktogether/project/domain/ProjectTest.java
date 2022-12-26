@@ -57,7 +57,7 @@ class ProjectTest {
         Member member = new Member("승재");
         em.persist(member);
 
-        Project project = Project.createProject("첫번째 프로젝트","간단할 설명~","긴설명~~~~~~~~~~~~~~~~~~~~~~~~~",MeetingMethod.SLACK,LocalDateTime.now(),LocalDateTime.now());
+        Project project = Project.createProject("첫번째 프로젝트",member,"간단할 설명~","긴설명~~~~~~~~~~~~~~~~~~~~~~~~~",MeetingMethod.SLACK,LocalDateTime.now(),LocalDateTime.now());
 
         em.persist(project);
 

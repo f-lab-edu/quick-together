@@ -1,7 +1,9 @@
 package com.flab.quicktogether.project.presentation.dto.request;
 
 
+import com.flab.quicktogether.project.application.dto.CreateProjectRequestDto;
 import com.flab.quicktogether.project.domain.MeetingMethod;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,6 +37,16 @@ public class CreateProjectRequest {
     private String projectDescription; // 프로젝트 상세설명
 
 
-
-
+    public CreateProjectRequestDto toServiceDto() {
+        CreateProjectRequestDto dto = CreateProjectRequestDto.builder()
+                .projectName(this.getProjectName())
+                .memberId(this.getMemberId())
+                .startDateTime(this.getStartDateTime())
+                .periodDateTime(this.getPeriodDateTime())
+                .meetingMethod(this.getMeetingMethod())
+                .projectSummary(this.getProjectSummary())
+                .projectDescription(this.getProjectDescription())
+                .build();
+        return dto;
+    }
 }

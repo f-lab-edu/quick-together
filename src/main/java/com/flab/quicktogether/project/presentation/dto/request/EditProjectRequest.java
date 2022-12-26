@@ -1,5 +1,7 @@
 package com.flab.quicktogether.project.presentation.dto.request;
 
+import com.flab.quicktogether.project.application.dto.CreateProjectRequestDto;
+import com.flab.quicktogether.project.application.dto.EditProjectRequestDto;
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.ProjectStatus;
 import jakarta.validation.constraints.NotNull;
@@ -35,4 +37,16 @@ public class EditProjectRequest {
     private ProjectStatus projectStatus; // 프로젝트 상태
 
 
+    public EditProjectRequestDto toServiceDto() {
+        EditProjectRequestDto dto = EditProjectRequestDto.builder()
+                .projectName(this.getProjectName())
+                .startDateTime(this.getStartDateTime())
+                .periodDateTime(this.getPeriodDateTime())
+                .meetingMethod(this.getMeetingMethod())
+                .projectSummary(this.getProjectSummary())
+                .projectDescription(this.getProjectDescription())
+                .projectStatus(this.getProjectStatus())
+                .build();
+        return dto;
+    }
 }

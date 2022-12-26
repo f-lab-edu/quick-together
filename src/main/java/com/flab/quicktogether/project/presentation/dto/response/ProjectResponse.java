@@ -1,6 +1,7 @@
 package com.flab.quicktogether.project.presentation.dto.response;
 
 import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.project.domain.*;
 
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +17,9 @@ public class ProjectResponse {
 
     @NotNull
     private String projectName; // 프로젝트 이름
+
+    @NotNull
+    private Long founder;
 
     @NotNull
     private ProjectDescriptionInfo projectDescriptionInfo; // 프로젝트 설명 정보
@@ -44,6 +48,7 @@ public class ProjectResponse {
 
     public ProjectResponse(Project p) {
         projectName = p.getProjectName();
+        founder = p.getFounder().getId();
         startDateTime = p.getStartDateTime();
         periodDateTime = p.getPeriodDateTime();
         meetingMethod = p.getMeetingMethod();

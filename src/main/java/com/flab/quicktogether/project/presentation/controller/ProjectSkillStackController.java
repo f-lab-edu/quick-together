@@ -34,7 +34,7 @@ public class ProjectSkillStackController {
     public ResponseEntity addProjectSkillStacks(@PathVariable("id") Long id,
                                                 @RequestBody @Valid EditProjectSkillStackRequest editProjectSkillStackRequest) {
 
-        projectService.addSkillStack(id, editProjectSkillStackRequest);
+        projectService.addSkillStack(id, editProjectSkillStackRequest.toServiceDto());
         Project findProject = projectService.retrieveProject(id);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -47,7 +47,8 @@ public class ProjectSkillStackController {
     @DeleteMapping("/projects/{id}/skillstacks")
     public ResponseEntity<ProjectSkillStackResponse> removeProjectSkillStacks(@PathVariable("id") Long id,
                                                                               @RequestBody @Valid EditProjectSkillStackRequest editProjectSkillStackRequest) {
-        projectService.removeSkillStack(id, editProjectSkillStackRequest);
+
+        projectService.removeSkillStack(id, editProjectSkillStackRequest.toServiceDto());
         Project findProject = projectService.retrieveProject(id);
 
         return ResponseEntity.ok(new ProjectSkillStackResponse(id, findProject));

@@ -1,6 +1,8 @@
 package com.flab.quicktogether.project.presentation.controller;
 
 import com.flab.quicktogether.project.application.ProjectService;
+import com.flab.quicktogether.project.application.dto.CreateProjectRequestDto;
+import com.flab.quicktogether.project.application.dto.EditProjectRequestDto;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.presentation.dto.request.CreateProjectRequest;
 import com.flab.quicktogether.project.presentation.dto.request.EditProjectRequest;
@@ -60,7 +62,8 @@ public class ProjectController {
     @PostMapping("/projects")
     public ResponseEntity registerProject(@RequestBody @Valid CreateProjectRequest createProjectRequest) {
 
-        Long projectId = projectService.createProject(createProjectRequest);
+        CreateProjectRequestDto createProjectRequestDto = createProjectRequest.toServiceDto();
+        Long projectId = projectService.createProject(createProjectRequestDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -76,7 +79,8 @@ public class ProjectController {
     @PutMapping("/projects/{id}")
     public HttpStatus editProject(@PathVariable("id") Long id, @RequestBody @Valid EditProjectRequest editProjectRequest) {
 
-        projectService.editProject(id, editProjectRequest);
+        EditProjectRequestDto editProjectRequestDto = editProjectRequest.toServiceDto();
+        projectService.editProject(id, editProjectRequestDto);
         Project findProject = projectService.retrieveProject(id);
 
         return HttpStatus.OK;

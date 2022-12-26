@@ -26,6 +26,9 @@ public class Project {
     private Long id;
     private String projectName;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member founder;
 
     @Embedded
     private ProjectDescriptionInfo projectDescriptionInfo; // 프로젝트 설명 정보
@@ -60,16 +63,18 @@ public class Project {
 
 
     @Builder
-    public Project(String projectName, String projectSummary, String projectDescription,
+    public Project(String projectName, Member founder, String projectSummary, String projectDescription,
                    MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime) {
 
         Assert.hasText(projectName,"projectName must not be empty");
+        Assert.notNull(founder, "projectFounder must not be null");
         Assert.notNull(projectSummary, "projectSummary must not be null");
         Assert.notNull(projectDescription, "description must not be null");
         Assert.notNull(meetingMethod, "meetingMethod must not be null");
         Assert.notNull(startDateTime, "startDateTime must not be null");
         Assert.notNull(periodDateTime, "periodDate must not be null");
 
+        this.founder = founder;
         this.projectName = projectName;
         this.meetingMethod = meetingMethod;
         this.startDateTime = startDateTime;
@@ -78,10 +83,11 @@ public class Project {
         this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, projectDescription);
     }
 
-    public static Project createProject(String projectName, String projectSummary, String description,
+    public static Project createProject(String projectName, Member founder, String projectSummary, String description,
                               MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDate){
         Project project = new Project();
 
+        project.founder = founder;
         project.projectName = projectName;
         project.meetingMethod = meetingMethod;
         project.startDateTime = startDateTime;

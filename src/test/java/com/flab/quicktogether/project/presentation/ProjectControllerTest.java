@@ -46,8 +46,6 @@ class ProjectControllerTest {
         Member member = new Member("승재");
         em.persist(member);
 
-        String editProjectSummary = "간단한 설명 변경";
-
         Project project = Project.builder()
                 .projectName("첫번째 프로젝트")
                 .startDateTime(LocalDateTime.now())

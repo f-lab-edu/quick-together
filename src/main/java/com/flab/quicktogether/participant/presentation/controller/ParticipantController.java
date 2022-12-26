@@ -45,7 +45,6 @@ public class ParticipantController {
 
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
         ParticipantResponse participantResponse = new ParticipantResponse(findParticipant);
-        System.out.println("participantResponseDto.getParticipantRole() = " + participantResponse.getParticipantRole());
 
         return participantResponse;
     }
