@@ -37,7 +37,7 @@ public class ParticipantSkillStackController {
     public ResponseEntity<ParticipantSkillStackResponse> addPosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId,
                                                                      @RequestBody @Valid EditParticipantSkillStackRequest editParticipantSkillStackRequest){
 
-        participantService.addSkillStack(projectId, memberId, editParticipantSkillStackRequest);
+        participantService.addSkillStack(projectId, memberId, editParticipantSkillStackRequest.toServiceDto());
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -51,7 +51,7 @@ public class ParticipantSkillStackController {
     public ParticipantSkillStackResponse removePosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId,
                                                         @RequestBody @Valid EditParticipantSkillStackRequest editParticipantSkillStackRequest){
 
-        participantService.removeSkillStack(projectId, memberId, editParticipantSkillStackRequest);
+        participantService.removeSkillStack(projectId, memberId, editParticipantSkillStackRequest.toServiceDto());
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
 
         return new ParticipantSkillStackResponse(projectId, memberId, findParticipant);

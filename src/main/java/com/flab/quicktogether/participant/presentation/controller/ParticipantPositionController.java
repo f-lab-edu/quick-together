@@ -37,7 +37,7 @@ public class ParticipantPositionController {
     public ResponseEntity<ParticipantPositionResponse> addPosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId,
                                                                    @RequestBody @Valid EditParticipantPositionRequest editParticipantPositionRequest) {
 
-        participantService.addPosition(projectId, memberId, editParticipantPositionRequest);
+        participantService.addPosition(projectId, memberId, editParticipantPositionRequest.toServiceDto());
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -51,7 +51,7 @@ public class ParticipantPositionController {
     public ParticipantPositionResponse removePosition(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId,
                                                       @RequestBody @Valid EditParticipantPositionRequest editParticipantPositionRequest) {
 
-        participantService.removePosition(projectId, memberId, editParticipantPositionRequest);
+        participantService.removePosition(projectId, memberId, editParticipantPositionRequest.toServiceDto());
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
 
         return new ParticipantPositionResponse(projectId, memberId, findParticipant);

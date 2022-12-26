@@ -4,6 +4,9 @@ package com.flab.quicktogether.participant.application;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.domain.MemberRepository;
+import com.flab.quicktogether.participant.application.dto.ChangeParticipantRoleRequestDto;
+import com.flab.quicktogether.participant.application.dto.EditParticipantPositionRequestDto;
+import com.flab.quicktogether.participant.application.dto.EditParticipantSkillStackRequestDto;
 import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.exception.DuplicateParticipantPositionException;
 import com.flab.quicktogether.participant.exception.DuplicateParticipantSkillStackException;
@@ -14,9 +17,7 @@ import com.flab.quicktogether.globalsetting.domain.SkillStack;
 import com.flab.quicktogether.project.exception.*;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
-import com.flab.quicktogether.participant.presentation.dto.request.EditParticipantPositionRequest;
-import com.flab.quicktogether.participant.presentation.dto.request.ChangeParticipantRoleRequest;
-import com.flab.quicktogether.participant.presentation.dto.request.EditParticipantSkillStackRequest;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,22 +87,22 @@ public class ParticipantService {
      * 구성원 권한 변경
      */
     @Transactional
-    public void changeRole(Long projectId, Long memberId, ChangeParticipantRoleRequest changeParticipantRoleRequest) {
+    public void changeRole(Long projectId, Long memberId, ChangeParticipantRoleRequestDto changeParticipantRoleRequestDto) {
         Participant participant = findParticipant(projectId, memberId);
-        participant.changeParticipantRole(changeParticipantRoleRequest.getParticipantRole());
+        participant.changeParticipantRole(changeParticipantRoleRequestDto.getParticipantRole());
     }
 
     /**
      * 구성원 포지션 추가
      */
     @Transactional
-    public void addPosition(Long projectId, Long memberId, EditParticipantPositionRequest editParticipantPositionRequest){
+    public void addPosition(Long projectId, Long memberId, EditParticipantPositionRequestDto editParticipantPositionRequestDto){
 
         Participant participant = findParticipant(projectId, memberId);
 
-        validateDuplicatePosition(participant, editParticipantPositionRequest.getPosition());
+        validateDuplicatePosition(participant, editParticipantPositionRequestDto.getPosition());
 
-        participant.addPosition(editParticipantPositionRequest.getPosition());
+        participant.addPosition(editParticipantPositionRequestDto.getPosition());
     }
 
     private void validateDuplicatePosition(Participant participant, Position newPosition) {
@@ -117,21 +118,21 @@ public class ParticipantService {
      * 구성원 포지션 삭제
      */
     @Transactional
-    public void removePosition(Long projectId, Long memberId, EditParticipantPositionRequest editParticipantPositionRequest){
+    public void removePosition(Long projectId, Long memberId, EditParticipantPositionRequestDto editParticipantPositionRequestDto){
         Participant participant = findParticipant(projectId, memberId);
-        participant.removePosition(editParticipantPositionRequest.getPosition());
+        participant.removePosition(editParticipantPositionRequestDto.getPosition());
     }
 
     /**
      * 구성원 스킬스택 추가
      */
     @Transactional
-    public void addSkillStack(Long projectId, Long memberId, EditParticipantSkillStackRequest editParticipantSkillStackRequest){
+    public void addSkillStack(Long projectId, Long memberId, EditParticipantSkillStackRequestDto editParticipantSkillStackRequestDto){
         Participant participant = findParticipant(projectId, memberId);
 
-        validateDuplicateSkillStack(participant, editParticipantSkillStackRequest.getSkillStack());
+        validateDuplicateSkillStack(participant, editParticipantSkillStackRequestDto.getSkillStack());
 
-        participant.addSkillStack(editParticipantSkillStackRequest.getSkillStack());
+        participant.addSkillStack(editParticipantSkillStackRequestDto.getSkillStack());
     }
 
     private void validateDuplicateSkillStack(Participant participant, SkillStack newSkillStack) {
@@ -147,9 +148,9 @@ public class ParticipantService {
      * 구성원 스킬스택 삭제
      */
     @Transactional
-    public void removeSkillStack(Long projectId, Long memberId, EditParticipantSkillStackRequest editParticipantSkillStackRequest) {
+    public void removeSkillStack(Long projectId, Long memberId, EditParticipantSkillStackRequestDto editParticipantSkillStackRequestDto) {
         Participant participant = findParticipant(projectId, memberId);
-        participant.removeSkillStack(editParticipantSkillStackRequest.getSkillStack());
+        participant.removeSkillStack(editParticipantSkillStackRequestDto.getSkillStack());
 
     }
 

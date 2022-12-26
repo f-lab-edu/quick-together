@@ -33,7 +33,7 @@ public class ParticipantRoleController {
     public ParticipantRoleResponse editRole(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId,
                                             @RequestBody @Valid ChangeParticipantRoleRequest changeParticipantRoleRequest){
 
-        participantService.changeRole(projectId, memberId, changeParticipantRoleRequest);
+        participantService.changeRole(projectId, memberId, changeParticipantRoleRequest.toServiceDto());
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
 
         return new ParticipantRoleResponse(projectId, memberId, findParticipant);
