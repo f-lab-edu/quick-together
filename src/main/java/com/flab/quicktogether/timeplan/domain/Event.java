@@ -1,6 +1,5 @@
 package com.flab.quicktogether.timeplan.domain;
 
-import com.flab.quicktogether.common.FootPrintInfo;
 import com.flab.quicktogether.timeplan.domain.exception.ExpiredTimeException;
 import com.flab.quicktogether.timeplan.domain.exception.IllegalEventStateException;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @ToString
 @EqualsAndHashCode
-public class Event extends FootPrintInfo implements Comparable<Event> {
+public class Event implements Comparable<Event> {
     @Id
     @GeneratedValue
     private Long id;

@@ -85,44 +85,10 @@ public class TimePlan {
      * 비교를 위한 최종 DateTimeSection을 뽑아내는 작업
      */
     public List<TimeBlock> extractAbleTimeBlock(List<Event> plannedEvents, LocalDate targetStartDate, LocalDate targetEndDate) {
-        //1. MemberAbleRoutine 절대화 -> List<DateTimeSection>
         List<TimeBlock> convertedAbleRoutines = convertAbsoluteBlock(targetStartDate, targetEndDate);
 
-        //2. PlannedEvents trimming -> List<DateTimeSection> 정규가능시간에서 존재하는 일정 빼기
-        List<TimeBlock> absoluteDateTimePlan = new ArrayList<>();
-//        for (PlannedEvent event : plannedEvents) {
-//            List<TimeBlock> trimmedTimeBlocks = convertedAbleRoutines.stream()
-//                    .filter(timeBlock -> timeBlock.isOverLapped(event.getTimeBlock()))
-//                    .map(timeBlock -> timeBlock.trim(event.getTimeBlock()))
-//                    .flatMap(Collection::stream)
-//                    .toList();
-//            absoluteDateTimePlan.addAll(trimmedTimeBlocks);
-//        }
-
-        for (TimeBlock convertedAbleRoutine : convertedAbleRoutines) {
-
-            List<TimeBlock> trimmedTimeBlock = new ArrayList<>();
-            for (Event plannedEvent : plannedEvents) {
-                if (convertedAbleRoutine.isOverLapped(plannedEvent.getTimeBlock())) {
-                    List<TimeBlock> trim = convertedAbleRoutine.trim(plannedEvent.getTimeBlock());
-                    trimmedTimeBlock.addAll(trim);
-                }
-            }
-
-            TimeBlock allTrimmedTimeBlock = null;
-            for (TimeBlock a : trimmedTimeBlock) {
-                for (TimeBlock b : trimmedTimeBlock) {
-                    if(a.isOverLapped(b))
-                    a.extractIntersection(b);
-                }
-            }
-        }
-
-
-
-        return absoluteDateTimePlan;
+        return trimPlannedEvents(convertedAbleRoutines, plannedEvents);
     }
-
 
     public List<TimeBlock> convertAbsoluteBlock(LocalDate targetStartDate, LocalDate targetEndDate) {
         return ableRoutines.stream()
@@ -130,6 +96,32 @@ public class TimePlan {
                 .flatMap(Collection::stream)
                 .filter(Objects::nonNull)
                 .toList();
+    }
+
+    private List<TimeBlock> trimPlannedEvents(List<TimeBlock> convertedAbleRoutines, List<Event> plannedEvents) {
+        List<TimeBlock> absoluteDateTimePlan = new ArrayList<>();
+
+        for (TimeBlock convertedAbleRoutine : convertedAbleRoutines) {
+
+            List<TimeBlock> eachTrimmedTimeBlock = new ArrayList<>();
+            for (Event plannedEvent : plannedEvents) {
+                if (convertedAbleRoutine.isOverLapped(plannedEvent.getTimeBlock())) {
+                    List<TimeBlock> trim = convertedAbleRoutine.trim(plannedEvent.getTimeBlock());
+                    eachTrimmedTimeBlock.addAll(trim);
+                }
+            }
+
+            for (TimeBlock a : eachTrimmedTimeBlock) {
+                TimeBlock allTrimmedTimeBlock = a;
+                for (TimeBlock b : eachTrimmedTimeBlock) {
+                    if(allTrimmedTimeBlock.isOverLapped(b))
+                        allTrimmedTimeBlock = allTrimmedTimeBlock.extractIntersection(b);
+                }
+                absoluteDateTimePlan.add(allTrimmedTimeBlock);
+            }
+        }
+
+        return absoluteDateTimePlan.stream().distinct().toList();
     }
 
 

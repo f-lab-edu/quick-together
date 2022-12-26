@@ -10,8 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import static com.flab.quicktogether.timeplan.fixture.TimePlanFixture.*;
@@ -54,22 +52,4 @@ class TimePlanTest {
         Assertions.assertThat(result).containsExactly(expectedAbleTimeBlock.toArray(new TimeBlock[0]));
     }
 
-
-    private static Event createPe(LocalDate target, String timeBlockString) {
-        String[] split = timeBlockString.split("~");
-        String startTimeString = split[0];
-        String endTimeString = split[1];
-        return new Event(TIME_PLAN,"forwardOverlapEvent",
-                new TimeBlock(
-                        LocalDateTime.of(target, LocalTime.parse(startTimeString))
-                        , LocalDateTime.of(target, LocalTime.parse(endTimeString)))
-                );
-
-    }
-
-
-
-    public static AbleRoutine getAbleRoutineByRelativeTimeBlock(RegularTimeBlock tb1) {
-        return new AbleRoutine(tb1);
-    }
 }

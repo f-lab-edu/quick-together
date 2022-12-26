@@ -1,6 +1,6 @@
 package com.flab.quicktogether.timeplan.presentation;
 
-import com.flab.quicktogether.common.annotation.Login;
+import com.flab.quicktogether.common.Login;
 import com.flab.quicktogether.timeplan.application.TimePlanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
