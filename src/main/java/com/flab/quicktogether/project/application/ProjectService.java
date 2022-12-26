@@ -59,14 +59,6 @@ public class ProjectService {
         return project.getId();
     }
 
-    private Member findMember(Long memberId) {
-        Optional<Member> member = memberRepository.findOne(memberId);
-        if (!member.isPresent()) {
-            throw new MemberNotFoundException(MEMBER_NOT_FOUND);
-        }
-        return member.get();
-    }
-
     @Transactional
     public void deleteProject(Long projectId) {
         Project findProject = findProject(projectId);
@@ -84,13 +76,6 @@ public class ProjectService {
         findProject.changeMeetingMethod(editProjectFormDto.getMeetingMethod());
         findProject.changeProjectDescriptionInfo(new ProjectDescriptionInfo(editProjectFormDto.getProjectSummary(), editProjectFormDto.getProjectDescription()));
         findProject.changeProjectStatus(editProjectFormDto.getProjectStatus());
-    }
-    private Project findProject(Long projectId) {
-        Optional<Project> project = projectRepository.findOne(projectId);
-        if (!project.isPresent()) {
-            throw new ProjectNotFoundException(PROJECT_NOT_FOUND);
-        }
-        return project.get();
     }
 
     /**
@@ -150,5 +135,15 @@ public class ProjectService {
     public void removeRecruitmentPosition(Long projectId, EditRecruitmentPositionsRequestDto editRecruitmentPositionsRequestDto) {
         Project findProject = findProject(projectId);
         findProject.removeRecruitmentPosition(editRecruitmentPositionsRequestDto.getRecruitmentPosition());
+    }
+
+    private Project findProject(Long projectId) {
+        return projectRepository.findOne(projectId).orElseThrow(
+                () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
+    }
+
+    private Member findMember(Long memberId) {
+        return memberRepository.findOne(memberId).orElseThrow(
+                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
 }

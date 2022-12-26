@@ -67,7 +67,7 @@ public class ParticipantService {
         participantRepository.save(Participant.addMember(project, member));
     }
 
-    private void checkProjectParticipation(Long projectId, Long memberId){
+    private void checkProjectParticipation(Long projectId, Long memberId) {
         Optional<Participant> participant = participantRepository.findByProjectIdAndMemberId(projectId, memberId);
         if (participant.isPresent()) {
             throw new DuplicateProjectParticipationException(DUPLICATE_PROJECT_PARTICIPATION);
@@ -96,7 +96,7 @@ public class ParticipantService {
      * 구성원 포지션 추가
      */
     @Transactional
-    public void addPosition(Long projectId, Long memberId, EditParticipantPositionRequestDto editParticipantPositionRequestDto){
+    public void addPosition(Long projectId, Long memberId, EditParticipantPositionRequestDto editParticipantPositionRequestDto) {
 
         Participant participant = findParticipant(projectId, memberId);
 
@@ -110,15 +110,15 @@ public class ParticipantService {
         positions.stream()
                 .filter(position -> position.equals(newPosition))
                 .forEach(position -> {
-            throw new DuplicateParticipantPositionException(DUPLICATE_PARTICIPANT_POSITION);
-        });
+                    throw new DuplicateParticipantPositionException(DUPLICATE_PARTICIPANT_POSITION);
+                });
     }
 
     /**
      * 구성원 포지션 삭제
      */
     @Transactional
-    public void removePosition(Long projectId, Long memberId, EditParticipantPositionRequestDto editParticipantPositionRequestDto){
+    public void removePosition(Long projectId, Long memberId, EditParticipantPositionRequestDto editParticipantPositionRequestDto) {
         Participant participant = findParticipant(projectId, memberId);
         participant.removePosition(editParticipantPositionRequestDto.getPosition());
     }
@@ -127,7 +127,7 @@ public class ParticipantService {
      * 구성원 스킬스택 추가
      */
     @Transactional
-    public void addSkillStack(Long projectId, Long memberId, EditParticipantSkillStackRequestDto editParticipantSkillStackRequestDto){
+    public void addSkillStack(Long projectId, Long memberId, EditParticipantSkillStackRequestDto editParticipantSkillStackRequestDto) {
         Participant participant = findParticipant(projectId, memberId);
 
         validateDuplicateSkillStack(participant, editParticipantSkillStackRequestDto.getSkillStack());
@@ -157,26 +157,17 @@ public class ParticipantService {
     private Participant findParticipant(Long projectId, Long memberId) {
         findProject(projectId);
         findMember(memberId);
-        Optional<Participant> participant = participantRepository.findByProjectIdAndMemberId(projectId, memberId);
-        if (!participant.isPresent()) {
-            throw new ParticipantNotFoundException(PARTICIPANT_NOT_FOUND);
-        }
-        return participant.get();
+        return participantRepository.findByProjectIdAndMemberId(projectId, memberId).orElseThrow(
+                () -> new ParticipantNotFoundException(PARTICIPANT_NOT_FOUND));
     }
 
     private Project findProject(Long projectId) {
-        Optional<Project> project = projectRepository.findOne(projectId);
-        if (!project.isPresent()) {
-            throw new ProjectNotFoundException(PROJECT_NOT_FOUND);
-        }
-        return project.get();
+        return projectRepository.findOne(projectId).orElseThrow(
+                () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
     }
 
     private Member findMember(Long memberId) {
-        Optional<Member> member = memberRepository.findOne(memberId);
-        if (!member.isPresent()) {
-            throw new MemberNotFoundException(MEMBER_NOT_FOUND);
-        }
-        return member.get();
+        return memberRepository.findOne(memberId).orElseThrow(
+                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
 }

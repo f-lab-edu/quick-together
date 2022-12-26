@@ -60,20 +60,12 @@ public class ProjectLikeService {
     }
 
     private Project findProject(Long projectId) {
-        Optional<Project> project = projectRepository.findOne(projectId);
-        if (!project.isPresent()) {
-            throw new ProjectNotFoundException(PROJECT_NOT_FOUND);
-        }
-        return project.get();
+        return projectRepository.findOne(projectId).orElseThrow(
+                () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
     }
 
     private Member findMember(Long memberId) {
-        Optional<Member> member = memberRepository.findOne(memberId);
-        if (!member.isPresent()) {
-            throw new MemberNotFoundException(MEMBER_NOT_FOUND);
-        }
-        return member.get();
+        return memberRepository.findOne(memberId).orElseThrow(
+                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
-
-
 }
