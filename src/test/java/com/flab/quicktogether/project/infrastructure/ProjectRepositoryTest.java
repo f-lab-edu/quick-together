@@ -4,7 +4,6 @@ import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.domain.MemberRepository;
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Project;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,12 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @SpringBootTest
@@ -30,10 +29,17 @@ class ProjectRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
+    private Member member;
+    private String projectName = "첫번째 프로젝트";
+    private LocalDateTime startDateTime = LocalDateTime.now();
+    private LocalDateTime periodDateTime = LocalDateTime.now();
+    private MeetingMethod meetingMethod = MeetingMethod.SLACK;
+    private String projectSummary = "간단할 설명~";
+    private String projectDescription = "긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
 
     @BeforeEach
     void initEach() {
-        Member member = new Member("승재");
+        member = new Member("승재");
         memberRepository.save(member);
     }
 
@@ -42,13 +48,15 @@ class ProjectRepositoryTest {
     @DisplayName("프로젝트 저장 후 조회")
     public void save(){
 
+
         Project project = Project.builder()
-                .projectName("첫번째 프로젝트")
-                .startDateTime(LocalDateTime.now())
-                .periodDateTime(LocalDateTime.now())
-                .meetingMethod(MeetingMethod.SLACK)
-                .projectSummary("간단할 설명~")
-                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .projectName(projectName)
+                .founder(member)
+                .startDateTime(startDateTime)
+                .periodDateTime(periodDateTime)
+                .meetingMethod(meetingMethod)
+                .projectSummary(projectSummary)
+                .projectDescription(projectDescription)
                 .build();
 
         projectRepository.save(project);
@@ -56,6 +64,12 @@ class ProjectRepositoryTest {
         Optional<Project> findProject = projectRepository.findOne(project.getId());
 
         Assertions.assertEquals(findProject.get().getId(),project.getId());
+        Assertions.assertEquals(findProject.get().getProjectName(),projectName);
+        Assertions.assertEquals(findProject.get().getFounder(),member);
+        Assertions.assertEquals(findProject.get().getMeetingMethod(), meetingMethod);
+        Assertions.assertEquals(findProject.get().getProjectDescriptionInfo().getProjectSummary(), projectSummary);
+        Assertions.assertEquals(findProject.get().getProjectDescriptionInfo().getProjectDescription(), projectDescription);
+
 
     }
 
@@ -64,22 +78,25 @@ class ProjectRepositoryTest {
     public void saveMany(){
 
         Project project1 = Project.builder()
-                .projectName("첫번째 프로젝트")
-                .startDateTime(LocalDateTime.now())
-                .periodDateTime(LocalDateTime.now())
-                .meetingMethod(MeetingMethod.SLACK)
-                .projectSummary("간단할 설명~")
-                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .projectName(projectName)
+                .founder(member)
+                .startDateTime(startDateTime)
+                .periodDateTime(periodDateTime)
+                .meetingMethod(meetingMethod)
+                .projectSummary(projectSummary)
+                .projectDescription(projectDescription)
                 .build();
 
         Project project2 = Project.builder()
                 .projectName("두번째 프로젝트")
-                .startDateTime(LocalDateTime.now())
-                .periodDateTime(LocalDateTime.now())
-                .meetingMethod(MeetingMethod.SLACK)
-                .projectSummary("간단할 설명~")
-                .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .founder(member)
+                .startDateTime(startDateTime)
+                .periodDateTime(periodDateTime)
+                .meetingMethod(meetingMethod)
+                .projectSummary(projectSummary)
+                .projectDescription(projectDescription)
                 .build();
+
 
         projectRepository.save(project1);
         projectRepository.save(project2);
@@ -94,14 +111,40 @@ class ProjectRepositoryTest {
     public void saveParameterNull(){
         Assertions.assertThrows(IllegalArgumentException.class,() -> {
                     Project.builder()
-                            .projectName("첫번째 프로젝트")
-                            .startDateTime(LocalDateTime.now())
-                            .periodDateTime(LocalDateTime.now())
-                            .meetingMethod(MeetingMethod.SLACK)
-                            .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                            .projectName(projectName)
+                            .founder(member)
+                            .startDateTime(startDateTime)
+                            .periodDateTime(periodDateTime)
+                            .meetingMethod(meetingMethod)
+                            .projectSummary(projectSummary)
+                            .projectDescription(projectDescription)
                             .build();
                 }
                 );
+
+    }
+
+    @Test
+    @DisplayName("프로젝트 저장 후 삭제")
+    public void delete(){
+
+        Project project = Project.builder()
+                .projectName(projectName)
+                .founder(member)
+                .startDateTime(startDateTime)
+                .periodDateTime(periodDateTime)
+                .meetingMethod(meetingMethod)
+                .projectSummary(projectSummary)
+                .projectDescription(projectDescription)
+                .build();
+
+        projectRepository.save(project);
+
+        Project findProject = projectRepository.findOne(project.getId()).get();
+        projectRepository.delete(findProject);
+
+        Optional<Project> deletedProject = projectRepository.findOne(findProject.getId());
+        Assertions.assertThrows(NoSuchElementException.class, () -> deletedProject.get());
 
     }
 
