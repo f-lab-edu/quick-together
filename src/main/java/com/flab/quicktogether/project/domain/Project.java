@@ -130,7 +130,7 @@ public class Project {
         this.projectDescriptionInfo = editProjectDescriptionInfo;
     }
 
-    public void changeProjectLikes(Long likes) {
+    public void settingLikes(Long likes) {
         this.likes = likes;
     }
 

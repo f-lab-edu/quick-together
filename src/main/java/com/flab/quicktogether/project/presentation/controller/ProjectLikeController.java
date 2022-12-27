@@ -23,7 +23,7 @@ public class ProjectLikeController {
     /**
      * 프로젝트 좋아요 조회
      */
-    @GetMapping("/projects/{id}/likes")
+    @GetMapping("/projects/{projectId}/likes")
     public ProjectLikeResponse retrieveProjectLikes(@PathVariable("projectId") Long projectId) {
         Long total = projectLikeService.totalLikes(projectId);
         return new ProjectLikeResponse(projectId, total);

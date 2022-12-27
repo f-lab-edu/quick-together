@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,6 +31,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 
     @ExceptionHandler(ApplicationException.class)
     public final ResponseEntity<Object> handleApplicationException(ApplicationException ex, WebRequest request) {
+        log.warn(ex.fillInStackTrace().getMessage());
         ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getErrorCode(), request.getDescription(false));
         return new ResponseEntity(exceptionResponse, ex.getErrorCode().getHttpStatus());
     }
@@ -75,7 +75,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                         HttpHeaders headers,
                                                         HttpStatusCode status,
                                                         WebRequest request) {
-
+        log.warn(ex.fillInStackTrace().getMessage());
         String message = "'"+ex.getValue()+"' to required type '"+ex.getRequiredType()+"'";
 
         if (ex instanceof MethodArgumentTypeMismatchException) {

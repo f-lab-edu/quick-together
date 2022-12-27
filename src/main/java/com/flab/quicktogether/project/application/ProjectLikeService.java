@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static com.flab.quicktogether.globalsetting.exception.ErrorCode.*;
 
 @Service
@@ -55,12 +53,12 @@ public class ProjectLikeService {
 
     public Long totalLikes(Long projectId) {
         findProject(projectId);
-        Long total = projectLikeRepository.findTotalLikesByProjectId(projectId);
+        Long total = projectLikeRepository.countByProjectId(projectId);
         return total;
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findOne(projectId).orElseThrow(
+        return projectRepository.findById(projectId).orElseThrow(
                 () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
     }
 

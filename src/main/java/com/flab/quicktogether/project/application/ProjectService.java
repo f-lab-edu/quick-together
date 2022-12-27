@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.flab.quicktogether.globalsetting.exception.ErrorCode.*;
 
@@ -39,7 +38,7 @@ public class ProjectService {
 
     public Project retrieveProject(Long projectId) {
         Project project = findProject(projectId);
-        project.changeProjectLikes(projectLikeRepository.findTotalLikesByProjectId(projectId));
+        project.settingLikes(projectLikeRepository.countByProjectId(projectId));
         return project;
     }
 
@@ -138,7 +137,7 @@ public class ProjectService {
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findOne(projectId).orElseThrow(
+        return projectRepository.findById(projectId).orElseThrow(
                 () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
     }
 

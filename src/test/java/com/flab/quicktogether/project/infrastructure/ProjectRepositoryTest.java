@@ -61,7 +61,7 @@ class ProjectRepositoryTest {
 
         projectRepository.save(project);
 
-        Optional<Project> findProject = projectRepository.findOne(project.getId());
+        Optional<Project> findProject = projectRepository.findById(project.getId());
 
         Assertions.assertEquals(findProject.get().getId(),project.getId());
         Assertions.assertEquals(findProject.get().getProjectName(),projectName);
@@ -112,7 +112,6 @@ class ProjectRepositoryTest {
         Assertions.assertThrows(IllegalArgumentException.class,() -> {
                     Project.builder()
                             .projectName(projectName)
-                            .founder(member)
                             .startDateTime(startDateTime)
                             .periodDateTime(periodDateTime)
                             .meetingMethod(meetingMethod)
@@ -140,10 +139,10 @@ class ProjectRepositoryTest {
 
         projectRepository.save(project);
 
-        Project findProject = projectRepository.findOne(project.getId()).get();
+        Project findProject = projectRepository.findById(project.getId()).get();
         projectRepository.delete(findProject);
 
-        Optional<Project> deletedProject = projectRepository.findOne(findProject.getId());
+        Optional<Project> deletedProject = projectRepository.findById(findProject.getId());
         Assertions.assertThrows(NoSuchElementException.class, () -> deletedProject.get());
 
     }

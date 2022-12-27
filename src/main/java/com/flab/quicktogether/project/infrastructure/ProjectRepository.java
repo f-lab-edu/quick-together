@@ -1,36 +1,24 @@
 package com.flab.quicktogether.project.infrastructure;
 
 import com.flab.quicktogether.project.domain.Project;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
-public class ProjectRepository {
+public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    @Autowired
-    private final EntityManager em;
+    @Override
+    Project save(Project project);
 
-    public void save(Project project) {
-        em.persist(project);
-    }
+    @Override
+    Optional<Project> findById(Long id);
 
-    public Optional<Project> findOne(Long id) {
-        return Optional.ofNullable(em.find(Project.class, id));
-    }
+    @Override
+    List<Project> findAll();
 
-    public void delete(Project project) {
-        em.remove(project);
-    }
-
-    public List<Project> findAll(){
-        return em.createQuery("select p from Project p", Project.class)
-                .getResultList();
-    }
-
+    @Override
+    void delete(Project entity);
 }

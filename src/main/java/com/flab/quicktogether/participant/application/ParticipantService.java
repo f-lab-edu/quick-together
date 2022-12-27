@@ -162,7 +162,7 @@ public class ParticipantService {
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findOne(projectId).orElseThrow(
+        return projectRepository.findById(projectId).orElseThrow(
                 () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
     }
 

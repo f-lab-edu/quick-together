@@ -15,7 +15,6 @@ import com.flab.quicktogether.project.exception.DuplicateProjectPositionExceptio
 import com.flab.quicktogether.project.exception.DuplicateProjectSkillStackException;
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
-import com.sun.jdi.request.DuplicateRequestException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -78,7 +77,7 @@ class ProjectServiceTest {
 
         Long createProjectId = projectService.createProject(createProjectRequestDto);
 
-        Optional<Project> findProject = projectRepository.findOne(createProjectId);
+        Optional<Project> findProject = projectRepository.findById(createProjectId);
 
         Assertions.assertEquals(projectName,findProject.get().getProjectName());
 
@@ -100,7 +99,7 @@ class ProjectServiceTest {
                 .projectDescription(projectDescription)
                 .build();
         Long createProjectId = projectService.createProject(createProjectRequestDto);
-        Project findProject = projectRepository.findOne(createProjectId).get();
+        Project findProject = projectRepository.findById(createProjectId).get();
 
         projectService.deleteProject(findProject.getId());
 
@@ -206,12 +205,12 @@ class ProjectServiceTest {
                 .build();
 
         Long createProjectId = projectService.createProject(createProjectRequestDto);
-        Project project = projectRepository.findOne(createProjectId).get();
+        Project project = projectRepository.findById(createProjectId).get();
         SkillStack skillStack = SkillStack.JAVA;
 
         projectService.addSkillStack(project.getId(),new EditProjectSkillStackRequestDto(skillStack));
 
-        Project findProject = projectRepository.findOne(project.getId()).get();
+        Project findProject = projectRepository.findById(project.getId()).get();
 
         Assertions.assertEquals(findProject.getSkillStacks().get(0), skillStack);
     }
@@ -231,7 +230,7 @@ class ProjectServiceTest {
                 .build();
 
         Long createProjectId = projectService.createProject(createProjectRequestDto);
-        Project project = projectRepository.findOne(createProjectId).get();
+        Project project = projectRepository.findById(createProjectId).get();
         SkillStack skillStack = SkillStack.JAVA;
 
         projectService.addSkillStack(project.getId(),new EditProjectSkillStackRequestDto(skillStack));
@@ -255,12 +254,12 @@ class ProjectServiceTest {
                 .build();
 
         Long createProjectId = projectService.createProject(createProjectRequestDto);
-        Project project = projectRepository.findOne(createProjectId).get();
+        Project project = projectRepository.findById(createProjectId).get();
         Position position = Position.BACKEND;
 
         projectService.addRecruitmentPosition(project.getId(),new EditRecruitmentPositionsRequestDto(position));
 
-        Project findProject = projectRepository.findOne(project.getId()).get();
+        Project findProject = projectRepository.findById(project.getId()).get();
 
         Assertions.assertEquals(findProject.getRecruitmentPositions().get(0), position);
     }
@@ -280,7 +279,7 @@ class ProjectServiceTest {
                 .build();
 
         Long createProjectId = projectService.createProject(createProjectRequestDto);
-        Project project = projectRepository.findOne(createProjectId).get();
+        Project project = projectRepository.findById(createProjectId).get();
         Position position = Position.BACKEND;
 
         projectService.addRecruitmentPosition(project.getId(),new EditRecruitmentPositionsRequestDto(position));
