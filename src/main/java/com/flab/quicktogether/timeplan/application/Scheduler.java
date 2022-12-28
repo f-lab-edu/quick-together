@@ -11,5 +11,5 @@ public interface Scheduler {
                                      LocalDate targetStartDate,
                                      LocalDate targetEndDate,
                                      Integer EventPeriodByMinute,
-                                     TimeBlock... timeBlocks);
+                                     List<List<TimeBlock>> ableTimeBlocks);
 }

@@ -64,6 +64,7 @@ public class TimeBlock {
         return trimmedBlocks;
 
     }
+//    TODO 간결하게 작성하면 왜 안되는지 확인 필요.
 //        if (this.startDateTime.compareTo(target.startDateTime) >= 0
 //                && this.endDateTime.compareTo(target.endDateTime) <= 0) {
 //        } else if (this.startDateTime.compareTo(target.startDateTime) <= 0
@@ -149,6 +150,12 @@ public class TimeBlock {
         return this.startDateTime.isAfter(target.startDateTime)
                 && this.endDateTime.isBefore(target.endDateTime);
     }
+
+    public boolean isIncludeIn(List<TimeBlock> target) {
+        return target.stream()
+                .anyMatch(this::isIncludeIn);
+    }
+
 
     private TimeBlock remainBackward(TimeBlock target) {
         return new TimeBlock(target.endDateTime, this.endDateTime);

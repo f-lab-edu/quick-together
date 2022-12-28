@@ -2,7 +2,6 @@ package com.flab.quicktogether.timeplan.domain;
 
 import com.flab.quicktogether.timeplan.domain.exception.AbleRoutineOverlapException;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
-import com.flab.quicktogether.timeplan.domain.value_type.RegularTimeBlock;
 import com.flab.quicktogether.timeplan.fixture.TimePlanFixture;
 import com.flab.quicktogether.member.domain.Member;
 import org.assertj.core.api.Assertions;
