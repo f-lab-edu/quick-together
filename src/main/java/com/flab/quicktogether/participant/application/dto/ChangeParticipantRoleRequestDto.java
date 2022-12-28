@@ -1,7 +1,6 @@
 package com.flab.quicktogether.participant.application.dto;
 
 import com.flab.quicktogether.participant.domain.ParticipantRole;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

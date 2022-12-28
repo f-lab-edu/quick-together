@@ -1,7 +1,7 @@
 package com.flab.quicktogether.project.application;
 
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.member.domain.MemberRepository;
+import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.exception.DuplicateProjectLikeException;

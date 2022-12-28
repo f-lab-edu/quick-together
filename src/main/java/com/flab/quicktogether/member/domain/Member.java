@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-<<<<<<< HEAD
 
 @Getter
 @Entity
@@ -24,22 +23,6 @@ public class Member {
 
     public Member(String memberName) {
         this.memberName = memberName;
-=======
-import lombok.Setter;
 
-@Entity
-@Getter @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
-
-    @Id @GeneratedValue
-    @Column(name = "member_id")
-    private Long id;
-
-    private String name;
-
-    public Member(String name) {
-        this.name = name;
->>>>>>> origin/feature/forReview
     }
 }

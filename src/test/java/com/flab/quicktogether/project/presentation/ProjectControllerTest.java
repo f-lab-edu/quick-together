@@ -48,6 +48,7 @@ class ProjectControllerTest {
 
         Project project = Project.builder()
                 .projectName("첫번째 프로젝트")
+                .founder(member)
                 .startDateTime(LocalDateTime.now())
                 .periodDateTime(LocalDateTime.now())
                 .meetingMethod(MeetingMethod.SLACK)

@@ -1,8 +1,8 @@
 package com.flab.quicktogether.project.application;
 
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.member.domain.MemberRepository;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
+import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import com.flab.quicktogether.project.domain.Likes;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.exception.DuplicateProjectLikeException;
@@ -63,7 +63,7 @@ public class ProjectLikeService {
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findOne(memberId).orElseThrow(
+        return memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
 }

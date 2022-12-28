@@ -3,7 +3,7 @@ package com.flab.quicktogether.participant.application;
 
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.member.domain.MemberRepository;
+import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import com.flab.quicktogether.participant.application.dto.ChangeParticipantRoleRequestDto;
 import com.flab.quicktogether.participant.application.dto.EditParticipantPositionRequestDto;
 import com.flab.quicktogether.participant.application.dto.EditParticipantSkillStackRequestDto;
@@ -167,7 +167,7 @@ public class ParticipantService {
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findOne(memberId).orElseThrow(
+        return memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
 }

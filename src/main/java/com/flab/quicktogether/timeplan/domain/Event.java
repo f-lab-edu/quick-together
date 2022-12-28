@@ -25,7 +25,7 @@ public class Event implements Comparable<Event> {
     private String eventName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "time_plan_id")
+    @JoinColumn(name = "time_plan_id")
     private TimePlan timePlan;
 
     @Embedded

@@ -3,7 +3,7 @@ package com.flab.quicktogether.participant.application;
 import com.flab.quicktogether.globalsetting.domain.Position;
 import com.flab.quicktogether.globalsetting.domain.SkillStack;
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.member.domain.MemberRepository;
+import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import com.flab.quicktogether.participant.application.dto.EditParticipantPositionRequestDto;
 import com.flab.quicktogether.participant.application.dto.EditParticipantSkillStackRequestDto;
 import com.flab.quicktogether.participant.domain.Participant;

@@ -4,7 +4,7 @@ import com.flab.quicktogether.globalsetting.domain.Position;
 import com.flab.quicktogether.globalsetting.domain.SkillStack;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.member.domain.MemberRepository;
+import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import com.flab.quicktogether.project.application.dto.CreateProjectRequestDto;
 import com.flab.quicktogether.project.application.dto.EditProjectRequestDto;
 import com.flab.quicktogether.project.application.dto.EditProjectSkillStackRequestDto;
@@ -142,7 +142,7 @@ public class ProjectService {
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findOne(memberId).orElseThrow(
+        return memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
 }
