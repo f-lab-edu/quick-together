@@ -68,10 +68,9 @@ public class ParticipantService {
     }
 
     private void checkProjectParticipation(Long projectId, Long memberId) {
-        Optional<Participant> participant = participantRepository.findByProjectIdAndMemberId(projectId, memberId);
-        if (participant.isPresent()) {
-            throw new DuplicateProjectParticipationException(DUPLICATE_PROJECT_PARTICIPATION);
-        }
+        participantRepository.findByProjectIdAndMemberId(projectId, memberId).ifPresent(joinedParticipant -> {
+                    throw new DuplicateProjectParticipationException(DUPLICATE_PROJECT_PARTICIPATION);
+                });
     }
 
     /**
