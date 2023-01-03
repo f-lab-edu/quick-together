@@ -3,7 +3,9 @@ package com.flab.quicktogether.project.domain;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.domain.ParticipantRole;
+import com.flab.quicktogether.timeplan.domain.etc.MinuteUnit;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +23,7 @@ import java.time.LocalDateTime;
 @ExtendWith(SpringExtension.class)
 class ProjectTest {
 
-    @Autowired
+    @PersistenceContext
     EntityManager em;
 
 
@@ -41,6 +43,7 @@ class ProjectTest {
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .meetingTimeUnit(MinuteUnit.TEN)
                 .build();
 
         em.persist(project);
@@ -86,6 +89,7 @@ class ProjectTest {
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .meetingTimeUnit(MinuteUnit.TEN)
                 .build();
 
         em.persist(project);
@@ -116,6 +120,8 @@ class ProjectTest {
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .meetingTimeUnit(MinuteUnit.TEN)
+
                 .build();
 
         em.persist(project);
