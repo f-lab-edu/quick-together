@@ -6,7 +6,6 @@ import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-가import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,7 +15,6 @@ import java.util.*;
  * 종료시간이 시작시간을 앞설수 없음.
  * 구간으로 구간을 잘라내는 trim구현
  */
-@Slf4j
 @Getter
 @Embeddable
 @EqualsAndHashCode
