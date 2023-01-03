@@ -2,8 +2,7 @@ package com.flab.quicktogether.timeplan.application;
 
 import com.flab.quicktogether.timeplan.domain.etc.MinuteUnit;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
-import com.flab.quicktogether.timeplan.fixture.TimeBlockFixture;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -11,12 +10,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class IteralSchedulerTest {
     private final Scheduler scheduler = new IteralScheduler();
 
     @Test
+    @DisplayName("두 타임블록을 두고 시간을 제안하면 모두 공통적으로 가능한 시간에 배정된다.")
     void suggestTime() {
         LocalDate target = LocalDate.now().plusDays(1L);
         // 19:00~ 21:00
@@ -42,6 +42,6 @@ class IteralSchedulerTest {
         LocalDateTime expectedEndTime = LocalDateTime.of(target, LocalTime.parse("21:00"));
         TimeBlock expectedTimeBlock = new TimeBlock(expectedStartTime, expectedEndTime);
 
-        org.assertj.core.api.Assertions.assertThat(result).containsExactly(expectedTimeBlock);
+        assertThat(result).containsExactly(expectedTimeBlock);
     }
 }
