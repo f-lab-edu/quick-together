@@ -1,4 +1,4 @@
-package com.flab.quicktogether.globalsetting.exception;
+package com.flab.quicktogether.globalsetting.domain.exception;
 
 
 import lombok.Data;

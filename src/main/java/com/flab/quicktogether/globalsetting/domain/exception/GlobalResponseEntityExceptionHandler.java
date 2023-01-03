@@ -1,6 +1,7 @@
-package com.flab.quicktogether.globalsetting.exception;
+package com.flab.quicktogether.globalsetting.domain.exception;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.*;
@@ -18,8 +19,11 @@ import java.util.Arrays;
 
 @RestController
 @ControllerAdvice
+@RequiredArgsConstructor
 @Slf4j
 public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+
 
 /*    @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {

@@ -1,7 +1,7 @@
 package com.flab.quicktogether.project.exception;
 
-import com.flab.quicktogether.globalsetting.exception.ApplicationException;
-import com.flab.quicktogether.globalsetting.exception.ErrorCode;
+import com.flab.quicktogether.globalsetting.domain.exception.ApplicationException;
+import com.flab.quicktogether.globalsetting.domain.exception.ErrorCode;
 
 public class DuplicateProjectPositionException extends ApplicationException {
     public DuplicateProjectPositionException(ErrorCode errorCode) {
