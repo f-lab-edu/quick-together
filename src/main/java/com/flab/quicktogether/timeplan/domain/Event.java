@@ -65,7 +65,7 @@ public class Event implements Comparable<Event> {
 
     private String nullProcess(String eventName) {
         if (eventName == null) {
-            eventName = "CONFIDENTIAL";
+            eventName = "";
         }
         return eventName;
     }
