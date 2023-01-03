@@ -6,6 +6,7 @@ import com.flab.quicktogether.timeplan.domain.exception.NoUniqueTimePlanCreateEx
 import com.flab.quicktogether.timeplan.domain.exception.NotFoundEventException;
 import com.flab.quicktogether.timeplan.domain.exception.NotFoundTimePlanException;
 import com.flab.quicktogether.timeplan.domain.TimePlan;
+import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import com.flab.quicktogether.timeplan.infrastructure.EventRepository;
 import com.flab.quicktogether.timeplan.infrastructure.TimePlanRepository;
 import com.flab.quicktogether.timeplan.presentation.*;
@@ -14,6 +15,7 @@ import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -25,6 +27,7 @@ public class TimePlanService {
     private final TimePlanRepository timePlanRepository;
     private final EventRepository eventRepository;
 
+    private final Scheduler scheduler;
 
     public void registerTimePlan(Long memberId, TimePlanCreateRequestDto timePlanCreateRequestDto) {
         timePlanRepository.findByMemberId(memberId)
@@ -69,5 +72,13 @@ public class TimePlanService {
                 .orElseThrow(NotFoundTimePlanException::new);
         List<Event> reservedEvent = eventRepository.findEventsByTimePlanIdAfterCurrentTime(timePlan.getId());
         return TimePlanGetRequestDto.from(timePlan,reservedEvent);
+    }
+
+    public List<TimeBlock> getAvailableTime(Long MemberId, LocalDate startDate, LocalDate endDate) {
+        TimePlan timePlan = timePlanRepository.findByMemberId(MemberId)
+                .orElseThrow(NotFoundTimePlanException::new);
+        List<Event> reservedEvent = eventRepository.findEventsByTimePlanIdAfterCurrentTime(timePlan.getId());
+
+        return timePlan.extractAbleTimeBlock(reservedEvent, startDate, endDate);
     }
 }
