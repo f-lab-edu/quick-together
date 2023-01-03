@@ -6,7 +6,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * 계산을 위해 가변객체로 만들어 계산하는 클래스인데 우선 불변객체로 계산하는 형태로 구현되어 아직 사용되지 않음.*/
 public class TimeBlockOperator {
 
     private final List<OperableTimeBlock> timeBlocks = new ArrayList<>();
