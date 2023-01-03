@@ -27,8 +27,6 @@ public class TimePlanService {
     private final TimePlanRepository timePlanRepository;
     private final EventRepository eventRepository;
 
-    private final Scheduler scheduler;
-
     public void registerTimePlan(Long memberId, TimePlanCreateRequestDto timePlanCreateRequestDto) {
         timePlanRepository.findByMemberId(memberId)
                 .ifPresent(tp -> {throw new NoUniqueTimePlanCreateException();});
@@ -81,4 +79,5 @@ public class TimePlanService {
 
         return timePlan.extractAbleTimeBlock(reservedEvent, startDate, endDate);
     }
+
 }
