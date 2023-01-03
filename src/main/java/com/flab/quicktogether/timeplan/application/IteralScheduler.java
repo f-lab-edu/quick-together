@@ -16,10 +16,10 @@ import java.util.List;
 public class IteralScheduler implements Scheduler {
 
     @Override
-    public List<TimeBlock> suggestEventTime(MinuteUnit minuteUnit, LocalDate targetStartDate, LocalDate targetEndDate, Integer EventPeriodByMinute,List<List<TimeBlock>> ableTimeblocks) {
+    public List<TimeBlock> suggestEventTime(MinuteUnit minuteUnit, LocalDate roughStartDate, LocalDate roughEndDate, Integer EventPeriodByMinute,List<List<TimeBlock>> ableTimeblocks) {
 
         //1. 기간과 단위시간만큼의 후보시간 얻기
-        List<TimeBlock> candidateTimes = getCandidateTimes(minuteUnit, targetStartDate, targetEndDate, EventPeriodByMinute);
+        List<TimeBlock> candidateTimes = getCandidateTimes(minuteUnit, roughStartDate, roughEndDate, EventPeriodByMinute);
 
         //2. 후보시간과 가능시간들을 모두 비교하여 시간제안
         return findTimeBlocksAllIncluded(candidateTimes, ableTimeblocks);
