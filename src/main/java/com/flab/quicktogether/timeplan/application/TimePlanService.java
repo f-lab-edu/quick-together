@@ -26,7 +26,7 @@ public class TimePlanService {
     private final EventRepository eventRepository;
 
 
-    public void createTimePlan(Long memberId, TimePlanCreateRequestDto timePlanCreateRequestDto) {
+    public void registerTimePlan(Long memberId, TimePlanCreateRequestDto timePlanCreateRequestDto) {
         timePlanRepository.findByMemberId(memberId)
                 .ifPresent(tp -> {throw new NoUniqueTimePlanCreateException();});
         Member member = memberRepository.findById(memberId).get();
@@ -34,7 +34,7 @@ public class TimePlanService {
         timePlanRepository.save(timePlan);
     }
 
-    public void updateAbleRoutine(Long memberId, List<AbleRoutineUpdateRequestDto> ableRoutineUpdateRequestDtos) {
+    public void modifyAbleRoutine(Long memberId, List<AbleRoutineUpdateRequestDto> ableRoutineUpdateRequestDtos) {
         List<AbleRoutine> newAbleRoutine = ableRoutineUpdateRequestDtos.stream()
                 .map(ableRoutineUpdateRequestDto -> ableRoutineUpdateRequestDto.toEntity())
                 .toList();
@@ -43,24 +43,22 @@ public class TimePlanService {
                 .orElseThrow(NotFoundTimePlanException::new)
                 .updateAbleRoutines(newAbleRoutine);
 
-
-
     }
 
-    public void createPlannedEvent(Long memberId, EventCreateRequestDto plannedEvent) {
+    public void registerEvent(Long memberId, EventCreateRequestDto plannedEvent) {
         TimePlan timePlan = timePlanRepository.findByMemberId(memberId)
                 .orElseThrow(NotFoundTimePlanException::new);
         Event event = plannedEvent.toEntity(timePlan);
         eventRepository.save(event);
     }
 
-    public void updateEvent(Long eventId, EventUpdateRequestDto eventUpdateRequestDto) {
+    public void editEvent(Long loginId, Long eventId,  EventUpdateRequestDto eventUpdateRequestDto) {
         eventRepository.findById(eventId)
                 .orElseThrow(NotFoundEventException::new)
                 .updateEvent(eventUpdateRequestDto);
     }
 
-    public void deletePlannedEvent(Long eventId) {
+    public void removePlannedEvent(Long eventId) {
         eventRepository.findById(eventId)
                 .orElseThrow(NotFoundEventException::new)
                 .delete();
