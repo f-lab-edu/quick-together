@@ -45,7 +45,7 @@ class ProjectRepositoryTest {
 
 
     @Test
-    @DisplayName("프로젝트 저장 후 조회")
+    @DisplayName("프로젝트 저장 후 필드값을 검증한다.")
     public void save(){
 
 
@@ -74,7 +74,7 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    @DisplayName("프로젝트 여러개 저장 후 조회")
+    @DisplayName("빈 저장소에 두 개의 프로젝트를 저장하고 전체 프로젝트를 조회했을 시 총 개수는 2개다.")
     public void saveMany(){
 
         Project project1 = Project.builder()
@@ -107,7 +107,7 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    @DisplayName("프로젝트 저장시 특정 파라미터 없을 시")
+    @DisplayName("프로젝트 생성시 특정 파라미터 없을 시 IllegalArgumentException 발생한다.")
     public void saveParameterNull(){
         Assertions.assertThrows(IllegalArgumentException.class,() -> {
                     Project.builder()
@@ -124,7 +124,7 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    @DisplayName("프로젝트 저장 후 삭제")
+    @DisplayName("프로젝트를 삭제 했을 시 상태값이 DELETED로 변한다.")
     public void delete(){
 
         Project project = Project.builder()
@@ -143,7 +143,7 @@ class ProjectRepositoryTest {
         projectRepository.delete(findProject);
 
         Optional<Project> deletedProject = projectRepository.findById(findProject.getId());
-        Assertions.assertThrows(NoSuchElementException.class, () -> deletedProject.get());
+        Assertions.assertEquals(project,deletedProject.get().getProjectStatus());
 
     }
 
