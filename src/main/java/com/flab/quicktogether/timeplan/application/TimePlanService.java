@@ -77,7 +77,7 @@ public class TimePlanService {
                 .orElseThrow(NotFoundTimePlanException::new);
         List<Event> reservedEvent = eventRepository.findEventsByTimePlanIdAfterCurrentTime(timePlan.getId());
 
-        return timePlan.extractAbleTimeBlock(reservedEvent, startDate, endDate);
+        return timePlan.extractAbleTimeBlock(startDate, endDate);
     }
 
 }
