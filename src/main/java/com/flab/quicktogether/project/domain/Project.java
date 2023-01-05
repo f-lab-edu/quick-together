@@ -61,12 +61,10 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private List<Position> RecruitmentPositions = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    private MinuteUnit meetingTimeUnit;
 
     @Builder
     public Project(String projectName, Member founder, String projectSummary, String projectDescription,
-                   MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime, MinuteUnit meetingTimeUnit) {
+                   MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime) {
 
         Assert.hasText(projectName,"projectName must not be empty");
         Assert.notNull(founder, "projectFounder must not be null");
@@ -75,14 +73,12 @@ public class Project {
         Assert.notNull(meetingMethod, "meetingMethod must not be null");
         Assert.notNull(startDateTime, "startDateTime must not be null");
         Assert.notNull(periodDateTime, "periodDate must not be null");
-        Assert.notNull(meetingMethod, "meetingTimeUnit must not be null");
 
         this.founder = founder;
         this.projectName = projectName;
         this.meetingMethod = meetingMethod;
         this.startDateTime = startDateTime;
         this.periodDateTime = periodDateTime;
-        this.meetingTimeUnit = meetingTimeUnit;
 
         this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, projectDescription);
     }
@@ -132,10 +128,6 @@ public class Project {
 
     public void changeProjectDescriptionInfo(ProjectDescriptionInfo editProjectDescriptionInfo){
         this.projectDescriptionInfo = editProjectDescriptionInfo;
-    }
-
-    public void settingMeetingTimeUnit(MinuteUnit minuteUnit) {
-        this.meetingTimeUnit = minuteUnit;
     }
 
     public void settingLikes(Long likes) {
