@@ -10,5 +10,5 @@ public interface TimePlanRepository extends JpaRepository<TimePlan, Long> {
 
     public Optional<TimePlan> findByMemberId(Long memberId);
 
-    @Query("select t from TimePlan t join" )
+
 }
