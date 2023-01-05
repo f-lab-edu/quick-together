@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.flab.quicktogether.participant.domain.ParticipantRole.*;
+import static com.flab.quicktogether.participant.domain.ParticipantRole.ROLE_ADMIN;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,7 +54,15 @@ public class Participant {
     }
 
     public static Participant addMember(Project project, Member member){
-        return new Participant(member, project, ParticipantRole.ROLE_USER);
+        return new Participant(member, project, ROLE_USER);
+    }
+
+    public void checkPermission(){
+        if(this.participantRole.equals(ROLE_ADMIN)){
+            //do nothing
+        }else {
+            new RuntimeException();
+        }
     }
 
     public void changeParticipantRole(ParticipantRole editParticipantRole){
