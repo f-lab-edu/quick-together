@@ -1,25 +1,35 @@
 package com.flab.quicktogether.meeting.domain;
 
-import com.flab.quicktogether.common.CUDTimeStampInfo;
-import com.flab.quicktogether.common.TimeSection;
+import com.flab.quicktogether.project.domain.Project;
+import com.flab.quicktogether.timeplan.domain.Event;
+import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.time.LocalDate;
-
-
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
+@ToString
+@Getter
 public class Meeting {
-    Long id;
-    Long meetingNo; // 클라이언트가 볼수있는 미팅고유번호
-    String meetingName; // 미팅이름
-    LocalDate meetingDate; // 미팅시작일
-    TimeSection meetingTime; // 미팅시간
 
-    String description; // 상세설명
+    @Id
+    @GeneratedValue
+    @Column(name = "meeting_id")
+    private Long id;
 
-    CUDTimeStampInfo meetingTimeStampInfo; // 생성, 수정, 삭제에 대한 TimeStamp 정보
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Project project;
 
-    //    private AlarmSettingInfo 추후 알람기능 생성시
-}
+    @Lob
+    private String description;
 
-enum MeetingStatus {
-    APPROVED, DENIED, VOTING, STARTED, CLOSED
+    @Embedded
+    private TimeBlock timeBlock;
+
+    public Meeting(Project project, String description, TimeBlock timeBlock) {
+        this.project = project;
+        this.description = description;
+        this.timeBlock = timeBlock;
+    }
 }

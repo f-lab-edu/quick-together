@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.flab.quicktogether.globalsetting.exception.ErrorCode.*;
+import static com.flab.quicktogether.globalsetting.domain.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -93,7 +93,7 @@ public class ProjectService {
         skillStacks.stream()
                 .filter(skillStack -> skillStack.equals(newSkillStack))
                 .forEach(skillStack -> {
-                    throw new DuplicateProjectSkillStackException(DUPLICATE_PROJECT_SKILLSTACK);
+                    throw new DuplicateProjectSkillStackException();
                 });
     }
 
@@ -123,8 +123,9 @@ public class ProjectService {
         positions.stream()
                 .filter(position -> position.equals(newRecruitmentPosition))
                 .forEach(skillStack -> {
-                    throw new DuplicateProjectPositionException(DUPLICATE_PROJECT_POSITION);
+                    throw new DuplicateProjectPositionException();
                 });
+
     }
 
     /**
@@ -137,12 +138,12 @@ public class ProjectService {
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findById(projectId).orElseThrow(
-                () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
+        return projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

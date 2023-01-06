@@ -45,7 +45,8 @@ public class TimeBlock {
 
         ArrayList<TimeBlock> trimmedBlocks = new ArrayList<>();
 
-        if (this.equals(target) || this.isIncludeIn(target)) {
+        if (this.isIncludeIn(target)) {
+            //do nothing.
         } else if (this.isOverlappedWithStartEqualBy(target) || this.isOverlappedForwardBy(target)) {
             trimmedBlocks.add(this.remainBackward(target));
 
@@ -147,8 +148,8 @@ public class TimeBlock {
     }
 
     public boolean isIncludeIn(TimeBlock target) {
-        return this.startDateTime.isAfter(target.startDateTime)
-                && this.endDateTime.isBefore(target.endDateTime);
+        return this.startDateTime.compareTo(target.startDateTime) >= 0
+                && this.endDateTime.compareTo(target.endDateTime) <= 0;
     }
 
     public boolean isIncludeIn(List<TimeBlock> target) {

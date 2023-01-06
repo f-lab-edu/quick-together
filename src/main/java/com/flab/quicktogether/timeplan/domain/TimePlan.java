@@ -34,31 +34,60 @@ public class TimePlan {
     @JoinColumn(name = "time_plan_id")
     private List<AbleRoutine> ableRoutines = new ArrayList<>();
 
+    @OneToMany(mappedBy = "timePlan")
+    private List<Event> plannedEvents = new ArrayList<>();
     protected TimePlan() {
     }
 
-    public TimePlan(Member member, List<AbleRoutine> ableRoutines) {
+    public TimePlan(Member member, List<AbleRoutine> ableRoutines,List<Event> plannedEvents) {
         this.member = member;
         verifySeperated(ableRoutines);
         this.ableRoutines = ableRoutines;
+        this.plannedEvents= plannedEvents;
     }
 
     /**
-     * ableRoutines검증
+     * ableRoutines검증 ableRoutine간의 블록은 서로 겹칠수 없음.
      *
      * @param ableRoutines
      * @return
      */
     private void verifySeperated(List<AbleRoutine> ableRoutines) {
         Collections.sort(ableRoutines);
-        for (int i = 0; i < ableRoutines.size()-1; i++) {
-            RegularTimeBlock cur = ableRoutines.get(i).getRegularTimeBlock();
-            RegularTimeBlock next = ableRoutines.get(i + 1).getRegularTimeBlock();
 
-            if (!cur.isSeperatedFrom(next)) {
+        Iterator<AbleRoutine> iterator = ableRoutines.iterator();
+        RegularTimeBlock curRtb = iterator.next().getRegularTimeBlock();
+
+        while (iterator.hasNext()) {
+            RegularTimeBlock nextRtb = iterator.next().getRegularTimeBlock();
+
+            if (!curRtb.isSeperatedFrom(nextRtb)) {
                 throw new AbleRoutineOverlapException();
             }
+            curRtb = nextRtb;
         }
+
+        //Stream Reduce 사용 -> ExceptionInInitializerError 발생
+//        ableRoutines.stream().reduce((x,y)-> {
+//            RegularTimeBlock xRtb = x.getRegularTimeBlock();
+//            RegularTimeBlock yRtb = y.getRegularTimeBlock();
+//
+//            if (xRtb.isSeperatedFrom(yRtb)) {
+//                throw new AbleRoutineOverlapException();
+//            }
+//            return y;
+//        });
+
+
+
+//        for (int i = 0; i < ableRoutines.size()-1; i++) {
+//            RegularTimeBlock cur = ableRoutines.get(i).getRegularTimeBlock();
+//            RegularTimeBlock next = ableRoutines.get(i + 1).getRegularTimeBlock();
+//
+//            if (!cur.isSeperatedFrom(next)) {
+//                throw new AbleRoutineOverlapException();
+//            }
+//        }
     }
 
     public void updateAbleRoutines(List<AbleRoutine> newAbleRoutine) {
@@ -80,11 +109,10 @@ public class TimePlan {
     }
 
 
-
     /**
      * 비교를 위한 최종 DateTimeSection을 뽑아내는 작업
      */
-    public List<TimeBlock> extractAbleTimeBlock(List<Event> plannedEvents, LocalDate targetStartDate, LocalDate targetEndDate) {
+    public List<TimeBlock> extractAbleTimeBlock(LocalDate targetStartDate, LocalDate targetEndDate) {
         List<TimeBlock> convertedAbleRoutines = convertAbsoluteBlock(targetStartDate, targetEndDate);
 
         return trimPlannedEvents(convertedAbleRoutines, plannedEvents);

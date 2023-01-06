@@ -17,7 +17,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @NotRequiredLoginCheck
-    @RequestMapping(path = "/login", method = RequestMethod.GET)
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
     public ResponseEntity login(HttpSession httpSession) {
         Long loginId = memberService.login();
         httpSession.setAttribute(SessionConst.LOGIN_MEMBER, loginId);

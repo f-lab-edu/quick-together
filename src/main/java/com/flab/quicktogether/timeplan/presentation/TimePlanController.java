@@ -29,21 +29,21 @@ public class TimePlanController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<HttpStatus> postTimePlan(@Login Long loginMemberId,
                                                    @Valid @RequestBody TimePlanCreateRequestDto timePlanCreateRequestDto, BindingResult bindingResult) {
-        timePlanService.createTimePlan(loginMemberId, timePlanCreateRequestDto);
+        timePlanService.registerTimePlan(loginMemberId, timePlanCreateRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @RequestMapping(path = "/routine", method = RequestMethod.PUT)
     public ResponseEntity updateAbleRoutine(@Login Long loginMemberId,
                                             @Valid @RequestBody List<AbleRoutineUpdateRequestDto> ableRoutinesRequestDtos) {
-        timePlanService.updateAbleRoutine(loginMemberId, ableRoutinesRequestDtos);
+        timePlanService.modifyAbleRoutine(loginMemberId, ableRoutinesRequestDtos);
         return ResponseEntity.ok().build();
     }
 
     @RequestMapping(path = "/events", method = RequestMethod.POST)
     public ResponseEntity addEvent(@Login Long loginMemberId,
                                    @Valid @RequestBody EventCreateRequestDto event, BindingResult bindingResult) {
-        timePlanService.createPlannedEvent(loginMemberId, event);
+        timePlanService.registerEvent(loginMemberId, event);
         return ResponseEntity.ok().build();
     }
 
@@ -51,13 +51,13 @@ public class TimePlanController {
     public ResponseEntity editEvent(@Login Long loginMemberId,
                                    @PathVariable Long eventId,
                                    @Valid @RequestBody EventUpdateRequestDto eventUpdateRequestDto, BindingResult bindingResult) {
-        timePlanService.updateEvent(loginMemberId, eventUpdateRequestDto);
+        timePlanService.editEvent(loginMemberId, eventId, eventUpdateRequestDto);
         return ResponseEntity.ok().build();
     }
 
     @RequestMapping(path = "/events/{eventId}", method = RequestMethod.DELETE)
     public ResponseEntity removeEvent(@Login Long loginMemberId, @PathVariable Long eventId) {
-        timePlanService.deletePlannedEvent(eventId);
+        timePlanService.removePlannedEvent(eventId);
         return ResponseEntity.ok().build();
     }
 

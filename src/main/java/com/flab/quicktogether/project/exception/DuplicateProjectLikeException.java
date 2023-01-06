@@ -1,22 +1,11 @@
 package com.flab.quicktogether.project.exception;
 
-import com.flab.quicktogether.globalsetting.exception.ApplicationException;
-import com.flab.quicktogether.globalsetting.exception.ErrorCode;
+import com.flab.quicktogether.globalsetting.domain.exception.ApplicationException;
+import org.springframework.http.HttpStatus;
 
 public class DuplicateProjectLikeException extends ApplicationException {
-    public DuplicateProjectLikeException(ErrorCode errorCode) {
-        super(errorCode);
-    }
-
-    public DuplicateProjectLikeException(String message, ErrorCode errorCode) {
-        super(message, errorCode);
-    }
-
-    public DuplicateProjectLikeException(String message, Throwable cause, ErrorCode errorCode) {
-        super(message, cause, errorCode);
-    }
-
-    public DuplicateProjectLikeException(Throwable cause, ErrorCode errorCode) {
-        super(cause, errorCode);
+    public DuplicateProjectLikeException() {
+        this.ERROR_CODE="DuplicateProjectLikeException";
+        this.HTTP_STATUS=HttpStatus.BAD_REQUEST;
     }
 }
