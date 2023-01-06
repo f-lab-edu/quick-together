@@ -25,7 +25,8 @@ public class ExceptionResponse {
         this.path = path;
     }
 
-    public ExceptionResponse(String path,List<ObjectError> allErrors) {
+    public ExceptionResponse(String message, String path,List<ObjectError> allErrors) {
+        this.message = message;
         this.path = path;
         allErrors.stream()
                 .map(allError -> (FieldError) allError)

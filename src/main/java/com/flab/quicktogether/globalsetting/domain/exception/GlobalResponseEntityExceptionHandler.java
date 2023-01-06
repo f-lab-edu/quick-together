@@ -53,7 +53,9 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                                   WebRequest request) {
         log.warn(ex.getClass().getSimpleName(), ex.getMessage());
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(request.getDescription(false), ex.getAllErrors());
+        String message = this.message.getMessage("MethodArgumentNotValidException", null, null);
+        String path = request.getDescription(false);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(message, path, ex.getAllErrors());
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
@@ -63,10 +65,9 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                                   HttpHeaders headers,
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
-        log.warn(ex.fillInStackTrace().getMessage());
+        log.warn(ex.getClass().getSimpleName(), ex.getMessage());
 
         String message=ex.getMessage();
-
         if (ex.getCause() instanceof InvalidFormatException) {
             InvalidFormatException ifx = (InvalidFormatException) ex.getCause();
             if (ifx.getTargetType()!=null && ifx.getTargetType().isEnum()) {
@@ -75,7 +76,8 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
             }
         }
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(message,request.getDescription(false));
+        String path = request.getDescription(false);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(message, path);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -85,14 +87,15 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                         HttpStatusCode status,
                                                         WebRequest request) {
         log.warn(ex.fillInStackTrace().getMessage());
-        String message = "'"+ex.getValue()+"' to required type '"+ex.getRequiredType()+"'";
+        String message = String.format("'%s' to required type '%s'",ex.getValue(),ex.getRequiredType());
 
         if (ex instanceof MethodArgumentTypeMismatchException) {
             MethodArgumentTypeMismatchException castEx  = (MethodArgumentTypeMismatchException) ex;
-            message = "'"+ex.getValue()+"' to required type '"+castEx.getName()+"'";
+            message = String.format("'%s' to required type '%s'",ex.getValue(),castEx.getName());
         }
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(message,request.getDescription(false));
+        String path = request.getDescription(false);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(message, path);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 

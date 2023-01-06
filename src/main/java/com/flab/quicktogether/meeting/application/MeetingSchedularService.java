@@ -30,7 +30,8 @@ public class MeetingSchedularService {
     private final Scheduler scheduler;
 
     public List<TimeBlock> suggestAvailableTime(Long loginMemberId, Long projectId, AvailableTimeRequestDto availableTimeRequestDto) {
-        MinuteUnit meetingTimeUnit = findProject(projectId).getMeetingTimeUnit();
+        //MinuteUnit meetingTimeUnit = findProject(projectId).getMeetingTimeUnit();
+        MinuteUnit meetingTimeUnit = null;
         LocalDate roughlyStartDate = availableTimeRequestDto.getRoughlyStartDate();
         LocalDate roughlyEndDate = availableTimeRequestDto.getRoughlyEndDate();
         Integer meetingDuration = availableTimeRequestDto.getMeetingDuration();
@@ -49,6 +50,6 @@ public class MeetingSchedularService {
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+        return projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException());
     }
 }

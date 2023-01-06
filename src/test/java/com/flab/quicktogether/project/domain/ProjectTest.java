@@ -43,7 +43,6 @@ class ProjectTest {
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                .meetingTimeUnit(MinuteUnit.TEN)
                 .build();
 
         em.persist(project);
@@ -89,7 +88,6 @@ class ProjectTest {
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                .meetingTimeUnit(MinuteUnit.TEN)
                 .build();
 
         em.persist(project);
@@ -120,7 +118,6 @@ class ProjectTest {
                 .meetingMethod(MeetingMethod.SLACK)
                 .projectSummary("간단할 설명~")
                 .projectDescription("긴설명~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                .meetingTimeUnit(MinuteUnit.TEN)
 
                 .build();
 
