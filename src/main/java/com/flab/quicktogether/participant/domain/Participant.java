@@ -1,5 +1,6 @@
 package com.flab.quicktogether.participant.domain;
 
+import com.flab.quicktogether.common.NotAuthorizedException;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.common.Position;
 import com.flab.quicktogether.project.domain.Project;
@@ -61,7 +62,7 @@ public class Participant {
         if(this.participantRole.equals(ROLE_ADMIN)){
             //do nothing
         }else {
-            new RuntimeException();
+            throw new NotAuthorizedException();
         }
     }
 

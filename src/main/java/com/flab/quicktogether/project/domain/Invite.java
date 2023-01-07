@@ -2,12 +2,15 @@ package com.flab.quicktogether.project.domain;
 
 import com.flab.quicktogether.member.domain.Member;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import static com.flab.quicktogether.project.domain.InviteStatus.*;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Invite {
 
     @Id

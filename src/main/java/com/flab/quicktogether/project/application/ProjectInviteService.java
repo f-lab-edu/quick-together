@@ -11,6 +11,7 @@ import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.domain.Invite;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.exception.DuplicateInviteMemberException;
+import com.flab.quicktogether.project.exception.DuplicateProjectParticipationException;
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import com.flab.quicktogether.project.infrastructure.InviteRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
@@ -36,11 +37,26 @@ public class ProjectInviteService {
         Member invitedMember = findMember(invitedMemberId);
         Project project = findProject(projectId);
 
-        Participant participant = findParticipant(projectId, requestMemberId);
-        participant.checkPermission();
+        checkProjectParticipation(projectId, invitedMemberId);
 
+        Participant requestParticipant = findParticipant(projectId, requestMemberId);
+        requestParticipant.checkPermission();
+
+        checkProjectInvite(projectId, invitedMemberId);
         Invite invite = Invite.inviteMember(project, requestMember, invitedMember);
         inviteRepository.save(invite);
+    }
+
+    private void checkProjectParticipation(Long projectId, Long memberId) {
+        participantRepository.findByProjectIdAndMemberId(projectId, memberId).ifPresent(joinedParticipant -> {
+            throw new DuplicateProjectParticipationException();
+        });
+    }
+
+    private void checkProjectInvite(Long projectId, Long invitedMemberId) {
+        inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId).ifPresent(invitedMember ->{
+            throw new DuplicateInviteMemberException();
+        });
     }
 
     @Transactional
@@ -64,8 +80,6 @@ public class ProjectInviteService {
     }
 
     private Participant findParticipant(Long projectId, Long longId) {
-        findProject(projectId);
-        findMember(longId);
         return participantRepository.findByProjectIdAndMemberId(projectId, longId).orElseThrow(
                 () -> new ParticipantNotFoundException());
     }
