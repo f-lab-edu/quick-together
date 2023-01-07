@@ -11,9 +11,9 @@ import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.exception.DuplicateParticipantPositionException;
 import com.flab.quicktogether.participant.exception.DuplicateParticipantSkillStackException;
 import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
-import com.flab.quicktogether.globalsetting.domain.Position;
+import com.flab.quicktogether.common.Position;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.common.SkillStack;
 import com.flab.quicktogether.project.exception.*;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
@@ -23,9 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-import static com.flab.quicktogether.globalsetting.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -69,7 +67,7 @@ public class ParticipantService {
 
     private void checkProjectParticipation(Long projectId, Long memberId) {
         participantRepository.findByProjectIdAndMemberId(projectId, memberId).ifPresent(joinedParticipant -> {
-                    throw new DuplicateProjectParticipationException(DUPLICATE_PROJECT_PARTICIPATION);
+                    throw new DuplicateProjectParticipationException();
                 });
     }
 
@@ -109,7 +107,7 @@ public class ParticipantService {
         positions.stream()
                 .filter(position -> position.equals(newPosition))
                 .forEach(position -> {
-                    throw new DuplicateParticipantPositionException(DUPLICATE_PARTICIPANT_POSITION);
+                    throw new DuplicateParticipantPositionException();
                 });
     }
 
@@ -139,7 +137,7 @@ public class ParticipantService {
         skillStacks.stream()
                 .filter(skillStack -> skillStack.equals(newSkillStack))
                 .forEach(skillStack -> {
-                    throw new DuplicateParticipantSkillStackException(DUPLICATE_PARTICIPANT_SKILLSTACK);
+                    throw new DuplicateParticipantSkillStackException();
                 });
     }
 
@@ -157,16 +155,16 @@ public class ParticipantService {
         findProject(projectId);
         findMember(memberId);
         return participantRepository.findByProjectIdAndMemberId(projectId, memberId).orElseThrow(
-                () -> new ParticipantNotFoundException(PARTICIPANT_NOT_FOUND));
+                () -> new ParticipantNotFoundException());
     }
 
     private Project findProject(Long projectId) {
         return projectRepository.findById(projectId).orElseThrow(
-                () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
+                () -> new ProjectNotFoundException());
     }
 
     private Member findMember(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+                () -> new MemberNotFoundException());
     }
 }

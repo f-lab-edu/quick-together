@@ -11,12 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 public class ExceptionResponse {
 
-    private LocalDateTime timestamp = LocalDateTime.now();
-    private String message;
-    private String path;
+    private final LocalDateTime timestamp = LocalDateTime.now();
+    private final String message;
+    private final String path;
 
     private List<ErrorInfo> errors = new ArrayList<>();
 

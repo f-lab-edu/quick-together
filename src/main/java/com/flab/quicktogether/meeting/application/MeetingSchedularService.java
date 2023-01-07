@@ -1,6 +1,5 @@
 package com.flab.quicktogether.meeting.application;
 
-import com.flab.quicktogether.globalsetting.domain.exception.ErrorCode;
 import com.flab.quicktogether.meeting.presentation.AvailableTimeRequestDto;
 import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;

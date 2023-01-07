@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 
 public class DuplicateProjectLikeException extends ApplicationException {
     public DuplicateProjectLikeException() {
-        this.ERROR_CODE="DuplicateProjectLikeException";
-        this.HTTP_STATUS=HttpStatus.BAD_REQUEST;
+        super("DuplicateProjectLikeException", HttpStatus.BAD_REQUEST);
     }
 }

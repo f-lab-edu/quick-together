@@ -1,5 +1,6 @@
 package com.flab.quicktogether.project.domain;
 
+import com.flab.quicktogether.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -11,33 +12,33 @@ public class Invite {
 
     @Id
     @GeneratedValue
-    @Column(name = "Invite_id")
+    @Column(name = "invite_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Long requestMemberId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Long invitedMemberId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
-    private Long projectId;
+    private Project project;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "requestMember_id")
+    private Member requestMember;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "invitedMember_id")
+    private Member invitedMember;
 
     @Enumerated(EnumType.STRING)
     private InviteStatus inviteStatus;
 
 
-    private Invite(Long projectId, Long requestMemberId, Long invitedMemberId) {
-        this.projectId = projectId;
-        this.requestMemberId = requestMemberId;
-        this.invitedMemberId = invitedMemberId;
+    public Invite(Project project, Member requestMember, Member invitedMember) {
+        this.project = project;
+        this.requestMember = requestMember;
+        this.invitedMember = invitedMember;
     }
 
-    public static Invite inviteMember(Long projectId, Long requestMemberId, Long invitedMemberId){
-        Invite invite = new Invite(projectId, requestMemberId, invitedMemberId);
+    public static Invite inviteMember(Project project, Member requestMember, Member invitedMember){
+        Invite invite = new Invite(project, requestMember, invitedMember);
         invite.inviteStatus = WAIT;
         return invite;
     }

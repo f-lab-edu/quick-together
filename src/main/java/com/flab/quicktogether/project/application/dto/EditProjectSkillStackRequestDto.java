@@ -1,7 +1,6 @@
 package com.flab.quicktogether.project.application.dto;
 
-import com.flab.quicktogether.globalsetting.domain.SkillStack;
-import jakarta.validation.constraints.NotNull;
+import com.flab.quicktogether.common.SkillStack;
 import lombok.*;
 
 

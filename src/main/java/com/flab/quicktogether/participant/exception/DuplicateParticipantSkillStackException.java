@@ -4,8 +4,8 @@ import com.flab.quicktogether.globalsetting.domain.exception.ApplicationExceptio
 import org.springframework.http.HttpStatus;
 
 public class DuplicateParticipantSkillStackException extends ApplicationException {
+
     public DuplicateParticipantSkillStackException() {
-        this.ERROR_CODE="DuplicateParticipantSkillStackException";
-        this.HTTP_STATUS= HttpStatus.BAD_REQUEST;
+        super("DuplicateParticipantSkillStackException", HttpStatus.BAD_REQUEST);
     }
 }
