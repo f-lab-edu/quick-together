@@ -54,7 +54,7 @@ public class Participant {
         this.participantRole = participantRole;
     }
 
-    public static Participant addMember(Project project, Member member){
+    public static Participant addParticipant(Project project, Member member){
         return new Participant(member, project, ROLE_USER);
     }
 
