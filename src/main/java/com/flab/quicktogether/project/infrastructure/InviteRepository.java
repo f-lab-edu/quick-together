@@ -13,6 +13,9 @@ public interface InviteRepository extends JpaRepository<Invite, Long> {
     /**
      * 프로젝트에 초대되어 WAIT 상태인 것을 반환
      */
-    @Query("select i from Invite i join fetch i.project p join fetch i.invitedMember m where p.Id = :projectId and m.Id = :invitedMember and i.inviteStatus = WAIT")
+    @Query("select i from Invite i " +
+            "join fetch i.project p " +
+            "join fetch i.invitedMember m " +
+            "where p.Id = :projectId and m.Id = :invitedMember and i.inviteStatus = WAIT")
     Optional<Invite> findByProjectIdAndInvitedMemberIdWithWait(@Param("projectId") Long projectId, @Param("invitedMember") Long invitedMember);
 }

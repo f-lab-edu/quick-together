@@ -100,7 +100,7 @@ class MockProjectInviteServiceTest {
         given(projectRepository.findById(project.getId())).willReturn(Optional.ofNullable(project));
         given(participantRepository.findByProjectIdAndMemberId(project.getId(), requestMemberId)).willReturn(Optional.ofNullable(participant));
         given(participantRepository.findByProjectIdAndMemberId(project.getId(), invitedMemberId)).willReturn(Optional.ofNullable(null));
-        given(inviteRepository.findByProjectIdAndInvitedMemberId(project.getId(), invitedMemberId)).willReturn(Optional.ofNullable(invite));
+        given(inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(project.getId(), invitedMemberId)).willReturn(Optional.ofNullable(invite));
 
 
         //then
@@ -119,13 +119,13 @@ class MockProjectInviteServiceTest {
         Member invitedMember = spy(Member.class);
         Invite invite = spy(Invite.class);
 
-        given(inviteRepository.findByProjectIdAndInvitedMemberId(project.getId(), invitedMember.getId())).willReturn(Optional.ofNullable(invite));
+        given(inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(project.getId(), invitedMember.getId())).willReturn(Optional.ofNullable(invite));
 
         //when
         projectInviteService.acceptInvite(project.getId(),invitedMember.getId());
 
         //then
-        verify(inviteRepository, times(1)).findByProjectIdAndInvitedMemberId(project.getId(), invitedMember.getId());
+        verify(inviteRepository, times(1)).findByProjectIdAndInvitedMemberIdWithWait(project.getId(), invitedMember.getId());
         verify(participantService,times(1)).joinProject(project.getId(),invitedMember.getId());
         Assertions.assertEquals(invite.getInviteStatus(), InviteStatus.ACCEPT);
 

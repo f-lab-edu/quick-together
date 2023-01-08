@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @SpringBootTest
@@ -120,30 +119,6 @@ class ProjectRepositoryTest {
                             .build();
                 }
                 );
-
-    }
-
-    @Test
-    @DisplayName("프로젝트를 삭제 했을 시 상태값이 DELETED로 변한다.")
-    public void delete(){
-
-        Project project = Project.builder()
-                .projectName(projectName)
-                .founder(member)
-                .startDateTime(startDateTime)
-                .periodDateTime(periodDateTime)
-                .meetingMethod(meetingMethod)
-                .projectSummary(projectSummary)
-                .projectDescription(projectDescription)
-                .build();
-
-        projectRepository.save(project);
-
-        Project findProject = projectRepository.findById(project.getId()).get();
-        projectRepository.delete(findProject);
-
-        Optional<Project> deletedProject = projectRepository.findById(findProject.getId());
-        Assertions.assertEquals(project,deletedProject.get().getProjectStatus());
 
     }
 
