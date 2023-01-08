@@ -62,7 +62,7 @@ public class ParticipantService {
 
         Project project = findProject(projectId);
         Member member = findMember(memberId);
-        participantRepository.save(Participant.addMember(project, member));
+        participantRepository.save(Participant.addParticipant(project, member));
     }
 
     private void checkProjectParticipation(Long projectId, Long memberId) {
