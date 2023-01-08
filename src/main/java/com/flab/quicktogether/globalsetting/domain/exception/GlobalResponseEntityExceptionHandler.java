@@ -28,7 +28,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 
     @ExceptionHandler(ApplicationException.class)
     public final ResponseEntity<Object> handleApplicationException(ApplicationException ex, WebRequest request) {
-        log.warn(ex.fillInStackTrace().getMessage());
+        log.warn(ex.getClass().getSimpleName(), ex.getMessage());
 
         String message = this.message.getMessage(ex.getErrorCode(), null, null);
         ExceptionResponse exceptionResponse = new ExceptionResponse(message, getRequestUrl(request));
