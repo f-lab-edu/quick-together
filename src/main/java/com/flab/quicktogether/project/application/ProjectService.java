@@ -121,7 +121,7 @@ public class ProjectService {
         List<Position> positions = project.getRecruitmentPositions();
         positions.stream()
                 .filter(position -> position.equals(newRecruitmentPosition))
-                .forEach(skillStack -> {
+                .forEach(position -> {
                     throw new DuplicateProjectPositionException();
                 });
 
