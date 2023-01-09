@@ -154,17 +154,17 @@ public class ParticipantService {
     private Participant findParticipant(Long projectId, Long memberId) {
         findProject(projectId);
         findMember(memberId);
-        return participantRepository.findByProjectIdAndMemberId(projectId, memberId).orElseThrow(
-                () -> new ParticipantNotFoundException());
+        return participantRepository.findByProjectIdAndMemberId(projectId, memberId)
+                .orElseThrow(ParticipantNotFoundException::new);
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findById(projectId).orElseThrow(
-                () -> new ProjectNotFoundException());
+        return projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException());
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

@@ -76,8 +76,8 @@ public class ProjectEnterService {
     }
 
     private Participant findParticipant(Long projectId, Long longId) {
-        return participantRepository.findByProjectIdAndMemberId(projectId, longId).orElseThrow(
-                () -> new ParticipantNotFoundException());
+        return participantRepository.findByProjectIdAndMemberId(projectId, longId)
+                .orElseThrow(ParticipantNotFoundException::new);
     }
 
     @Transactional
@@ -94,17 +94,17 @@ public class ProjectEnterService {
         findProject(projectId);
         findMember(enterMemberId);
         Enter enter = enterRepository.findByProjectIdAndEnterMemberIdWithWait(projectId, enterMemberId)
-                .orElseThrow(() -> new EnterNotFoundException());
+                .orElseThrow(EnterNotFoundException::new);
         return enter;
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findById(projectId).orElseThrow(
-                () -> new ProjectNotFoundException());
+        return projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException());
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

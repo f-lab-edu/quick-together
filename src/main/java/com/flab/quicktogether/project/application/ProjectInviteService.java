@@ -33,7 +33,7 @@ public class ProjectInviteService {
     private final ParticipantService participantService;
 
 
-    public Invite retrieveInvitedMember(Long projectId, Long invitedMemberId){
+    public Invite retrieveInvitedMember(Long projectId, Long invitedMemberId) {
         Invite invite = findInvite(projectId, invitedMemberId);
         return invite;
     }
@@ -59,7 +59,7 @@ public class ProjectInviteService {
     }
 
     private void isInvited(Long projectId, Long invitedMemberId) {
-        inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId).ifPresent(invitedMember ->{
+        inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId).ifPresent(invitedMember -> {
             throw new DuplicateInviteMemberException();
         });
     }
@@ -69,7 +69,7 @@ public class ProjectInviteService {
         Invite invite = findInvite(projectId, invitedMemberId);
         invite.accept();
 
-        participantService.joinProject(projectId,invitedMemberId);
+        participantService.joinProject(projectId, invitedMemberId);
     }
 
     @Transactional
@@ -82,22 +82,22 @@ public class ProjectInviteService {
         findProject(projectId);
         findMember(invitedMemberId);
         Invite invite = inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId)
-                .orElseThrow(() -> new InviteNotFoundException());
+                .orElseThrow(InviteNotFoundException::new);
         return invite;
     }
 
     private Participant findParticipant(Long projectId, Long longId) {
-        return participantRepository.findByProjectIdAndMemberId(projectId, longId).orElseThrow(
-                () -> new ParticipantNotFoundException());
+        return participantRepository.findByProjectIdAndMemberId(projectId, longId)
+                .orElseThrow(ParticipantNotFoundException::new);
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findById(projectId).orElseThrow(
-                () -> new ProjectNotFoundException());
+        return projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException());
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }
