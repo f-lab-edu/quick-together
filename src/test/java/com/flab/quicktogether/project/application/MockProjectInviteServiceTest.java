@@ -120,6 +120,8 @@ class MockProjectInviteServiceTest {
         Invite invite = spy(Invite.class);
 
         given(inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(project.getId(), invitedMember.getId())).willReturn(Optional.ofNullable(invite));
+        given(projectRepository.findById(project.getId())).willReturn(Optional.ofNullable(project));
+        given(memberRepository.findById(invitedMember.getId())).willReturn(Optional.ofNullable(invitedMember));
 
         //when
         projectInviteService.acceptInvite(project.getId(),invitedMember.getId());
