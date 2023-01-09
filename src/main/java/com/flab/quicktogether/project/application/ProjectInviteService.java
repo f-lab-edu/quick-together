@@ -34,8 +34,6 @@ public class ProjectInviteService {
 
 
     public Invite retrieveInvitedMember(Long projectId, Long invitedMemberId){
-        findProject(projectId);
-        findMember(invitedMemberId);
         Invite invite = findInvite(projectId, invitedMemberId);
         return invite;
     }
@@ -81,6 +79,8 @@ public class ProjectInviteService {
     }
 
     private Invite findInvite(Long projectId, Long invitedMemberId) {
+        findProject(projectId);
+        findMember(invitedMemberId);
         Invite invite = inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId)
                 .orElseThrow(() -> new InviteNotFoundException());
         return invite;
