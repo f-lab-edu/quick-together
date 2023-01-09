@@ -41,7 +41,7 @@ public class ProjectInviteController {
     /**
      * 프로젝트 초대 수락
      */
-    @PutMapping("/projects/{projectId}/members/{invitedMemberId}/invites")
+    @PostMapping("/projects/{projectId}/members/{invitedMemberId}/invites")
     public ResponseEntity acceptInvite(@PathVariable("projectId") Long projectId, @PathVariable("invitedMemberId") Long invitedMemberId) {
 
         projectInviteService.acceptInvite(projectId, invitedMemberId);
