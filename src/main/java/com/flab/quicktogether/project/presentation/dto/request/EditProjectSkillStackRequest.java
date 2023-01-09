@@ -1,6 +1,6 @@
 package com.flab.quicktogether.project.presentation.dto.request;
 
-import com.flab.quicktogether.common.SkillStack;
+import com.flab.quicktogether.globalsetting.domain.SkillStack;
 import com.flab.quicktogether.project.application.dto.EditProjectSkillStackRequestDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

@@ -1,6 +1,7 @@
 package com.flab.quicktogether.project.presentation.dto.response;
 
-import com.flab.quicktogether.common.SkillStack;
+import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.project.domain.*;
 
 import jakarta.validation.constraints.NotNull;

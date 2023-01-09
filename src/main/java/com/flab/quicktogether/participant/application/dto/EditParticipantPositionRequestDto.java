@@ -1,6 +1,6 @@
 package com.flab.quicktogether.participant.application.dto;
 
-import com.flab.quicktogether.common.Position;
+import com.flab.quicktogether.globalsetting.domain.Position;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.flab.quicktogether.participant.presentation.dto.request;
 
-import com.flab.quicktogether.common.Position;
+import com.flab.quicktogether.globalsetting.domain.Position;
 import com.flab.quicktogether.participant.application.dto.EditParticipantPositionRequestDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
-import org.springframework.context.MessageSource;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,16 +23,23 @@ import java.util.Arrays;
 @Slf4j
 public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private final MessageSource message;
+
+
+/*    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
 
     @ExceptionHandler(ApplicationException.class)
     public final ResponseEntity<Object> handleApplicationException(ApplicationException ex, WebRequest request) {
-        log.warn(ex.getClass().getSimpleName(), ex.getMessage());
-
-        String message = this.message.getMessage(ex.getErrorCode(), null, null);
-        ExceptionResponse exceptionResponse = new ExceptionResponse(message, getRequestUrl(request));
-        return new ResponseEntity(exceptionResponse, ex.getHttpStatus());
+        log.warn(ex.fillInStackTrace().getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getErrorCode(), request.getDescription(false));
+        return new ResponseEntity(exceptionResponse, ex.getErrorCode().getHttpStatus());
     }
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -42,8 +48,8 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                                   WebRequest request) {
         log.warn(ex.getClass().getSimpleName(), ex.getMessage());
 
-        String message = this.message.getMessage("MethodArgumentNotValidException", null, null);
-        ExceptionResponse exceptionResponse = new ExceptionResponse(message, getRequestUrl(request), ex.getAllErrors());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.VALIDATION_FAILED, request.getDescription(false), ex.getAllErrors());
+
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -52,7 +58,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                                   HttpHeaders headers,
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
-        log.warn(ex.getClass().getSimpleName(), ex.getMessage());
+        log.warn(ex.fillInStackTrace().getMessage());
 
         String message=ex.getMessage();
 
@@ -64,7 +70,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
             }
         }
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(message, getRequestUrl(request));
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.MESSAGE_NOT_READABLE, message,request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -73,20 +79,18 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                         HttpHeaders headers,
                                                         HttpStatusCode status,
                                                         WebRequest request) {
-        log.warn(ex.getClass().getSimpleName(), ex.getMessage());
-        String message = String.format("'%s' to required type '%s'",ex.getValue(),ex.getRequiredType());
+        log.warn(ex.fillInStackTrace().getMessage());
+        String message = "'"+ex.getValue()+"' to required type '"+ex.getRequiredType()+"'";
 
         if (ex instanceof MethodArgumentTypeMismatchException) {
             MethodArgumentTypeMismatchException castEx  = (MethodArgumentTypeMismatchException) ex;
-            message = String.format("'%s' to required type '%s'",ex.getValue(),castEx.getName());
+            message = "'"+ex.getValue()+"' to required type '"+castEx.getName()+"'";
         }
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(message, getRequestUrl(request));
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCode.TYPE_MISMATCH, message,request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
-    private static String getRequestUrl(WebRequest request) {
-        String path = request.getDescription(false);
-        return path;
-    }
+
+
 }

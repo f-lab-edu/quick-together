@@ -27,7 +27,7 @@ public class TimePlanCreateRequestDto {
                 .map(AbleRoutine::new)
                 .collect(Collectors.toList());
 
-        return new TimePlan(member, routines, null);
+        return new TimePlan(member, routines);
     }
 
 }

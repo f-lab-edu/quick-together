@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@ToString(exclude = "timePlan")
+@ToString
 @EqualsAndHashCode
 public class Event implements Comparable<Event> {
     @Id
@@ -39,9 +39,7 @@ public class Event implements Comparable<Event> {
 
     public Event(TimePlan timePlan, String eventName, TimeBlock timeBlock) {
         this.eventName = nullProcess(eventName);
-
         this.timePlan = timePlan;
-        timePlan.getPlannedEvents().add(this);
 
         verifyNotExpire(timeBlock);
         this.timeBlock = timeBlock;

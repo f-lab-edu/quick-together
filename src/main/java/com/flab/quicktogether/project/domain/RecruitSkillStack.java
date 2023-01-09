@@ -1,6 +1,6 @@
 package com.flab.quicktogether.project.domain;
 
-import com.flab.quicktogether.common.SkillStack;
+import com.flab.quicktogether.globalsetting.domain.SkillStack;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

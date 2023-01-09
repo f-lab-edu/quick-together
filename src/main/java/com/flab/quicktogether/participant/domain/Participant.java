@@ -1,10 +1,9 @@
 package com.flab.quicktogether.participant.domain;
 
-import com.flab.quicktogether.common.NotAuthorizedException;
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.common.Position;
+import com.flab.quicktogether.globalsetting.domain.Position;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.common.SkillStack;
+import com.flab.quicktogether.globalsetting.domain.SkillStack;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,9 +11,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.flab.quicktogether.participant.domain.ParticipantRole.*;
-import static com.flab.quicktogether.participant.domain.ParticipantRole.ROLE_ADMIN;
 
 @Getter
 @Entity
@@ -54,16 +50,8 @@ public class Participant {
         this.participantRole = participantRole;
     }
 
-    public static Participant addParticipant(Project project, Member member){
-        return new Participant(member, project, ROLE_USER);
-    }
-
-    public void checkPermission(){
-        if(this.participantRole.equals(ROLE_ADMIN)){
-            //do nothing
-        }else {
-            throw new NotAuthorizedException();
-        }
+    public static Participant addMember(Project project, Member member){
+        return new Participant(member, project, ParticipantRole.ROLE_USER);
     }
 
     public void changeParticipantRole(ParticipantRole editParticipantRole){

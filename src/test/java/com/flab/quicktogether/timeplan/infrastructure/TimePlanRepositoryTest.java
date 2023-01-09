@@ -46,7 +46,7 @@ class TimePlanRepositoryTest {
         //given
         Member member = memberRepository.findById(1L).get();
         List<AbleRoutine> dayEqualRoutines = TimePlanFixture.DAY_EQUAL_ROUTINES;
-        TimePlan timePlan = new TimePlan(member, dayEqualRoutines, null);
+        TimePlan timePlan = new TimePlan(member, dayEqualRoutines);
 
         //when
         timePlanRepository.save(timePlan);

@@ -45,7 +45,7 @@ public class TimePlanFixture {
             "11:59~13:00"
     );
 
-    public static TimePlan TIME_PLAN = new TimePlan(TEST_MEMBER, DAY_EQUAL_ROUTINES, PLANNED_EVENTS);
+    public static TimePlan TIME_PLAN = new TimePlan(TEST_MEMBER, DAY_EQUAL_ROUTINES);
 
 
 

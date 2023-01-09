@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.flab.quicktogether.globalsetting.domain.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class ProjectLikeService {
         projectLikeRepository.findByProjectIdAndMemberId(projectId, memberId)
                 .ifPresentOrElse(
                         findLikes -> {
-                            throw new DuplicateProjectLikeException();
+                            throw new DuplicateProjectLikeException(DUPLICATE_PROJECT_LIKE);
                         },
                         () -> {
                             Likes addLikes = new Likes(findProject(projectId), findMember(memberId));
@@ -45,7 +46,7 @@ public class ProjectLikeService {
                 .ifPresentOrElse(
                         findLikes -> projectLikeRepository.delete(findLikes),
                         () -> {
-                            throw new ProjectNoLikeException();
+                            throw new ProjectNoLikeException(NO_LIKE);
                         }
                 );
     }
@@ -57,12 +58,12 @@ public class ProjectLikeService {
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findById(projectId)
-                .orElseThrow(ProjectNotFoundException::new);
+        return projectRepository.findById(projectId).orElseThrow(
+                () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(MemberNotFoundException::new);
+        return memberRepository.findById(memberId).orElseThrow(
+                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
 }
