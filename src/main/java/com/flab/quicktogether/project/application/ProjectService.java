@@ -1,7 +1,7 @@
 package com.flab.quicktogether.project.application;
 
-import com.flab.quicktogether.globalsetting.domain.Position;
-import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.common.Position;
+import com.flab.quicktogether.common.SkillStack;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.flab.quicktogether.globalsetting.domain.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -93,7 +92,7 @@ public class ProjectService {
         skillStacks.stream()
                 .filter(skillStack -> skillStack.equals(newSkillStack))
                 .forEach(skillStack -> {
-                    throw new DuplicateProjectSkillStackException(DUPLICATE_PROJECT_SKILLSTACK);
+                    throw new DuplicateProjectSkillStackException();
                 });
     }
 
@@ -122,9 +121,10 @@ public class ProjectService {
         List<Position> positions = project.getRecruitmentPositions();
         positions.stream()
                 .filter(position -> position.equals(newRecruitmentPosition))
-                .forEach(skillStack -> {
-                    throw new DuplicateProjectPositionException(DUPLICATE_PROJECT_POSITION);
+                .forEach(position -> {
+                    throw new DuplicateProjectPositionException();
                 });
+
     }
 
     /**
@@ -137,12 +137,12 @@ public class ProjectService {
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findById(projectId).orElseThrow(
-                () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
+        return projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

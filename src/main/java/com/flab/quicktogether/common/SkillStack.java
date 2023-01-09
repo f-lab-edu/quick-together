@@ -1,4 +1,4 @@
-package com.flab.quicktogether.globalsetting.domain;
+package com.flab.quicktogether.common;
 
 public enum SkillStack {
         JAVA, KOTLIN, SPRING, JPA,

@@ -24,7 +24,7 @@ class TimePlanTest {
         List<AbleRoutine> routines = TimePlanFixture.DAY_OVERLAP_ROUTINES;
 
         //when&then
-        assertThrows(AbleRoutineOverlapException.class,()-> new TimePlan(member, routines));
+        assertThrows(AbleRoutineOverlapException.class,()-> new TimePlan(member, routines, null));
 
     }
 
@@ -36,13 +36,14 @@ class TimePlanTest {
         List<AbleRoutine> dayEqualRoutines = DAY_EQUAL_ROUTINES;
         List<Event> plannedEvents = PLANNED_EVENTS;
 
-        TimePlan timePlan = new TimePlan(TEST_MEMBER, DAY_EQUAL_ROUTINES);
+        TimePlan timePlan = new TimePlan(TEST_MEMBER, DAY_EQUAL_ROUTINES,null);
+
         List<TimeBlock> expectedAbleTimeBlock = EXPECTED_ABLE_TIME_BLOCK;
 
 
         LocalDate fixedDate = FIXED_DATE;
         //when
-        List<TimeBlock> result = timePlan.extractAbleTimeBlock(PLANNED_EVENTS, FIXED_DATE, FIXED_DATE);
+        List<TimeBlock> result = timePlan.extractAbleTimeBlock(FIXED_DATE, FIXED_DATE);
 
         //then
         Assertions.assertThat(result).containsExactly(expectedAbleTimeBlock.toArray(new TimeBlock[0]));

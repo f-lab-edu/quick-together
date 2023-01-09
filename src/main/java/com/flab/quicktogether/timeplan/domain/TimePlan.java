@@ -34,13 +34,16 @@ public class TimePlan {
     @JoinColumn(name = "time_plan_id")
     private List<AbleRoutine> ableRoutines = new ArrayList<>();
 
+    @OneToMany(mappedBy = "timePlan")
+    private List<Event> plannedEvents = new ArrayList<>();
     protected TimePlan() {
     }
 
-    public TimePlan(Member member, List<AbleRoutine> ableRoutines) {
+    public TimePlan(Member member, List<AbleRoutine> ableRoutines,List<Event> plannedEvents) {
         this.member = member;
         verifySeperated(ableRoutines);
         this.ableRoutines = ableRoutines;
+        this.plannedEvents= plannedEvents;
     }
 
     /**
@@ -106,11 +109,10 @@ public class TimePlan {
     }
 
 
-
     /**
      * 비교를 위한 최종 DateTimeSection을 뽑아내는 작업
      */
-    public List<TimeBlock> extractAbleTimeBlock(List<Event> plannedEvents, LocalDate targetStartDate, LocalDate targetEndDate) {
+    public List<TimeBlock> extractAbleTimeBlock(LocalDate targetStartDate, LocalDate targetEndDate) {
         List<TimeBlock> convertedAbleRoutines = convertAbsoluteBlock(targetStartDate, targetEndDate);
 
         return trimPlannedEvents(convertedAbleRoutines, plannedEvents);

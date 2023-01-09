@@ -11,39 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 public class ExceptionResponse {
-    private LocalDateTime timestamp = LocalDateTime.now();
 
-    private int status;
-    private String error = "";
-    private String code = "";
-    private String message = "";
-    private String path = "";
+    private final LocalDateTime timestamp = LocalDateTime.now();
+    private final String message;
+    private final String path;
 
     private List<ErrorInfo> errors = new ArrayList<>();
 
-    public ExceptionResponse(ErrorCode errorCode, String path) {
-        this.status = errorCode.getHttpStatus().value();
-        this.error = errorCode.getHttpStatus().name();
-        this.message = errorCode.getMessage();
-        this.code = errorCode.name();
-        this.path = path;
-    }
-
-    public ExceptionResponse(ErrorCode errorCode, String message, String path) {
-        this.status = errorCode.getHttpStatus().value();
-        this.error = errorCode.getHttpStatus().name();
+    public ExceptionResponse(String message, String path) {
         this.message = message;
-        this.code = errorCode.name();
         this.path = path;
     }
 
-    public ExceptionResponse(ErrorCode errorCode, String path,List<ObjectError> allErrors) {
-        this.status = errorCode.getHttpStatus().value();
-        this.error = errorCode.getHttpStatus().name();
-        this.message = errorCode.getMessage();
-        this.code = errorCode.name();
+    public ExceptionResponse(String message, String path,List<ObjectError> allErrors) {
+        this.message = message;
         this.path = path;
         allErrors.stream()
                 .map(allError -> (FieldError) allError)

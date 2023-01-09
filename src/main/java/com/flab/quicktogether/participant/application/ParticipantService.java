@@ -11,9 +11,9 @@ import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.exception.DuplicateParticipantPositionException;
 import com.flab.quicktogether.participant.exception.DuplicateParticipantSkillStackException;
 import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
-import com.flab.quicktogether.globalsetting.domain.Position;
+import com.flab.quicktogether.common.Position;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.common.SkillStack;
 import com.flab.quicktogether.project.exception.*;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
@@ -23,9 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-import static com.flab.quicktogether.globalsetting.domain.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -64,14 +62,13 @@ public class ParticipantService {
 
         Project project = findProject(projectId);
         Member member = findMember(memberId);
-        participantRepository.save(Participant.addMember(project, member));
+        participantRepository.save(Participant.addParticipant(project, member));
     }
 
     private void checkProjectParticipation(Long projectId, Long memberId) {
-        Optional<Participant> participant = participantRepository.findByProjectIdAndMemberId(projectId, memberId);
-        if (participant.isPresent()) {
-            throw new DuplicateProjectParticipationException(DUPLICATE_PROJECT_PARTICIPATION);
-        }
+        participantRepository.findByProjectIdAndMemberId(projectId, memberId).ifPresent(joinedParticipant -> {
+                    throw new DuplicateProjectParticipationException();
+                });
     }
 
     /**
@@ -110,7 +107,7 @@ public class ParticipantService {
         positions.stream()
                 .filter(position -> position.equals(newPosition))
                 .forEach(position -> {
-                    throw new DuplicateParticipantPositionException(DUPLICATE_PARTICIPANT_POSITION);
+                    throw new DuplicateParticipantPositionException();
                 });
     }
 
@@ -140,7 +137,7 @@ public class ParticipantService {
         skillStacks.stream()
                 .filter(skillStack -> skillStack.equals(newSkillStack))
                 .forEach(skillStack -> {
-                    throw new DuplicateParticipantSkillStackException(DUPLICATE_PARTICIPANT_SKILLSTACK);
+                    throw new DuplicateParticipantSkillStackException();
                 });
     }
 
@@ -157,17 +154,17 @@ public class ParticipantService {
     private Participant findParticipant(Long projectId, Long memberId) {
         findProject(projectId);
         findMember(memberId);
-        return participantRepository.findByProjectIdAndMemberId(projectId, memberId).orElseThrow(
-                () -> new ParticipantNotFoundException(PARTICIPANT_NOT_FOUND));
+        return participantRepository.findByProjectIdAndMemberId(projectId, memberId)
+                .orElseThrow(ParticipantNotFoundException::new);
     }
 
     private Project findProject(Long projectId) {
-        return projectRepository.findById(projectId).orElseThrow(
-                () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
+        return projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }
