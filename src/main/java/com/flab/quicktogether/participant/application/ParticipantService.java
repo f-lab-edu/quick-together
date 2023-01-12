@@ -57,18 +57,10 @@ public class ParticipantService {
      */
     @Transactional
     public void joinProject(Long projectId, Long memberId) {
-
-        checkProjectParticipation(projectId, memberId);
-
         Project project = findProject(projectId);
         Member member = findMember(memberId);
-        participantRepository.save(Participant.addParticipant(project, member));
-    }
 
-    private void checkProjectParticipation(Long projectId, Long memberId) {
-        participantRepository.findByProjectIdAndMemberId(projectId, memberId).ifPresent(joinedParticipant -> {
-                    throw new DuplicateProjectParticipationException();
-                });
+        project.getParticipants().addParticipant(project,member);
     }
 
     /**

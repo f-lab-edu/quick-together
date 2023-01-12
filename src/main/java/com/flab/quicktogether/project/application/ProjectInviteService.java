@@ -4,14 +4,9 @@ package com.flab.quicktogether.project.application;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
-import com.flab.quicktogether.participant.application.ParticipantService;
-import com.flab.quicktogether.participant.domain.Participant;
-import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
-import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.domain.Invite;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.exception.DuplicateInviteMemberException;
-import com.flab.quicktogether.project.exception.DuplicateProjectParticipationException;
 import com.flab.quicktogether.project.exception.InviteNotFoundException;
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import com.flab.quicktogether.project.infrastructure.InviteRepository;
@@ -28,12 +23,10 @@ public class ProjectInviteService {
 
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
-    private final ParticipantRepository participantRepository;
     private final InviteRepository inviteRepository;
-    private final ParticipantService participantService;
 
 
-    public Invite retrieveInvitedMember(Long projectId, Long invitedMemberId) {
+    public Invite retrieveInvitedMember(long projectId, Long invitedMemberId) {
         Invite invite = findInvite(projectId, invitedMemberId);
         return invite;
     }
@@ -43,22 +36,15 @@ public class ProjectInviteService {
         Member requestMember = findMember(requestMemberId);
         Member invitedMember = findMember(invitedMemberId);
         Project project = findProject(projectId);
-        checkProjectParticipation(projectId, invitedMemberId);
 
-        Participant requestParticipant = findParticipant(projectId, requestMemberId);
-        requestParticipant.checkPermission();
+        project.getParticipants().isParticipantNot(invitedMemberId);
+        project.getParticipants().isAdmin(requestMemberId);
 
-        isInvited(projectId, invitedMemberId);
+        isInvitedNot(projectId, invitedMemberId);
         inviteRepository.save(Invite.inviteMember(project, requestMember, invitedMember));
     }
 
-    private void checkProjectParticipation(Long projectId, Long memberId) {
-        participantRepository.findByProjectIdAndMemberId(projectId, memberId).ifPresent(joinedParticipant -> {
-            throw new DuplicateProjectParticipationException();
-        });
-    }
-
-    private void isInvited(Long projectId, Long invitedMemberId) {
+    private void isInvitedNot(Long projectId, Long invitedMemberId) {
         inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId).ifPresent(invitedMember -> {
             throw new DuplicateInviteMemberException();
         });
@@ -66,10 +52,13 @@ public class ProjectInviteService {
 
     @Transactional
     public void acceptInvite(Long projectId, Long invitedMemberId) {
+        Project project = findProject(projectId);
+        Member invitedMember = findMember(invitedMemberId);
         Invite invite = findInvite(projectId, invitedMemberId);
-        invite.accept();
 
-        participantService.joinProject(projectId, invitedMemberId);
+        // 이벤트로 바꾸기
+        invite.accept();
+        project.getParticipants().addParticipant(project, invitedMember);
     }
 
     @Transactional
@@ -84,11 +73,6 @@ public class ProjectInviteService {
         Invite invite = inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId)
                 .orElseThrow(InviteNotFoundException::new);
         return invite;
-    }
-
-    private Participant findParticipant(Long projectId, Long longId) {
-        return participantRepository.findByProjectIdAndMemberId(projectId, longId)
-                .orElseThrow(ParticipantNotFoundException::new);
     }
 
     private Project findProject(Long projectId) {

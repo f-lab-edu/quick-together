@@ -58,6 +58,10 @@ public class Participant {
         return new Participant(member, project, ROLE_USER);
     }
 
+    public static Participant registerFounder(Project project, Member founder) {
+        return new Participant(founder, project, ParticipantRole.ROLE_ADMIN);
+    }
+
     public void checkPermission(){
         if(this.participantRole.equals(ROLE_ADMIN)){
             //do nothing

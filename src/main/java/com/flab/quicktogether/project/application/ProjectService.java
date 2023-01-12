@@ -11,7 +11,6 @@ import com.flab.quicktogether.project.application.dto.EditProjectSkillStackReque
 import com.flab.quicktogether.project.application.dto.EditRecruitmentPositionsRequestDto;
 import com.flab.quicktogether.project.domain.*;
 import com.flab.quicktogether.project.exception.*;
-import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectLikeRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +28,6 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
 
     private final MemberRepository memberRepository;
-
-    private final ParticipantRepository participantRepository;
 
     private final ProjectLikeRepository projectLikeRepository;
 
@@ -51,10 +48,10 @@ public class ProjectService {
         Member member = findMember(createProjectRequestDto.getMemberId());
         Project project = createProjectRequestDto.createProject(member);
 
-        projectRepository.save(project);
-        participantRepository.save(project.registerFounder(member, project));
+        Project savedProject = projectRepository.save(project);
+        project.getParticipants().registerFounder(project,member);
 
-        return project.getId();
+        return savedProject.getId();
     }
 
     @Transactional
