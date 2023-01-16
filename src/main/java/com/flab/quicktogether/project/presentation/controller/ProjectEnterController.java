@@ -1,7 +1,7 @@
 package com.flab.quicktogether.project.presentation.controller;
 
 
-import com.flab.quicktogether.common.Login;
+import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.project.application.ProjectEnterService;
 import com.flab.quicktogether.project.domain.Enter;
 import com.flab.quicktogether.project.presentation.dto.request.EnterMemberRequest;

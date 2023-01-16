@@ -1,5 +1,8 @@
-package com.flab.quicktogether.common;
+package com.flab.quicktogether.common.auth.config;
 
+import com.flab.quicktogether.common.SessionConst;
+import com.flab.quicktogether.common.auth.Login;
+import com.flab.quicktogether.member.exception.NotAuthorizedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.core.MethodParameter;
@@ -8,13 +11,12 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-public class LoginMemberIdArgumentResolver implements HandlerMethodArgumentResolver {
+public class SessionLoginMemberIdArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-
-        boolean hasMethodAnnotation = parameter.hasMethodAnnotation(Login.class);
+        boolean hasParameterAnnotation = parameter.hasParameterAnnotation(Login.class);
         boolean assignableFrom = Long.class.isAssignableFrom(parameter.getParameterType());
-        return hasMethodAnnotation && assignableFrom;
+        return hasParameterAnnotation && assignableFrom;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class LoginMemberIdArgumentResolver implements HandlerMethodArgumentResol
 
         HttpSession session = request.getSession(false);
         if (session == null) {
-            return null;
+            throw new NotAuthorizedException();
         }
 
         return session.getAttribute(SessionConst.LOGIN_MEMBER);

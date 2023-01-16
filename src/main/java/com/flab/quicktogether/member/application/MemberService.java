@@ -1,28 +1,32 @@
 package com.flab.quicktogether.member.application;
 
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.common.NotAuthorizedException;
+import com.flab.quicktogether.member.exception.DuplicateMemberNameException;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
-import jakarta.annotation.PostConstruct;
+import com.flab.quicktogether.member.presentation.MemberRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 public class MemberService {
-
-
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @PostConstruct
-    public void init() {
-        Member proto = new Member("proto");
-        memberRepository.save(proto);
+    @Transactional
+    public void createMember(MemberRequest memberRequest){
+        memberRepository.findByMemberName(memberRequest.getMemberName()).ifPresent(member -> {
+                    throw new DuplicateMemberNameException();
+                });
+
+        memberRequest.setPassword(passwordEncoder.encode(memberRequest.getMemberName()));
+        Member member = memberRequest.toEntity();
+        memberRepository.save(member);
     }
 
-    public Long login() {
-        Member member = memberRepository.findById(1L)
-                .orElseThrow(NotAuthenticateException::new);
-        return member.getId();
-    }
+
+
+
 }

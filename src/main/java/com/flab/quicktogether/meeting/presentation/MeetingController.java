@@ -1,6 +1,6 @@
 package com.flab.quicktogether.meeting.presentation;
 
-import com.flab.quicktogether.common.Login;
+import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.meeting.application.MeetingSchedularService;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import lombok.RequiredArgsConstructor;
