@@ -26,7 +26,7 @@ public class ProjectInviteService {
     private final InviteRepository inviteRepository;
 
 
-    public Invite retrieveInvitedMember(long projectId, Long invitedMemberId) {
+    public Invite retrieveInvitedMember(Long projectId, Long invitedMemberId) {
         Invite invite = findInvite(projectId, invitedMemberId);
         return invite;
     }
@@ -52,13 +52,8 @@ public class ProjectInviteService {
 
     @Transactional
     public void acceptInvite(Long projectId, Long invitedMemberId) {
-        Project project = findProject(projectId);
-        Member invitedMember = findMember(invitedMemberId);
         Invite invite = findInvite(projectId, invitedMemberId);
-
-        // 이벤트로 바꾸기
         invite.accept();
-        project.getParticipants().addParticipant(project, invitedMember);
     }
 
     @Transactional

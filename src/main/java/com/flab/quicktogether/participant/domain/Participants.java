@@ -12,8 +12,8 @@ import java.util.List;
 
 @Embeddable
 public class Participants {
-    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Participant> participants = new ArrayList<>();
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private final List<Participant> participants = new ArrayList<>();
 
     public Participants() {
     }
@@ -31,7 +31,10 @@ public class Participants {
         participants.stream()
                 .filter(participant -> participant.getMember().getId().equals(requestMemberId))
                 .findFirst()
-                .ifPresent(Participant::checkPermission);
+                .ifPresentOrElse(Participant::checkPermission,
+                        () -> {
+                            throw new ParticipantNotFoundException();
+                        });
     }
 
     public void addParticipant(Project project, Member member) {
@@ -43,7 +46,7 @@ public class Participants {
         participants.add(Participant.registerFounder(project, fonder));
     }
 
-    public Participant findParticipant(Long findMemberId){
+    public Participant findParticipant(Long findMemberId) {
         return participants.stream()
                 .filter(participant -> participant.getMember().getId().equals(findMemberId))
                 .findFirst()

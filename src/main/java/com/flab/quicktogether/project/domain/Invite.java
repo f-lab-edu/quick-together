@@ -1,6 +1,8 @@
 package com.flab.quicktogether.project.domain;
 
 import com.flab.quicktogether.member.domain.Member;
+import com.flab.quicktogether.project.event.Events;
+import com.flab.quicktogether.project.event.ProjectJoinEvent;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -48,6 +50,7 @@ public class Invite {
 
     public void accept() {
         this.inviteStatus = ACCEPT;
+        Events.raise(new ProjectJoinEvent(project.getId(), invitedMember.getId()));
     }
 
     public void reject() {

@@ -4,9 +4,6 @@ package com.flab.quicktogether.project.application;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
-import com.flab.quicktogether.participant.domain.Participant;
-import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
-import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.domain.Enter;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.exception.DuplicateEnterMemberException;
@@ -27,7 +24,6 @@ public class ProjectEnterService {
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
     private final EnterRepository enterRepository;
-    private final ParticipantRepository participantRepository;
 
 
     public Enter retrieveEnterMember(Long projectId, Long enterMemberId){
@@ -57,29 +53,17 @@ public class ProjectEnterService {
 
     @Transactional
     public void acceptEnter(Long projectId, Long adminMemberId, Long EnterMemberId) {
-
         Project project = findProject(projectId);
-        Member enterMember = findMember(EnterMemberId);
-
         project.getParticipants().isAdmin(adminMemberId);
 
-        //이벤트로 바꾸기
         Enter Enter = findEnter(projectId, EnterMemberId);
         Enter.accept();
-
-        project.getParticipants().addParticipant(project, enterMember);
-    }
-
-    private Participant findParticipant(Long projectId, Long longId) {
-        return participantRepository.findByProjectIdAndMemberId(projectId, longId)
-                .orElseThrow(ParticipantNotFoundException::new);
     }
 
     @Transactional
     public void rejectEnter(Long projectId, Long adminMemberId, Long EnterMemberId) {
-
-        Participant adminParticipant = findParticipant(projectId, adminMemberId);
-        adminParticipant.checkPermission();
+        Project project = findProject(projectId);
+        project.getParticipants().isAdmin(adminMemberId);
 
         Enter Enter = findEnter(projectId, EnterMemberId);
         Enter.reject();
