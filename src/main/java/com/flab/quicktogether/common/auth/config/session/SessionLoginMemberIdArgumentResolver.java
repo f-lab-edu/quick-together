@@ -1,4 +1,4 @@
-package com.flab.quicktogether.common.auth.config;
+package com.flab.quicktogether.common.auth.config.session;
 
 import com.flab.quicktogether.common.SessionConst;
 import com.flab.quicktogether.common.auth.Login;

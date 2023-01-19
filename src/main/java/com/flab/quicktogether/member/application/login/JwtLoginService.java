@@ -1,23 +1,26 @@
-package com.flab.quicktogether.member.application;
+package com.flab.quicktogether.member.application.login;
 
-import com.flab.quicktogether.common.SessionConst;
+import com.flab.quicktogether.common.auth.config.jwt.JwtProvider;
+import com.flab.quicktogether.common.auth.config.jwt.JwtTokenType;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.exception.BadCredentialsException;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service
-public class MemberLoginService {
+//@Service
+public class JwtLoginService implements LoginService{
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final HttpSession httpSession;
+    private final HttpServletResponse response;
+    private final JwtProvider jwtProvider;
 
     @PostConstruct
     public void init() {
@@ -37,14 +40,14 @@ public class MemberLoginService {
             throw new BadCredentialsException();
         }
 
-        httpSession.setAttribute(SessionConst.LOGIN_MEMBER, member.getId());
+        String token = jwtProvider.createToken(memberName, member.getId());
+        response.addHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s",JwtTokenType.BEARER, token));
+
 
         return member.getId();
     }
 
     public void logout() {
-        if (httpSession != null) {
-            httpSession.invalidate();
-        }
+
     }
 }

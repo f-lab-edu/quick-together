@@ -1,6 +1,5 @@
-package com.flab.quicktogether.member.presentation;
+package com.flab.quicktogether.member.presentation.dto.request;
 
-import com.flab.quicktogether.member.domain.Member;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,14 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberRequest {
+public class LoginRequest {
     @NotEmpty
     private String memberName;
     @NotEmpty
     private String password;
-
-    public Member toEntity() {
-        Member member = new Member(memberName, password);
-        return member;
-    }
 }

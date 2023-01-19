@@ -1,4 +1,4 @@
-package com.flab.quicktogether.member.presentation;
+package com.flab.quicktogether.member.presentation.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberResponse {
+public class MemberIdResponse {
     private Long memberId;
 }
