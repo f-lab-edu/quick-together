@@ -6,12 +6,8 @@ import com.flab.quicktogether.participant.application.ParticipantService;
 import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.domain.ParticipantRole;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
-import com.flab.quicktogether.project.application.dto.CreateProjectRequestDto;
-import com.flab.quicktogether.project.application.dto.EditProjectRequestDto;
 import com.flab.quicktogether.project.domain.*;
 import com.flab.quicktogether.project.exception.DuplicateInviteMemberException;
-import com.flab.quicktogether.project.exception.ProjectNoLikeException;
-import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import com.flab.quicktogether.project.infrastructure.InviteRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
@@ -129,7 +124,7 @@ class MockProjectInviteServiceTest {
         //then
         verify(inviteRepository, times(1)).findByProjectIdAndInvitedMemberIdWithWait(project.getId(), invitedMember.getId());
         verify(participantService,times(1)).joinProject(project.getId(),invitedMember.getId());
-        Assertions.assertEquals(invite.getInviteStatus(), InviteStatus.ACCEPT);
+        Assertions.assertEquals(invite.getInviteStatus(), ProjectJoinStatus.ACCEPT);
 
     }
 

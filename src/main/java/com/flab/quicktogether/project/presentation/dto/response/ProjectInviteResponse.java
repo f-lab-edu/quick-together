@@ -1,7 +1,7 @@
 package com.flab.quicktogether.project.presentation.dto.response;
 
 import com.flab.quicktogether.project.domain.Invite;
-import com.flab.quicktogether.project.domain.InviteStatus;
+import com.flab.quicktogether.project.domain.ProjectJoinStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public class ProjectInviteResponse {
     private Long invitedMember;
 
     @NotNull
-    private InviteStatus inviteStatus;
+    private ProjectJoinStatus inviteStatus;
 
     public ProjectInviteResponse(Invite invite) {
         this.projectId = invite.getProject().getId();

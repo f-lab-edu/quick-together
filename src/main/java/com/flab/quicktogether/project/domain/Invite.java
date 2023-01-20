@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.flab.quicktogether.project.domain.InviteStatus.*;
+import static com.flab.quicktogether.project.domain.ProjectJoinStatus.*;
 
 @Getter
 @Entity
@@ -33,7 +33,7 @@ public class Invite {
     private Member invitedMember;
 
     @Enumerated(EnumType.STRING)
-    private InviteStatus inviteStatus;
+    private ProjectJoinStatus inviteStatus;
 
 
     public Invite(Project project, Member requestMember, Member invitedMember) {

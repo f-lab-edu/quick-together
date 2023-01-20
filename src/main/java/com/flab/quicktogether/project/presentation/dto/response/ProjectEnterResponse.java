@@ -1,7 +1,7 @@
 package com.flab.quicktogether.project.presentation.dto.response;
 
 import com.flab.quicktogether.project.domain.Enter;
-import com.flab.quicktogether.project.domain.EnterStatus;
+import com.flab.quicktogether.project.domain.ProjectJoinStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class ProjectEnterResponse {
     private Long enterMember;
 
     @NotNull
-    private EnterStatus enterStatus;
+    private ProjectJoinStatus enterStatus;
 
     public ProjectEnterResponse(Enter enter) {
         this.projectId = enter.getProject().getId();

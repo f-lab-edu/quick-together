@@ -1,5 +1,5 @@
 package com.flab.quicktogether.project.domain;
 
-public enum EnterStatus {
+public enum ProjectJoinStatus {
     ACCEPT, REJECT, WAIT
 }

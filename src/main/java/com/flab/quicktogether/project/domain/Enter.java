@@ -8,9 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.flab.quicktogether.project.domain.EnterStatus.ACCEPT;
-import static com.flab.quicktogether.project.domain.EnterStatus.REJECT;
-import static com.flab.quicktogether.project.domain.EnterStatus.WAIT;
+import static com.flab.quicktogether.project.domain.ProjectJoinStatus.*;
 
 @Getter
 @Entity
@@ -31,7 +29,7 @@ public class Enter {
     private Member enterMember;
 
     @Enumerated(EnumType.STRING)
-    private EnterStatus enterStatus;
+    private ProjectJoinStatus enterStatus;
 
     public Enter(Project project, Member enterMember) {
         this.project = project;
