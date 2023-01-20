@@ -2,9 +2,7 @@ package com.flab.quicktogether.project.application;
 
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
-import com.flab.quicktogether.participant.application.ParticipantService;
-import com.flab.quicktogether.participant.domain.Participant;
-import com.flab.quicktogether.participant.domain.ParticipantRole;
+import com.flab.quicktogether.participant.domain.Participants;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.domain.*;
 import com.flab.quicktogether.project.exception.DuplicateInviteMemberException;
@@ -28,17 +26,13 @@ import static org.mockito.Mockito.*;
 class MockProjectInviteServiceTest {
     @InjectMocks
     ProjectInviteService projectInviteService;
-
     @Mock
     ProjectRepository projectRepository;
     @Mock
     MemberRepository memberRepository;
     @Mock
-    ParticipantRepository participantRepository;
-    @Mock
     InviteRepository inviteRepository;
-    @Mock
-    ParticipantService participantService;
+
 
 
     @BeforeEach
@@ -52,27 +46,25 @@ class MockProjectInviteServiceTest {
     public void inviteMember(){
 
         //given
-        Project project = spy(Project.class);
-        Member requestMember = spy(Member.class);
-        Member invitedMember = spy(Member.class);
-        Participant participant = spy(Participant.class);
-        participant.changeParticipantRole(ParticipantRole.ROLE_ADMIN);
+        Project project = mock(Project.class);
+        Member requestMember = mock(Member.class);
+        Member invitedMember = mock(Member.class);
+        Participants participants = mock(Participants.class);
         long requestMemberId = 1;
         long invitedMemberId = 2;
 
+        given(projectRepository.findById(project.getId())).willReturn(Optional.ofNullable(project));
+        given(project.getParticipants()).willReturn(participants);
         given(memberRepository.findById(requestMemberId)).willReturn(Optional.ofNullable(requestMember));
         given(memberRepository.findById(invitedMemberId)).willReturn(Optional.ofNullable(invitedMember));
-        given(projectRepository.findById(project.getId())).willReturn(Optional.ofNullable(project));
-        given(participantRepository.findByProjectIdAndMemberId(project.getId(), requestMemberId)).willReturn(Optional.ofNullable(participant));
-        given(participantRepository.findByProjectIdAndMemberId(project.getId(), invitedMemberId)).willReturn(Optional.ofNullable(null));
-
 
         //when
         projectInviteService.inviteMember(project.getId(),requestMemberId,invitedMemberId);
 
         //then
         verify(inviteRepository, times(1)).save(any());
-        verify(participant,times(1)).checkPermission();
+        verify(participants,times(1)).isAdmin(requestMemberId);
+        verify(participants,times(1)).isParticipantNot(invitedMemberId);
 
     }
 
@@ -81,22 +73,15 @@ class MockProjectInviteServiceTest {
     public void inviteMemberException(){
 
         //given
-        Project project = spy(Project.class);
-        Member requestMember = spy(Member.class);
-        Member invitedMember = spy(Member.class);
-        Participant participant = spy(Participant.class);
-        participant.changeParticipantRole(ParticipantRole.ROLE_ADMIN);
+        Project project = mock(Project.class);
+        Participants participants = mock(Participants.class);
         Invite invite = mock(Invite.class);
         long requestMemberId = 1;
         long invitedMemberId = 2;
 
-        given(memberRepository.findById(requestMemberId)).willReturn(Optional.ofNullable(requestMember));
-        given(memberRepository.findById(invitedMemberId)).willReturn(Optional.ofNullable(invitedMember));
         given(projectRepository.findById(project.getId())).willReturn(Optional.ofNullable(project));
-        given(participantRepository.findByProjectIdAndMemberId(project.getId(), requestMemberId)).willReturn(Optional.ofNullable(participant));
-        given(participantRepository.findByProjectIdAndMemberId(project.getId(), invitedMemberId)).willReturn(Optional.ofNullable(null));
+        given(project.getParticipants()).willReturn(participants);
         given(inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(project.getId(), invitedMemberId)).willReturn(Optional.ofNullable(invite));
-
 
         //then
         Assertions.assertThrows(DuplicateInviteMemberException.class, () -> {
@@ -110,21 +95,19 @@ class MockProjectInviteServiceTest {
     public void acceptInvite(){
 
         //given
-        Project project = spy(Project.class);
-        Member invitedMember = spy(Member.class);
+        Project project = mock(Project.class);
+        Member invitedMember = mock(Member.class);
         Invite invite = spy(Invite.class);
 
         given(inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(project.getId(), invitedMember.getId())).willReturn(Optional.ofNullable(invite));
         given(projectRepository.findById(project.getId())).willReturn(Optional.ofNullable(project));
         given(memberRepository.findById(invitedMember.getId())).willReturn(Optional.ofNullable(invitedMember));
+        doNothing().when(invite).accept();
 
         //when
         projectInviteService.acceptInvite(project.getId(),invitedMember.getId());
 
-        //then
-        verify(inviteRepository, times(1)).findByProjectIdAndInvitedMemberIdWithWait(project.getId(), invitedMember.getId());
-        verify(participantService,times(1)).joinProject(project.getId(),invitedMember.getId());
-        Assertions.assertEquals(invite.getInviteStatus(), ProjectJoinStatus.ACCEPT);
+        verify(invite,times(1)).accept();
 
     }
 
