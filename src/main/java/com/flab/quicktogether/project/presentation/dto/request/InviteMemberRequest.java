@@ -11,8 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InviteMemberRequest {
     @NotNull
-    private Long requestMemberId;
-
-    @NotNull
     private Long invitedMemberId;
 }

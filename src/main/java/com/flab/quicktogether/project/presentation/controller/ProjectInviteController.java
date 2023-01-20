@@ -1,5 +1,6 @@
 package com.flab.quicktogether.project.presentation.controller;
 
+import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.project.application.ProjectInviteService;
 import com.flab.quicktogether.project.domain.Invite;
 import com.flab.quicktogether.project.presentation.dto.request.InviteMemberRequest;
@@ -19,6 +20,7 @@ public class ProjectInviteController {
 
     /**
      * 프로젝트에 초대된 멤버 조회
+     * todo:관리자 권한으로 변경
      */
     @GetMapping("/projects/{projectId}/members/{invitedMemberId}/invites")
     public ResponseEntity inviteMember(@PathVariable("projectId") Long projectId, @PathVariable("invitedMemberId") Long invitedMemberId) {
@@ -32,8 +34,10 @@ public class ProjectInviteController {
      * 프로젝트 멤버 초대
      */
     @PostMapping("/projects/{projectId}/invites")
-    public ResponseEntity inviteMember(@PathVariable("projectId") Long projectId, @RequestBody @Valid InviteMemberRequest inviteMemberRequest) {
-        projectInviteService.inviteMember(projectId, inviteMemberRequest.getRequestMemberId(), inviteMemberRequest.getInvitedMemberId());
+    public ResponseEntity inviteMember(@PathVariable("projectId") Long projectId,
+                                       @RequestBody @Valid InviteMemberRequest inviteMemberRequest,
+                                       @Login Long requestMemberId) {
+        projectInviteService.inviteMember(projectId, requestMemberId, inviteMemberRequest.getInvitedMemberId());
         URI location = URI.create(String.format("/projects/%d/members/%d/invites", projectId, inviteMemberRequest.getInvitedMemberId()));
         return ResponseEntity.created(location).build();
     }
@@ -41,8 +45,9 @@ public class ProjectInviteController {
     /**
      * 프로젝트 초대 수락
      */
-    @PostMapping("/projects/{projectId}/members/{invitedMemberId}/invites")
-    public ResponseEntity acceptInvite(@PathVariable("projectId") Long projectId, @PathVariable("invitedMemberId") Long invitedMemberId) {
+    @PostMapping("/projects/{projectId}/members/invites")
+    public ResponseEntity acceptInvite(@PathVariable("projectId") Long projectId,
+                                       @Login Long invitedMemberId) {
 
         projectInviteService.acceptInvite(projectId, invitedMemberId);
 
@@ -52,8 +57,9 @@ public class ProjectInviteController {
     /**
      * 프로젝트 초대 거절
      */
-    @DeleteMapping("/projects/{projectId}/members/{invitedMemberId}/invites")
-    public ResponseEntity rejectInvite(@PathVariable("projectId") Long projectId, @PathVariable("invitedMemberId") Long invitedMemberId) {
+    @DeleteMapping("/projects/{id}/members/invites")
+    public ResponseEntity rejectInvite(@PathVariable("projectId") Long projectId,
+                                       @Login Long invitedMemberId) {
 
         projectInviteService.rejectInvite(projectId, invitedMemberId);
 

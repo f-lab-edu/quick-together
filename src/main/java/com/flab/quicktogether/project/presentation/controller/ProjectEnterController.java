@@ -21,9 +21,10 @@ public class ProjectEnterController {
 
     /**
      * 프로젝트에 입장 신청한 멤버 조회
+     * todo:관리자 권한으로 변경
      */
     @GetMapping("/projects/{projectId}/members/{enterMemberId}/enters")
-    public ResponseEntity enterMember(@PathVariable("projectId") Long projectId,
+    public ResponseEntity retrieveMember(@PathVariable("projectId") Long projectId,
                                       @PathVariable("enterMemberId") Long enterMemberId) {
 
         Enter enter = projectEnterService.retrieveEnterMember(projectId, enterMemberId);
@@ -36,19 +37,19 @@ public class ProjectEnterController {
      */
     @PostMapping("/projects/{projectId}/enters")
     public ResponseEntity enterMember(@PathVariable("projectId") Long projectId,
-                                      @RequestBody @Valid EnterMemberRequest enterMemberRequest) {
+                                      @Login Long enterMemberId) {
 
-        projectEnterService.requestEnterProject(projectId, enterMemberRequest.getEnterMemberId());
-        URI location = URI.create(String.format("/projects/%d/members/%d/enters", projectId, enterMemberRequest.getEnterMemberId()));
+        projectEnterService.requestEnterProject(projectId, enterMemberId);
+        URI location = URI.create(String.format("/projects/%d/members/%d/enters", projectId, enterMemberId));
         return ResponseEntity.created(location).build();
     }
 
     /**
      * 프로젝트 입장 신청 수락
      */
-    @PostMapping("/projects/{projectId}/members/{adminMemberId}/enters")
+    @PostMapping("/projects/{projectId}/members/enters")
     public ResponseEntity acceptEnter(@PathVariable("projectId") Long projectId,
-                                      @Login @PathVariable("adminMemberId") Long adminMemberId,
+                                      @Login Long adminMemberId,
                                       @RequestBody @Valid EnterMemberRequest enterMemberRequest) {
 
         projectEnterService.acceptEnter(projectId, adminMemberId,enterMemberRequest.getEnterMemberId());
@@ -58,9 +59,9 @@ public class ProjectEnterController {
     /**
      * 프로젝트 입장 신청 거절
      */
-    @DeleteMapping("/projects/{projectId}/members/{adminMemberId}/enters")
+    @DeleteMapping("/projects/{projectId}/members/enters")
     public ResponseEntity rejectEnter(@PathVariable("projectId") Long projectId,
-                                      @Login @PathVariable("adminMemberId") Long adminMemberId,
+                                      @Login Long adminMemberId,
                                       @RequestBody @Valid EnterMemberRequest enterMemberRequest) {
 
         projectEnterService.rejectEnter(projectId, adminMemberId,enterMemberRequest.getEnterMemberId());
