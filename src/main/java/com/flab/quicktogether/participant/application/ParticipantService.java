@@ -41,6 +41,7 @@ public class ParticipantService {
      * 구성원 전체 조회
      */
     public List<Participant> retrieveAllParticipants(Long projectId) {
+        findProject(projectId);
         return participantRepository.findByProjectId(projectId);
     }
 

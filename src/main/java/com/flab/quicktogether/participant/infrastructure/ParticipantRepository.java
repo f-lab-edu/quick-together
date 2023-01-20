@@ -7,14 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
-    @Override
-    Participant save(Participant participant);
-
-    @Override
-    Optional<Participant> findById(Long id);
-
-    @Override
-    void delete(Participant participant);
 
     /**
      * 특정 프로젝트에 특정 구성원 정보
