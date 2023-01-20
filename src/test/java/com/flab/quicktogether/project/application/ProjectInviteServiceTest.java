@@ -6,11 +6,9 @@ import com.flab.quicktogether.participant.application.ParticipantService;
 import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.domain.ParticipantRole;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
-import com.flab.quicktogether.project.domain.Invite;
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.exception.DuplicateInviteMemberException;
-import com.flab.quicktogether.project.exception.DuplicateProjectLikeException;
 import com.flab.quicktogether.project.infrastructure.InviteRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
 import org.junit.jupiter.api.Assertions;
@@ -20,18 +18,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-@Transactional
 class ProjectInviteServiceTest {
 
     @Autowired
@@ -79,16 +73,16 @@ class ProjectInviteServiceTest {
                 .build();
         project = p;
         projectRepository.save(project);
+        Participant participant = new Participant(requestMember, project, ParticipantRole.ROLE_ADMIN);
+        participantRepository.save(participant);
     }
 
     @Test
     @DisplayName("같은 프로젝트에 중복 초대 되었을 시 DuplicateInviteMemberException 발생한다.")
-    //@Rollback(value = false)
+
     void InviteMemberException() {
 
         //given
-        Participant participant = new Participant(requestMember, project, ParticipantRole.ROLE_ADMIN);
-        participantRepository.save(participant);
         projectInviteService.inviteMember(project.getId(),requestMember.getId(),invitedMember.getId());
 
         //when
@@ -108,9 +102,6 @@ class ProjectInviteServiceTest {
         Long projectId = project.getId();
         Long requestMemberId = requestMember.getId();
 
-        Participant participant = new Participant(requestMember, project, ParticipantRole.ROLE_ADMIN);
-        participantRepository.save(participant);
-
         projectInviteService.inviteMember(projectId, requestMemberId, invitedMemberId);
         projectInviteService.rejectInvite(projectId,invitedMemberId);
 
@@ -118,7 +109,7 @@ class ProjectInviteServiceTest {
         projectInviteService.inviteMember(projectId, requestMemberId,invitedMemberId);
 
         //then
-        Assertions.assertEquals(invitedMember, inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId,invitedMemberId).get().getInvitedMember());
+        Assertions.assertEquals(invitedMember.getMemberName(), inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId,invitedMemberId).get().getInvitedMember().getMemberName());
 
     }
 

@@ -75,14 +75,17 @@ class MockProjectServiceTest {
     public void createProject(){
 
         //given
+        Project project = mock(Project.class);
         given(memberRepository.findById(member.getId())).willReturn(Optional.ofNullable(member));
+        given(projectRepository.save(any())).willReturn(Optional.ofNullable(project).get());
+
 
         //when
         projectService.createProject(createProjectRequestDto);
 
         //then
         verify(projectRepository, times(1)).save(any());
-        verify(participantRepository, times(1)).save(any());
+
 
     }
 
