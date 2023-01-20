@@ -37,11 +37,11 @@ public class ProjectEnterService {
     @Transactional
     public void requestEnterProject(Long projectId, Long enterMemberId) {
         Project project = findProject(projectId);
-        Member EnterMember = findMember(enterMemberId);
-
         project.getParticipants().isParticipantNot(enterMemberId);
 
         isEnteredNot(projectId, enterMemberId);
+
+        Member EnterMember = findMember(enterMemberId);
         enterRepository.save(Enter.enterMember(project, EnterMember));
     }
 

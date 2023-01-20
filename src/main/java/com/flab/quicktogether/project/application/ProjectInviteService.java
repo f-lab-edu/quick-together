@@ -33,14 +33,14 @@ public class ProjectInviteService {
 
     @Transactional
     public void inviteMember(Long projectId, Long requestMemberId, Long invitedMemberId) {
-        Member requestMember = findMember(requestMemberId);
-        Member invitedMember = findMember(invitedMemberId);
         Project project = findProject(projectId);
-
         project.getParticipants().isParticipantNot(invitedMemberId);
         project.getParticipants().isAdmin(requestMemberId);
 
         isInvitedNot(projectId, invitedMemberId);
+
+        Member requestMember = findMember(requestMemberId);
+        Member invitedMember = findMember(invitedMemberId);
         inviteRepository.save(Invite.inviteMember(project, requestMember, invitedMember));
     }
 
