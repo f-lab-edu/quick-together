@@ -11,7 +11,7 @@ import com.flab.quicktogether.project.application.dto.EditProjectSkillStackReque
 import com.flab.quicktogether.project.application.dto.EditRecruitmentPositionsRequestDto;
 import com.flab.quicktogether.project.domain.*;
 import com.flab.quicktogether.project.exception.*;
-import com.flab.quicktogether.project.infrastructure.ProjectLikeRepository;
+import com.flab.quicktogether.project.support.like.infrastructure.ProjectLikeRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

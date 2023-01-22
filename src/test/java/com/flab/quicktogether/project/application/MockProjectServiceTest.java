@@ -9,7 +9,7 @@ import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.domain.ProjectStatus;
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
-import com.flab.quicktogether.project.infrastructure.ProjectLikeRepository;
+import com.flab.quicktogether.project.support.like.infrastructure.ProjectLikeRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

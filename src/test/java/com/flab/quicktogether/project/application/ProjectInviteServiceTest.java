@@ -8,9 +8,10 @@ import com.flab.quicktogether.participant.domain.ParticipantRole;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.project.exception.DuplicateInviteMemberException;
-import com.flab.quicktogether.project.infrastructure.InviteRepository;
+import com.flab.quicktogether.project.support.invite.exception.DuplicateInviteMemberException;
+import com.flab.quicktogether.project.support.invite.infrastructure.InviteRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
+import com.flab.quicktogether.project.support.invite.application.ProjectInviteService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,8 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
