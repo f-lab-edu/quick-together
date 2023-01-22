@@ -137,8 +137,11 @@ class ProjectServiceTest {
     }
 
     @Test
-    @DisplayName("빈 저장소에 두 개의 프로젝트를 저장하고 전체 프로젝트를 조회했을 시 총 개수는 2개다.")
+    @DisplayName("빈 저장소에 두 개의 프로젝트를 저장하고 전체 프로젝트를 조회했을 시 전체 개수는 2개 늘어난다.")
     void findProjects() {
+        List<Project> projects = projectService.retrieveAllProjects();
+        int oldSize = projects.size();
+
         CreateProjectRequestDto createProjectRequestDto = CreateProjectRequestDto.builder()
                 .projectName(projectName)
                 .memberId(member.getId())
@@ -152,9 +155,10 @@ class ProjectServiceTest {
         projectService.createProject(createProjectRequestDto);
         projectService.createProject(createProjectRequestDto);
 
-        List<Project> projects = projectService.retrieveAllProjects();
+        projects = projectService.retrieveAllProjects();
+        int newSize = projects.size();
 
-        Assertions.assertEquals(projects.size(),2);
+        Assertions.assertEquals(oldSize+2,newSize);
 
     }
 
