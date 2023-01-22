@@ -1,6 +1,7 @@
 package com.flab.quicktogether.participant.domain;
 
 import com.flab.quicktogether.member.domain.Member;
+import com.flab.quicktogether.participant.exception.NotAuthorizedParticipantException;
 import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.exception.DuplicateProjectParticipationException;
@@ -51,6 +52,13 @@ public class Participants {
                 .filter(participant -> participant.getMember().getId().equals(findMemberId))
                 .findFirst()
                 .orElseThrow(ParticipantNotFoundException::new);
+    }
+
+    public void checkParticipant(Long memberId) {
+        participants.stream()
+                .filter(participant -> participant.getMember().getId().equals(memberId))
+                .findFirst()
+                .orElseThrow(NotAuthorizedParticipantException::new);
     }
 
 }

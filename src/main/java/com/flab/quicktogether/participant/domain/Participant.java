@@ -1,8 +1,8 @@
 package com.flab.quicktogether.participant.domain;
 
-import com.flab.quicktogether.member.exception.NotAuthorizedException;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.common.Position;
+import com.flab.quicktogether.participant.exception.NotAuthorizedParticipantException;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.common.SkillStack;
 import jakarta.persistence.*;
@@ -66,7 +66,7 @@ public class Participant {
         if(this.participantRole.equals(ROLE_ADMIN)){
             //do nothing
         }else {
-            throw new NotAuthorizedException();
+            throw new NotAuthorizedParticipantException();
         }
     }
 
