@@ -4,7 +4,7 @@ import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.domain.ParticipantRole;
-import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
+import com.flab.quicktogether.participant.exception.NotAuthorizedParticipantException;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Project;
@@ -89,7 +89,7 @@ class ProjectPostServiceTest {
 
         //when
         //then
-        Assertions.assertThrows(ParticipantNotFoundException.class,() -> projectPostService.createPost(project.getId(), member2.getId(), content));
+        Assertions.assertThrows(NotAuthorizedParticipantException.class,() -> projectPostService.createPost(project.getId(), member2.getId(), content));
 
     }
 
