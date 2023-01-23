@@ -34,17 +34,17 @@ public class ProjectInviteService {
     @Transactional
     public void inviteMember(Long projectId, Long requestMemberId, Long invitedMemberId) {
         Project project = findProject(projectId);
-        project.getParticipants().isParticipantNot(invitedMemberId);
-        project.getParticipants().isAdmin(requestMemberId);
+        project.getParticipants().checkParticipantNot(invitedMemberId);
+        project.getParticipants().checkAdminAuth(requestMemberId);
 
-        isInvitedNot(projectId, invitedMemberId);
+        checkInvitedNot(projectId, invitedMemberId);
 
         Member requestMember = findMember(requestMemberId);
         Member invitedMember = findMember(invitedMemberId);
         inviteRepository.save(Invite.inviteMember(project, requestMember, invitedMember));
     }
 
-    private void isInvitedNot(Long projectId, Long invitedMemberId) {
+    private void checkInvitedNot(Long projectId, Long invitedMemberId) {
         inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId).ifPresent(invitedMember -> {
             throw new DuplicateInviteMemberException();
         });

@@ -37,15 +37,15 @@ public class ProjectEnterService {
     @Transactional
     public void requestEnterProject(Long projectId, Long enterMemberId) {
         Project project = findProject(projectId);
-        project.getParticipants().isParticipantNot(enterMemberId);
+        project.getParticipants().checkParticipantNot(enterMemberId);
 
-        isEnteredNot(projectId, enterMemberId);
+        checkEnteredNot(projectId, enterMemberId);
 
         Member EnterMember = findMember(enterMemberId);
         enterRepository.save(Enter.enterMember(project, EnterMember));
     }
 
-    private void isEnteredNot(Long projectId, Long enterMemberId) {
+    private void checkEnteredNot(Long projectId, Long enterMemberId) {
         enterRepository.findByProjectIdAndEnterMemberIdWithWait(projectId, enterMemberId).ifPresent(enterMember ->{
             throw new DuplicateEnterMemberException();
         });
@@ -54,7 +54,7 @@ public class ProjectEnterService {
     @Transactional
     public void acceptEnter(Long projectId, Long adminMemberId, Long EnterMemberId) {
         Project project = findProject(projectId);
-        project.getParticipants().isAdmin(adminMemberId);
+        project.getParticipants().checkAdminAuth(adminMemberId);
 
         Enter Enter = findEnter(projectId, EnterMemberId);
         Enter.accept();
@@ -63,7 +63,7 @@ public class ProjectEnterService {
     @Transactional
     public void rejectEnter(Long projectId, Long adminMemberId, Long EnterMemberId) {
         Project project = findProject(projectId);
-        project.getParticipants().isAdmin(adminMemberId);
+        project.getParticipants().checkAdminAuth(adminMemberId);
 
         Enter Enter = findEnter(projectId, EnterMemberId);
         Enter.reject();

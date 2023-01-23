@@ -26,7 +26,7 @@ public class LoginController {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
-    public ResponseEntity isLogin(@Login Long memberId) {
+    public ResponseEntity checkLogin(@Login Long memberId) {
         return ResponseEntity.ok(new MemberIdResponse(memberId));
     }
 

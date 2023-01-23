@@ -19,7 +19,7 @@ public class Participants {
     public Participants() {
     }
 
-    public void isParticipantNot(Long invitedMemberId) {
+    public void checkParticipantNot(Long invitedMemberId) {
         participants.stream()
                 .filter(participant -> participant.getMember().getId().equals(invitedMemberId))
                 .findFirst()
@@ -28,7 +28,7 @@ public class Participants {
                 });
     }
 
-    public void isAdmin(Long requestMemberId) {
+    public void checkAdminAuth(Long requestMemberId) {
         participants.stream()
                 .filter(participant -> participant.getMember().getId().equals(requestMemberId))
                 .findFirst()
@@ -39,7 +39,7 @@ public class Participants {
     }
 
     public void addParticipant(Project project, Member member) {
-        isParticipantNot(member.getId());
+        checkParticipantNot(member.getId());
         participants.add(Participant.addParticipant(project, member));
     }
 

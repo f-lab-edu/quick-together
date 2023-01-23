@@ -64,8 +64,8 @@ class MockProjectInviteServiceTest {
 
         //then
         verify(inviteRepository, times(1)).save(any());
-        verify(participants,times(1)).isAdmin(requestMemberId);
-        verify(participants,times(1)).isParticipantNot(invitedMemberId);
+        verify(participants,times(1)).checkAdminAuth(requestMemberId);
+        verify(participants,times(1)).checkParticipantNot(invitedMemberId);
 
     }
 
