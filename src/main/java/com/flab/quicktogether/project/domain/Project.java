@@ -4,6 +4,7 @@ import com.flab.quicktogether.common.Position;
 import com.flab.quicktogether.common.SkillStack;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.participant.domain.Participants;
+import com.flab.quicktogether.project.exception.JoinProjectException;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -119,6 +120,14 @@ public class Project {
 
     public void settingLikes(Long likes) {
         this.likes = likes;
+    }
+
+    public void checkJoinProject(){
+        if(projectStatus.equals(ProjectStatus.OPEN)){
+            //do nothing
+        }else {
+           throw new JoinProjectException();
+        }
     }
 
     public void addSkillStack(SkillStack skillStack) {

@@ -59,8 +59,9 @@ public class ParticipantService {
     @Transactional
     public void joinProject(Long projectId, Long memberId) {
         Project project = findProject(projectId);
-        Member member = findMember(memberId);
+        project.checkJoinProject();
 
+        Member member = findMember(memberId);
         project.getParticipants().addParticipant(project,member);
     }
 
