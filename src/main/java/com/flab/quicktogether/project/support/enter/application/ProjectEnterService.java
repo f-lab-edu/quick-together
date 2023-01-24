@@ -26,7 +26,7 @@ public class ProjectEnterService {
     private final EnterRepository enterRepository;
 
 
-    public Enter retrieveEnterMember(Long projectId, Long enterMemberId){
+    public Enter retrieveEnterMember(Long projectId, Long enterMemberId) {
         Enter Enter = findEnter(projectId, enterMemberId);
         return Enter;
     }
@@ -46,9 +46,10 @@ public class ProjectEnterService {
     }
 
     private void checkEnteredNot(Long projectId, Long enterMemberId) {
-        enterRepository.findByProjectIdAndEnterMemberIdWithWait(projectId, enterMemberId).ifPresent(enterMember ->{
-            throw new DuplicateEnterMemberException();
-        });
+        enterRepository.findByProjectIdAndEnterMemberIdWithWait(projectId, enterMemberId)
+                .ifPresent(enterMember -> {
+                    throw new DuplicateEnterMemberException();
+                });
     }
 
     @Transactional

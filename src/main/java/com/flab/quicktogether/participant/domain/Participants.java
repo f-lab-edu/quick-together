@@ -13,7 +13,7 @@ import java.util.List;
 
 @Embeddable
 public class Participants {
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Participant> participants = new ArrayList<>();
 
     public Participants() {

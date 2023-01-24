@@ -45,9 +45,10 @@ public class ProjectInviteService {
     }
 
     private void checkInvitedNot(Long projectId, Long invitedMemberId) {
-        inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId).ifPresent(invitedMember -> {
-            throw new DuplicateInviteMemberException();
-        });
+        inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId)
+                .ifPresent(invitedMember -> {
+                    throw new DuplicateInviteMemberException();
+                });
     }
 
     @Transactional
