@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post {
     private final static int contentMaxSize = 300;
-    private final static int contentEmpty = 0;
     @Id
     @GeneratedValue
     private Long id;
@@ -51,7 +50,7 @@ public class Post {
     }
 
     private static void validateContent(String content){
-        if (contentMaxSize < content.length() || content.length() == contentEmpty) {
+        if (contentMaxSize < content.length() || content.isEmpty()) {
             throw new ContentLengthException();
         }
     }
