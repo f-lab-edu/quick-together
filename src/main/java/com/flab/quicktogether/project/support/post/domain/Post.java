@@ -17,6 +17,7 @@ public class Post {
     private final static int contentMaxSize = 300;
     @Id
     @GeneratedValue
+    @Column(name = "post_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
