@@ -42,8 +42,6 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private MeetingMethod meetingMethod; // 진행방식
 
-    private Long likes = 0L; // 좋아요 수
-
     private Integer views = 0; // 조회 수
 
     private LocalDateTime startDateTime; // 시작일
@@ -116,10 +114,6 @@ public class Project {
 
     public void changeProjectDescriptionInfo(ProjectDescriptionInfo editProjectDescriptionInfo){
         this.projectDescriptionInfo = editProjectDescriptionInfo;
-    }
-
-    public void settingLikes(Long likes) {
-        this.likes = likes;
     }
 
     public void checkJoinProject(){

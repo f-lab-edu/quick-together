@@ -90,7 +90,7 @@ class MockProjectServiceTest {
     }
 
     @Test
-    @DisplayName("프로젝트 조회 시 프로젝트와 좋아요 조회된다.")
+    @DisplayName("프로젝트 기본 조회 시 프로젝트를 조회된다.")
     public void retrieveProject(){
 
         //given
@@ -100,11 +100,10 @@ class MockProjectServiceTest {
         given(projectRepository.findById(projectId)).willReturn(Optional.ofNullable(project));
 
         //when
-        projectService.retrieveProject(projectId);
+        projectService.retrieveBasicProject(projectId);
 
         //then
         verify(projectRepository, times(1)).findById(projectId);
-        verify(projectLikeRepository, times(1)).countByProjectId(projectId);
 
     }
 
@@ -120,7 +119,7 @@ class MockProjectServiceTest {
         given(projectRepository.findById(projectId)).willReturn(Optional.ofNullable(project));
 
         Assertions.assertThrows(ProjectNotFoundException.class, () -> {
-            projectService.retrieveProject(projectId);
+            projectService.retrieveBasicProject(projectId);
         });
     }
 

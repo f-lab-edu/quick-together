@@ -19,6 +19,10 @@ public class Participants {
     public Participants() {
     }
 
+    public List<Participant> participantsInfo(){
+        return participants;
+    }
+
     public void checkParticipantNot(Long invitedMemberId) {
         participants.stream()
                 .filter(participant -> participant.getMember().getId().equals(invitedMemberId))

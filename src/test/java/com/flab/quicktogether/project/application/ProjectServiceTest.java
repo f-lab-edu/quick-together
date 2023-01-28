@@ -120,7 +120,7 @@ class ProjectServiceTest {
                 .build();
         Long createProjectId = projectService.createProject(createProjectRequestDto);
 
-        Project findProject = projectService.retrieveProject(createProjectId);
+        Project findProject = projectService.retrieveBasicProject(createProjectId);
 
         Assertions.assertEquals(projectName,findProject.getProjectName());
 
@@ -131,7 +131,7 @@ class ProjectServiceTest {
     @DisplayName("없는 프로젝트 조회 시 ProjectNotFoundException 발생한다.")
     void findProjectException() {
 
-        Assertions.assertThrows(ProjectNotFoundException.class,() -> projectService.retrieveProject(1L));
+        Assertions.assertThrows(ProjectNotFoundException.class,() -> projectService.retrieveBasicProject(1L));
 
 
     }
@@ -139,7 +139,7 @@ class ProjectServiceTest {
     @Test
     @DisplayName("빈 저장소에 두 개의 프로젝트를 저장하고 전체 프로젝트를 조회했을 시 전체 개수는 2개 늘어난다.")
     void findProjects() {
-        List<Project> projects = projectService.retrieveAllProjects();
+        List<Project> projects = projectService.retrieveAllBasicProjects();
         int oldSize = projects.size();
 
         CreateProjectRequestDto createProjectRequestDto = CreateProjectRequestDto.builder()
@@ -155,7 +155,7 @@ class ProjectServiceTest {
         projectService.createProject(createProjectRequestDto);
         projectService.createProject(createProjectRequestDto);
 
-        projects = projectService.retrieveAllProjects();
+        projects = projectService.retrieveAllBasicProjects();
         int newSize = projects.size();
 
         Assertions.assertEquals(oldSize+2,newSize);
@@ -188,7 +188,7 @@ class ProjectServiceTest {
                 .build();
         projectService.editProject(projectId, editProjectRequestDto);
 
-        Project changedProject = projectService.retrieveProject(projectId);
+        Project changedProject = projectService.retrieveBasicProject(projectId);
 
         Assertions.assertEquals(changedProjectName, changedProject.getProjectName());
 
