@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/quick-together-test
+    url: jdbc:h2:tcp://localhost/~/test
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -13,8 +13,17 @@ spring:
         format_sql: true
         default_batch_fetch_size: 500
 #        show_sql: true
+    defer-datasource-initialization: true
 
+  sql:
+    init:
+      mode: ALWAYS
+      #mode: NEVER,ALWAYS
 
 logging:
   level:
     sql: debug
+
+fcm:
+  certification: quick-together-aa39f-firebase-adminsdk-o5u46-3a3494ce2f.json
+
