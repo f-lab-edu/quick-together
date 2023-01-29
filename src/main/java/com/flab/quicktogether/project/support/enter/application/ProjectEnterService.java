@@ -4,8 +4,10 @@ package com.flab.quicktogether.project.support.enter.application;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
+import com.flab.quicktogether.project.event.Events;
 import com.flab.quicktogether.project.support.enter.domain.Enter;
 import com.flab.quicktogether.project.domain.Project;
+import com.flab.quicktogether.project.support.enter.event.ProjectEnterEvent;
 import com.flab.quicktogether.project.support.enter.exception.DuplicateEnterMemberException;
 import com.flab.quicktogether.project.support.enter.exception.EnterNotFoundException;
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
@@ -43,6 +45,8 @@ public class ProjectEnterService {
 
         Member EnterMember = findMember(enterMemberId);
         enterRepository.save(Enter.enterMember(project, EnterMember));
+
+        Events.raise(new ProjectEnterEvent(projectId, enterMemberId));
     }
 
     private void checkEnteredNot(Long projectId, Long enterMemberId) {
