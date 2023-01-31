@@ -1,6 +1,6 @@
 package com.flab.quicktogether.participant.application.dto;
 
-import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.common.SkillStack;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

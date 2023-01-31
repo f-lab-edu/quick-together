@@ -24,27 +24,16 @@ import java.util.Arrays;
 @Slf4j
 public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-
     private final MessageSource message;
-
-/*    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-        ExceptionResponse exceptionResponse =
-                new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
-
-        return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }*/
 
     @ExceptionHandler(ApplicationException.class)
     public final ResponseEntity<Object> handleApplicationException(ApplicationException ex, WebRequest request) {
-        log.warn(ex.fillInStackTrace().getMessage());
+        log.warn(ex.getClass().getSimpleName(), ex.getMessage());
 
-        String message = this.message.getMessage(ex.getERROR_CODE(), null, null);
-        String path = request.getDescription(false);
-        ExceptionResponse exceptionResponse = new ExceptionResponse(message, path);
-        return new ResponseEntity(exceptionResponse, ex.getHTTP_STATUS());
+        String message = this.message.getMessage(ex.getErrorCode(), null, null);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(message, getRequestUrl(request));
+        return new ResponseEntity(exceptionResponse, ex.getHttpStatus());
     }
-
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -53,8 +42,8 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                                   WebRequest request) {
         log.warn(ex.getClass().getSimpleName(), ex.getMessage());
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(request.getDescription(false), ex.getAllErrors());
-
+        String message = this.message.getMessage("MethodArgumentNotValidException", null, null);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(message, getRequestUrl(request), ex.getAllErrors());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -63,7 +52,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                                   HttpHeaders headers,
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
-        log.warn(ex.fillInStackTrace().getMessage());
+        log.warn(ex.getClass().getSimpleName(), ex.getMessage());
 
         String message=ex.getMessage();
 
@@ -75,7 +64,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
             }
         }
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(message,request.getDescription(false));
+        ExceptionResponse exceptionResponse = new ExceptionResponse(message, getRequestUrl(request));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -84,18 +73,20 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                         HttpHeaders headers,
                                                         HttpStatusCode status,
                                                         WebRequest request) {
-        log.warn(ex.fillInStackTrace().getMessage());
-        String message = "'"+ex.getValue()+"' to required type '"+ex.getRequiredType()+"'";
+        log.warn(ex.getClass().getSimpleName(), ex.getMessage());
+        String message = String.format("'%s' to required type '%s'",ex.getValue(),ex.getRequiredType());
 
         if (ex instanceof MethodArgumentTypeMismatchException) {
             MethodArgumentTypeMismatchException castEx  = (MethodArgumentTypeMismatchException) ex;
-            message = "'"+ex.getValue()+"' to required type '"+castEx.getName()+"'";
+            message = String.format("'%s' to required type '%s'",ex.getValue(),castEx.getName());
         }
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(message,request.getDescription(false));
+        ExceptionResponse exceptionResponse = new ExceptionResponse(message, getRequestUrl(request));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
-
-
+    private static String getRequestUrl(WebRequest request) {
+        String path = request.getDescription(false);
+        return path;
+    }
 }

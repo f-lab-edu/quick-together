@@ -60,7 +60,7 @@ class ProjectControllerTest {
     }
 
     @Test
-    @DisplayName("프로젝트 조회 컨트롤러 테스트")
+    @DisplayName("전체 프로젝트 조회 후 첫번째 프로젝트의 제목과 미팅방법을 출력한다.")
     void selectProject() throws Exception {
 
         //given
@@ -80,7 +80,7 @@ class ProjectControllerTest {
     }
 
     @Test
-    @DisplayName("프로젝트 생성 테스트")
+    @DisplayName("프로젝트 생성 요청 후 created 응답을 받는다.")
     void addProject() throws Exception {
         //given
         String projectName = "에프랩프로젝트"; // 프로젝트 이름
@@ -100,7 +100,7 @@ class ProjectControllerTest {
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
 
     }

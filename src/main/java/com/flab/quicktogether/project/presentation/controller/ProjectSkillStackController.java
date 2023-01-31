@@ -23,7 +23,7 @@ public class ProjectSkillStackController {
      */
     @GetMapping("/projects/{id}/skillstacks")
     public ProjectSkillStackResponse retrieveProjectSkillStacks(@PathVariable("id") Long id) {
-        Project findProject = projectService.retrieveProject(id);
+        Project findProject = projectService.retrieveBasicProject(id);
         return new ProjectSkillStackResponse(id, findProject);
     }
 
@@ -35,7 +35,7 @@ public class ProjectSkillStackController {
                                                 @RequestBody @Valid EditProjectSkillStackRequest editProjectSkillStackRequest) {
 
         projectService.addSkillStack(id, editProjectSkillStackRequest.toServiceDto());
-        Project findProject = projectService.retrieveProject(id);
+        Project findProject = projectService.retrieveBasicProject(id);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.created(location).body(new ProjectSkillStackResponse(id, findProject));
@@ -49,7 +49,7 @@ public class ProjectSkillStackController {
                                                                               @RequestBody @Valid EditProjectSkillStackRequest editProjectSkillStackRequest) {
 
         projectService.removeSkillStack(id, editProjectSkillStackRequest.toServiceDto());
-        Project findProject = projectService.retrieveProject(id);
+        Project findProject = projectService.retrieveBasicProject(id);
 
         return ResponseEntity.ok(new ProjectSkillStackResponse(id, findProject));
     }

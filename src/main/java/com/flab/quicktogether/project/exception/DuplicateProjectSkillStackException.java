@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 
 public class DuplicateProjectSkillStackException extends ApplicationException {
     public DuplicateProjectSkillStackException() {
-        this.ERROR_CODE = "DuplicateProjectSkillStackException";
-        this.HTTP_STATUS = HttpStatus.BAD_REQUEST;
+        super("DuplicateProjectSkillStackException", HttpStatus.BAD_REQUEST);
     }
 }

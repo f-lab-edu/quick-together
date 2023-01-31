@@ -11,9 +11,9 @@ import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.exception.DuplicateParticipantPositionException;
 import com.flab.quicktogether.participant.exception.DuplicateParticipantSkillStackException;
 import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
-import com.flab.quicktogether.globalsetting.domain.Position;
+import com.flab.quicktogether.common.Position;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.common.SkillStack;
 import com.flab.quicktogether.project.exception.*;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
@@ -23,9 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-import static com.flab.quicktogether.globalsetting.domain.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +41,7 @@ public class ParticipantService {
      * 구성원 전체 조회
      */
     public List<Participant> retrieveAllParticipants(Long projectId) {
+        findProject(projectId);
         return participantRepository.findByProjectId(projectId);
     }
 
@@ -59,18 +58,11 @@ public class ParticipantService {
      */
     @Transactional
     public void joinProject(Long projectId, Long memberId) {
-
-        checkProjectParticipation(projectId, memberId);
-
         Project project = findProject(projectId);
+        project.checkJoinProject();
+
         Member member = findMember(memberId);
-        participantRepository.save(Participant.addMember(project, member));
-    }
-
-    private void checkProjectParticipation(Long projectId, Long memberId) {
-        participantRepository.findByProjectIdAndMemberId(projectId, memberId)
-                .ifPresent((t) -> {throw new DuplicateProjectParticipationException();});
-
+        project.getParticipants().addParticipant(project,member);
     }
 
     /**

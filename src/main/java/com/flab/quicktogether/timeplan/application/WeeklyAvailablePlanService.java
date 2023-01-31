@@ -3,7 +3,7 @@ package com.flab.quicktogether.timeplan.application;
 import com.flab.quicktogether.timeplan.domain.weekly_available_plan.AvailablePlan;
 import com.flab.quicktogether.timeplan.domain.weekly_available_plan.WeeklyAvailablePlanRepository;
 import com.flab.quicktogether.timeplan.domain.exception.NoUniqueWeeklyAvailablePlanCreateException;
-import com.flab.quicktogether.timeplan.domain.exception.NotFoundWeeklyAvailablePlan;
+import com.flab.quicktogether.timeplan.domain.exception.NotFoundWeeklyAvailablePlanException;
 import com.flab.quicktogether.timeplan.domain.weekly_available_plan.WeeklyAvailablePlan;
 import com.flab.quicktogether.timeplan.presentation.dto.AvailablePlanCreateRequestDto;
 import com.flab.quicktogether.timeplan.presentation.dto.AvailablePlanGetDto;
@@ -38,7 +38,7 @@ public class WeeklyAvailablePlanService {
                 .toList();
 
         weeklyAvailablePlanRepository.findByMemberId(memberId)
-                .orElseThrow(NotFoundWeeklyAvailablePlan::new)
+                .orElseThrow(NotFoundWeeklyAvailablePlanException::new)
                 .updateAbleRoutines(newAvailablePlan);
     }
 
@@ -46,7 +46,7 @@ public class WeeklyAvailablePlanService {
         ZoneId zoneId = ZoneId.of(localTimeZone);
 
         WeeklyAvailablePlan weeklyAvailablePlan = weeklyAvailablePlanRepository.findByMemberId(loginMemberId)
-                .orElseThrow(NotFoundWeeklyAvailablePlan::new);
+                .orElseThrow(NotFoundWeeklyAvailablePlanException::new);
         return AvailablePlanGetDto.from(weeklyAvailablePlan, zoneId);
     }
 

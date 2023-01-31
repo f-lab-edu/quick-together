@@ -23,7 +23,7 @@ public class ProjectRecruitmentPositionController {
      */
     @GetMapping("/projects/{id}/recruitment/positions")
     public ProjectRecruitmentPositionsResponse retrieveProjectRecruitmentPositions(@PathVariable("id") Long id) {
-        Project findProject = projectService.retrieveProject(id);
+        Project findProject = projectService.retrieveBasicProject(id);
         return new ProjectRecruitmentPositionsResponse(id, findProject);
     }
 
@@ -35,7 +35,7 @@ public class ProjectRecruitmentPositionController {
                                                                                               @RequestBody @Valid EditRecruitmentPositionsRequest editRecruitmentPositionsRequest) {
 
         projectService.addRecruitmentPosition(id, editRecruitmentPositionsRequest.toServiceDto());
-        Project findProject = projectService.retrieveProject(id);
+        Project findProject = projectService.retrieveBasicProject(id);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.created(location).body(new ProjectRecruitmentPositionsResponse(id, findProject));
@@ -50,7 +50,7 @@ public class ProjectRecruitmentPositionController {
                                                                                                  @RequestBody @Valid EditRecruitmentPositionsRequest editRecruitmentPositionsRequest) {
 
         projectService.removeRecruitmentPosition(id, editRecruitmentPositionsRequest.toServiceDto());
-        Project findProject = projectService.retrieveProject(id);
+        Project findProject = projectService.retrieveBasicProject(id);
 
         return ResponseEntity.ok(new ProjectRecruitmentPositionsResponse(id, findProject));
     }
