@@ -1,7 +1,7 @@
 package com.flab.quicktogether.timeplan.domain.plan;
 
-import com.flab.quicktogether.timeplan.domain.exception.ExpiredTimeException;
-import com.flab.quicktogether.timeplan.domain.exception.IllegalEventStateException;
+import com.flab.quicktogether.timeplan.domain.exception.ExpiredRangeException;
+import com.flab.quicktogether.timeplan.domain.exception.IllegalPlanStateException;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -68,7 +68,7 @@ public class Plan implements Comparable<Plan> {
 
     private void verifyModifiable() {
         if (this.planStatus.equals(PlanStatus.DELETED)) {
-            throw new IllegalEventStateException();
+            throw new IllegalPlanStateException();
         }
     }
 
@@ -82,7 +82,7 @@ public class Plan implements Comparable<Plan> {
     private static void verifyNotExpire(TimeBlock timeBlock) {
         boolean isExpired = timeBlock.getEndDateTime().compareTo(LocalDateTime.now()) <= 0;
         if (isExpired) {
-            throw new ExpiredTimeException();
+            throw new ExpiredRangeException();
         }
     }
 

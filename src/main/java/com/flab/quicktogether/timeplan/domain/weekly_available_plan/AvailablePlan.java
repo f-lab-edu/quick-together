@@ -1,6 +1,6 @@
 package com.flab.quicktogether.timeplan.domain.weekly_available_plan;
 
-import com.flab.quicktogether.timeplan.domain.exception.ExpiredTimeException;
+import com.flab.quicktogether.timeplan.domain.exception.ExpiredRangeException;
 import com.flab.quicktogether.timeplan.domain.value_type.Range;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import com.flab.quicktogether.timeplan.domain.value_type.RegularTimeBlock;
@@ -44,7 +44,7 @@ public class AvailablePlan implements Comparable<AvailablePlan> {
     private static void verifyExpiredDate(Range range) {
         LocalDateTime endDateTime = range.getEndDateTime();
         if (endDateTime.compareTo(LocalDateTime.now()) <= 0) {
-            throw new ExpiredTimeException();
+            throw new ExpiredRangeException();
         }
     }
 
