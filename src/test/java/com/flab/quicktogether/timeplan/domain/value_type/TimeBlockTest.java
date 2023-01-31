@@ -8,23 +8,26 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 
+import static com.flab.quicktogether.timeplan.domain.value_type.RegularTimeBlockTest.UTC;
 import static com.flab.quicktogether.timeplan.fixture.TimeBlockFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
 class TimeBlockTest {
 
+    public ZoneId zoneId = ZoneId.of("UTC");
     @Test
-    @DisplayName("종료시간이 시작시간을 앞서거나 같은 경우 생성시 IllegalOrderTimeBlockException을 반환한다.")
+    @DisplayName("종료시간이 시작시간을 앞서거나 같은 경우 생성시 NotNaturalTimeOrderException을 반환한다.")
     void newTimeBlock_ThrowIllegalOrder() throws Exception{
         //given
         LocalDateTime now = NOW_DATE_TIME;
         LocalDateTime beforeDateTime = BEFORE_DATE_TIME;
 
         //when & then
-        Assertions.assertThrows(NotNaturalTimeOrderException.class, () -> new TimeBlock(now, beforeDateTime));
-        Assertions.assertThrows(NotNaturalTimeOrderException.class, () -> new TimeBlock(now, now));
+        Assertions.assertThrows(NotNaturalTimeOrderException.class, () -> TimeBlock.of(now, beforeDateTime));
+        Assertions.assertThrows(NotNaturalTimeOrderException.class, () -> TimeBlock.of(now, now));
     }
 
     @Test
@@ -173,20 +176,41 @@ class TimeBlockTest {
         LocalDateTime startTime2 = LocalDateTime.of(target, LocalTime.parse("20:00"));
         LocalDateTime endTime2 = LocalDateTime.of(target, LocalTime.parse("22:00"));
 
-        TimeBlock block1 = new TimeBlock(startTime1, endTime1);
-        TimeBlock block2 = new TimeBlock(startTime2, endTime2);
+        TimeBlock block1 = TimeBlock.of(startTime1, endTime1);
+        TimeBlock block2 = TimeBlock.of(startTime2, endTime2);
 
 
         LocalDateTime includedStartTime = LocalDateTime.of(target, LocalTime.parse("20:00"));
         LocalDateTime includedEndTime = LocalDateTime.of(target, LocalTime.parse("21:00"));
 
-        TimeBlock includedTimeBlock = new TimeBlock(includedStartTime, includedEndTime);
+        TimeBlock includedTimeBlock = TimeBlock.of(includedStartTime, includedEndTime);
 
         List<TimeBlock> blocks = List.of(block1, block2);
 
         boolean result = includedTimeBlock.isIncludeIn(blocks);
 
         assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("기간을 둔 TimeBlock생성시 기간을 벗어난 부분을 제외한 타임블록을 생성한다.")
+    void inRange() throws Exception{
+        //given
+        LocalDate nowDate = NOW_DATE;
+        LocalDate rangeDate = NOW_DATE.plusDays(1L);
+        Range range = Range.asCommonTime(rangeDate, rangeDate, UTC);
+
+        LocalDateTime beforeOutDateStartTime = LocalDateTime.of(nowDate, LocalTime.parse("11:00"));
+        LocalDateTime afterOutDateEndTime = LocalDateTime.of(NOW_DATE.plusDays(2L), LocalTime.parse("09:00"));
+
+        //when
+        TimeBlock result = TimeBlock.inRange(beforeOutDateStartTime, afterOutDateEndTime, range);
+        LocalDateTime expectedStartDateTime = rangeDate.atStartOfDay();
+        LocalDateTime expectedEndDateTime = expectedStartDateTime.plusDays(1L);
+
+        //then
+        assertThat(result.getStartDateTime()).isEqualTo(expectedStartDateTime);
+        assertThat(result.getEndDateTime()).isEqualTo(expectedEndDateTime);
     }
 
 }
