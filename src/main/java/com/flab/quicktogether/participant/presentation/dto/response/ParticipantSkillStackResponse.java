@@ -1,7 +1,7 @@
 package com.flab.quicktogether.participant.presentation.dto.response;
 
 import com.flab.quicktogether.participant.domain.Participant;
-import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.common.SkillStack;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 

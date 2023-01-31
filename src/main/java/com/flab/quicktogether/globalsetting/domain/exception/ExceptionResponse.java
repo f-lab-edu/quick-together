@@ -11,12 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 public class ExceptionResponse {
 
-    private LocalDateTime timestamp = LocalDateTime.now();
-    private String message;
-    private String path;
+    private final LocalDateTime timestamp = LocalDateTime.now();
+    private final String message;
+    private final String path;
 
     private List<ErrorInfo> errors = new ArrayList<>();
 
@@ -25,7 +24,8 @@ public class ExceptionResponse {
         this.path = path;
     }
 
-    public ExceptionResponse(String path,List<ObjectError> allErrors) {
+    public ExceptionResponse(String message, String path,List<ObjectError> allErrors) {
+        this.message = message;
         this.path = path;
         allErrors.stream()
                 .map(allError -> (FieldError) allError)

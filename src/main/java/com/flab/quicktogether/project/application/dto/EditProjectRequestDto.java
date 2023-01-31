@@ -3,15 +3,14 @@ package com.flab.quicktogether.project.application.dto;
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.ProjectStatus;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EditProjectRequestDto {
 
     private String projectName; // 프로젝트 이름

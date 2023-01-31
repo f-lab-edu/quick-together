@@ -1,7 +1,6 @@
 package com.flab.quicktogether.meeting.domain;
 
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.timeplan.domain.Event;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,6 +19,8 @@ public class Meeting {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
+
+    private String title;
 
     @Lob
     private String description;

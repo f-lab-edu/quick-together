@@ -1,7 +1,7 @@
 package com.flab.quicktogether.project.application;
 
-import com.flab.quicktogether.globalsetting.domain.Position;
-import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.common.Position;
+import com.flab.quicktogether.common.SkillStack;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
@@ -11,8 +11,6 @@ import com.flab.quicktogether.project.application.dto.EditProjectSkillStackReque
 import com.flab.quicktogether.project.application.dto.EditRecruitmentPositionsRequestDto;
 import com.flab.quicktogether.project.domain.*;
 import com.flab.quicktogether.project.exception.*;
-import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
-import com.flab.quicktogether.project.infrastructure.ProjectLikeRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.flab.quicktogether.globalsetting.domain.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,18 +28,14 @@ public class ProjectService {
 
     private final MemberRepository memberRepository;
 
-    private final ParticipantRepository participantRepository;
-
-    private final ProjectLikeRepository projectLikeRepository;
 
 
-    public Project retrieveProject(Long projectId) {
+    public Project retrieveBasicProject(Long projectId) {
         Project project = findProject(projectId);
-        project.settingLikes(projectLikeRepository.countByProjectId(projectId));
         return project;
     }
 
-    public List<Project> retrieveAllProjects() {
+    public List<Project> retrieveAllBasicProjects() {
         return projectRepository.findAll();
     }
 
@@ -52,10 +45,10 @@ public class ProjectService {
         Member member = findMember(createProjectRequestDto.getMemberId());
         Project project = createProjectRequestDto.createProject(member);
 
-        projectRepository.save(project);
-        participantRepository.save(project.registerFounder(member, project));
+        Project savedProject = projectRepository.save(project);
+        project.getParticipants().registerFounder(project,member);
 
-        return project.getId();
+        return savedProject.getId();
     }
 
     @Transactional
@@ -122,7 +115,7 @@ public class ProjectService {
         List<Position> positions = project.getRecruitmentPositions();
         positions.stream()
                 .filter(position -> position.equals(newRecruitmentPosition))
-                .forEach(skillStack -> {
+                .forEach(position -> {
                     throw new DuplicateProjectPositionException();
                 });
 

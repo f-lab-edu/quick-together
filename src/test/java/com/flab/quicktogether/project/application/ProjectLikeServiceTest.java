@@ -4,9 +4,10 @@ import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import com.flab.quicktogether.project.domain.MeetingMethod;
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.project.exception.DuplicateProjectLikeException;
-import com.flab.quicktogether.project.exception.ProjectNoLikeException;
+import com.flab.quicktogether.project.support.like.exception.DuplicateProjectLikeException;
+import com.flab.quicktogether.project.support.like.exception.ProjectNoLikeException;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
+import com.flab.quicktogether.project.support.like.application.ProjectLikeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -68,7 +69,7 @@ class ProjectLikeServiceTest {
 
 
     @Test
-    @DisplayName("좋아요 1 증가")
+    @DisplayName("좋아요를 누를 경우 프로젝트에 좋아요가 1 증가한다.")
     void addProjectLike() {
         Long originalLike = 0L;
         projectLikeService.addProjectLike(project.getId(), member.getId());
@@ -76,7 +77,7 @@ class ProjectLikeServiceTest {
     }
 
     @Test
-    @DisplayName("여러명 좋아요")
+    @DisplayName("2명의 멤버가 한 프로젝트에 좋아요를 눌렀으시 좋아요 개수는 2 증가한다.")
     void addProjectLikes() {
         Long originalLike = 0L;
         projectLikeService.addProjectLike(project.getId(), member.getId());
@@ -85,7 +86,7 @@ class ProjectLikeServiceTest {
     }
 
     @Test
-    @DisplayName("같은 멤버가 같은 프로젝트에 좋아요 두번 할 시 중복 Exception 발생")
+    @DisplayName("같은 멤버가 같은 프로젝트에 좋아요를 두번 할 시 중복 DuplicateProjectLikeException 발생한다.")
     void addProjectLikeException() {
         Assertions.assertThrows(DuplicateProjectLikeException.class, () -> {
             projectLikeService.addProjectLike(project.getId(), member.getId());
@@ -94,7 +95,7 @@ class ProjectLikeServiceTest {
     }
 
     @Test
-    @DisplayName("좋아요 1 감소")
+    @DisplayName("좋아요를 취소할 경우 좋아요 1 감소한다.")
     void cancelProjectLike() {
         Long originalLike = 1L;
         projectLikeService.addProjectLike(project.getId(), member.getId());
@@ -103,7 +104,7 @@ class ProjectLikeServiceTest {
     }
 
     @Test
-    @DisplayName("좋아요를 누르지 않은 프로젝트에 좋아요 취소를 할 경우 Exception 발생")
+    @DisplayName("좋아요를 누르지 않은 프로젝트에 좋아요 취소를 할 경우 ProjectNoLikeException 발생한다.")
     void cancelProjectLikeException() {
         Assertions.assertThrows(ProjectNoLikeException.class, () -> {
             projectLikeService.cancelProjectLike(project.getId(), member.getId());

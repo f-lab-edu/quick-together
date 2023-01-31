@@ -1,11 +1,10 @@
 package com.flab.quicktogether.project.domain;
 
-import com.flab.quicktogether.globalsetting.domain.Position;
-import com.flab.quicktogether.globalsetting.domain.SkillStack;
+import com.flab.quicktogether.common.Position;
+import com.flab.quicktogether.common.SkillStack;
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.participant.domain.Participant;
-import com.flab.quicktogether.participant.domain.ParticipantRole;
-import com.flab.quicktogether.timeplan.domain.etc.MinuteUnit;
+import com.flab.quicktogether.participant.domain.Participants;
+import com.flab.quicktogether.project.exception.JoinProjectException;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,6 +31,9 @@ public class Project {
     private Member founder;
 
     @Embedded
+    private Participants participants = new Participants();
+
+    @Embedded
     private ProjectDescriptionInfo projectDescriptionInfo; // 프로젝트 설명 정보
 
     @Enumerated(EnumType.STRING)
@@ -39,8 +41,6 @@ public class Project {
 
     @Enumerated(EnumType.STRING)
     private MeetingMethod meetingMethod; // 진행방식
-
-    private Long likes = 0L; // 좋아요 수
 
     private Integer views = 0; // 조회 수
 
@@ -62,7 +62,7 @@ public class Project {
     private List<Position> RecruitmentPositions = new ArrayList<>();
 
 
-    @Builder
+    @Builder()
     public Project(String projectName, Member founder, String projectSummary, String projectDescription,
                    MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime) {
 
@@ -81,21 +81,7 @@ public class Project {
         this.periodDateTime = periodDateTime;
 
         this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, projectDescription);
-    }
 
-    public static Project createProject(String projectName, Member founder, String projectSummary, String description,
-                              MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDate){
-        Project project = new Project();
-
-        project.founder = founder;
-        project.projectName = projectName;
-        project.meetingMethod = meetingMethod;
-        project.startDateTime = startDateTime;
-        project.periodDateTime = periodDate;
-
-        project.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, description);
-
-        return project;
     }
 
     public void changeProjectName(String editProjectName){
@@ -130,13 +116,12 @@ public class Project {
         this.projectDescriptionInfo = editProjectDescriptionInfo;
     }
 
-    public void settingLikes(Long likes) {
-        this.likes = likes;
-    }
-
-
-    public Participant registerFounder(Member findMember, Project project) {
-        return new Participant(findMember, project, ParticipantRole.ROLE_ADMIN);
+    public void checkJoinProject(){
+        if(projectStatus.equals(ProjectStatus.OPEN)){
+            //do nothing
+        }else {
+           throw new JoinProjectException();
+        }
     }
 
     public void addSkillStack(SkillStack skillStack) {

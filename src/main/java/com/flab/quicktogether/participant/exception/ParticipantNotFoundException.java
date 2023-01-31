@@ -4,8 +4,8 @@ import com.flab.quicktogether.globalsetting.domain.exception.ApplicationExceptio
 import org.springframework.http.HttpStatus;
 
 public class ParticipantNotFoundException extends ApplicationException {
+
     public ParticipantNotFoundException() {
-        this.ERROR_CODE="ParticipantNotFoundException";
-        this.HTTP_STATUS=HttpStatus.NOT_FOUND;
+        super("ParticipantNotFoundException", HttpStatus.NOT_FOUND);
     }
 }

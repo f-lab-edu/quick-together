@@ -1,7 +1,7 @@
 package com.flab.quicktogether.meeting.presentation;
 
-import com.flab.quicktogether.common.Login;
-import com.flab.quicktogether.meeting.application.MeetingSchedularService;
+import com.flab.quicktogether.common.auth.Login;
+import com.flab.quicktogether.meeting.application.MeetingService;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,13 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MeetingController {
 
-    private final MeetingSchedularService meetingSchedularService;
+    private final MeetingService meetingService;
 
     @RequestMapping(path = "/{projectId}/meetingSchedule", method = RequestMethod.POST)
     public ResponseEntity<List<TimeBlock>> giveAvailableTime(@Login Long loginMemberId,
                                                              @PathVariable Long projectId,
                                                              AvailableTimeRequestDto availableTimeRequestDto) {
-        List<TimeBlock> availableTimes = meetingSchedularService.suggestAvailableTime(loginMemberId,projectId, availableTimeRequestDto);
+        List<TimeBlock> availableTimes = meetingService.suggestAvailableTime(loginMemberId,projectId, availableTimeRequestDto);
 
         return new ResponseEntity<>(availableTimes, HttpStatus.OK);
     }
