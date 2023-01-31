@@ -33,12 +33,20 @@ public class PlanFixture {
         return plan;
     }
 
-    private static TimeBlock newTimeBlockByString(LocalDate target, String startTimeAndEndTime) {
-        String[] split = startTimeAndEndTime.split("~");
-        List<LocalDateTime> localDateTimes = Arrays.stream(split)
-                .map(s -> LocalDateTime.of(target,LocalTime.parse(s)))
-                .toList();
-        return TimeBlock.of(localDateTimes.get(0), localDateTimes.get(1));
+    private static TimeBlock newTimeBlockByString(LocalDate target, String fromTo) {
+        String[] split = fromTo.split("~");
+        LocalTime startTime = LocalTime.parse(split[0]);
+        LocalTime endTime = LocalTime.parse(split[1]);
+
+        LocalDateTime startDateTime = target.atTime(startTime);
+
+        LocalDateTime endDateTime = target.atTime(endTime);
+
+        if (endTime.equals(LocalTime.MIN)) {
+            endDateTime = endDateTime.plusDays(1L);
+        }
+
+        return TimeBlock.of(startDateTime, endDateTime);
     }
 
     private static void setField(Plan plan, String fieldName, Object value) throws NoSuchFieldException, IllegalAccessException {
