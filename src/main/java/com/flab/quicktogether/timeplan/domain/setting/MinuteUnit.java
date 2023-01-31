@@ -1,4 +1,4 @@
-package com.flab.quicktogether.timeplan.domain.etc;
+package com.flab.quicktogether.timeplan.domain.setting;
 
 import lombok.Getter;
 

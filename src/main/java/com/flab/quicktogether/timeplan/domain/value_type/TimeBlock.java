@@ -233,9 +233,13 @@ public class TimeBlock implements Comparable<TimeBlock> {
                 && this.endDateTime.compareTo(target.endDateTime) <= 0;
     }
 
-    public boolean isIncludeIn(List<TimeBlock> target) {
+    public boolean isIncludeIn(List<TimeBlock> target, Integer marginalMinutes) {
+        LocalDateTime marginalStartDateTime = this.startDateTime.minusMinutes(marginalMinutes);
+        LocalDateTime marginalEndDateTime = this.endDateTime.plusMinutes(marginalMinutes);
+
+        TimeBlock marginalTimeBlock = TimeBlock.of(marginalStartDateTime, marginalEndDateTime);
         return target.stream()
-                .anyMatch(this::isIncludeIn);
+                .anyMatch(marginalTimeBlock::isIncludeIn);
     }
 
     private TimeBlock remainBackward(TimeBlock target) {

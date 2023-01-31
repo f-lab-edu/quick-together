@@ -187,7 +187,7 @@ class TimeBlockTest {
 
         List<TimeBlock> blocks = List.of(block1, block2);
 
-        boolean result = includedTimeBlock.isIncludeIn(blocks);
+        boolean result = includedTimeBlock.isIncludeIn(blocks, 0);
 
         assertThat(result).isTrue();
     }
