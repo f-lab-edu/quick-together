@@ -31,7 +31,7 @@ public class ProjectLikeService {
         projectLikeRepository.findByProjectIdAndMemberId(projectId, memberId)
                 .ifPresentOrElse(
                         findLikes -> {
-                            throw new DuplicateProjectLikeException(DUPLICATE_PROJECT_LIKE);
+                            throw new DuplicateProjectLikeException();
                         },
                         () -> {
                             Likes addLikes = new Likes(findProject(projectId), findMember(memberId));
@@ -46,7 +46,7 @@ public class ProjectLikeService {
                 .ifPresentOrElse(
                         findLikes -> projectLikeRepository.delete(findLikes),
                         () -> {
-                            throw new ProjectNoLikeException(NO_LIKE);
+                            throw new ProjectNoLikeException();
                         }
                 );
     }
@@ -59,11 +59,11 @@ public class ProjectLikeService {
 
     private Project findProject(Long projectId) {
         return projectRepository.findById(projectId).orElseThrow(
-                () -> new ProjectNotFoundException(PROJECT_NOT_FOUND));
+                () -> new ProjectNotFoundException());
     }
 
     private Member findMember(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+                () -> new MemberNotFoundException());
     }
 }

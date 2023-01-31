@@ -5,7 +5,7 @@ import com.flab.quicktogether.globalsetting.domain.SkillStack;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.domain.ParticipantRole;
-import com.flab.quicktogether.timeplan.domain.etc.MinuteUnit;
+import com.flab.quicktogether.timeplan.domain.setting.MinuteUnit;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
