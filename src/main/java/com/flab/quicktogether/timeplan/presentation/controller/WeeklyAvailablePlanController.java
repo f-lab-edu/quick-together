@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/available_plan")
+@RequestMapping("/available_plans")
 @RequiredArgsConstructor
 public class WeeklyAvailablePlanController {
 
@@ -36,7 +36,7 @@ public class WeeklyAvailablePlanController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @RequestMapping(path = "/routine", method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity updateAbleRoutine(@Login Long loginMemberId,
                                             @Valid @RequestBody List<AvailablePlanRequestDto> ableRoutinesRequestDtos) {
         availableTimeService.updateAvailablePlan(loginMemberId, ableRoutinesRequestDtos);
