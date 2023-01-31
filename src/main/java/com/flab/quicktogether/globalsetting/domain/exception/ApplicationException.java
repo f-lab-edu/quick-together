@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class ApplicationException extends RuntimeException{
-    protected String ERROR_CODE;
-    protected HttpStatus HTTP_STATUS;
+    protected String errorCode;
+    protected HttpStatus httpStatus;
 
-
+    public ApplicationException(String errorCode, HttpStatus httpStatus) {
+        this.errorCode = errorCode;
+        this.httpStatus = httpStatus;
+    }
 }

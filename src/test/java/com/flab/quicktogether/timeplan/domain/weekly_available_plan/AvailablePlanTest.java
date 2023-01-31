@@ -1,7 +1,6 @@
 package com.flab.quicktogether.timeplan.domain.weekly_available_plan;
 
-import com.flab.quicktogether.timeplan.domain.weekly_available_plan.AvailablePlan;
-import com.flab.quicktogether.timeplan.domain.exception.ExpiredTimeException;
+import com.flab.quicktogether.timeplan.domain.exception.ExpiredRangeException;
 import com.flab.quicktogether.timeplan.domain.value_type.Range;
 import com.flab.quicktogether.timeplan.domain.value_type.RegularTimeBlock;
 import org.junit.jupiter.api.Assertions;
@@ -39,7 +38,7 @@ class AvailablePlanTest {
                 .collect(Collectors.toList());
 
         //when&then
-        Assertions.assertThrows(ExpiredTimeException.class,
+        Assertions.assertThrows(ExpiredRangeException.class,
                 () -> collect.get(0).extractAvailableTime(targetDate));
     }
 }

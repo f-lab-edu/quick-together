@@ -1,7 +1,6 @@
 package com.flab.quicktogether.timeplan.domain.plan;
 
-import com.flab.quicktogether.timeplan.domain.exception.ExpiredTimeException;
-import com.flab.quicktogether.timeplan.domain.plan.Plan;
+import com.flab.quicktogether.timeplan.domain.exception.ExpiredRangeException;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +24,7 @@ public class PlanTest {
         TimeBlock atb = TimeBlock.asCommonTime(startTime, expiredEndTime, UTC);
 
         //when then
-        Assertions.assertThrows(ExpiredTimeException.class, () -> new Plan(1L, "meeting", atb));
+        Assertions.assertThrows(ExpiredRangeException.class, () -> new Plan(1L, "meeting", atb));
 
     }
 
