@@ -11,6 +11,7 @@ import com.flab.quicktogether.project.support.enter.event.ProjectEnterEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +23,7 @@ public class EnterEventHandler {
     private final ParticipantRepository participantRepository;
 
     @EventListener(ProjectEnterEvent.class)
+    @Async
     public void handle(ProjectEnterEvent event) {
 
         Long projectId = event.getProjectId();

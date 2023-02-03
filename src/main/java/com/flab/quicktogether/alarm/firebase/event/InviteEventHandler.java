@@ -8,6 +8,7 @@ import com.flab.quicktogether.project.support.invite.event.ProjectInviteEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,7 @@ public class InviteEventHandler {
     private final FcmTokenRepository fcmTokenRepository;
 
     @EventListener(ProjectInviteEvent.class)
+    @Async
     public void handle(ProjectInviteEvent event) {
 
         Long invitedMemberId = event.getInvitedMemberId();
