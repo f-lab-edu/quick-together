@@ -1,5 +1,6 @@
 package com.flab.quicktogether.alarm.firebase.event;
 
+import com.flab.quicktogether.alarm.firebase.FcmTokenNotFoundException;
 import com.flab.quicktogether.alarm.firebase.NotificationMessageProvider;
 import com.flab.quicktogether.alarm.firebase.FcmService;
 import com.flab.quicktogether.member.infrastructure.FcmTokenRepository;
@@ -20,7 +21,6 @@ public class EnterEventHandler {
     private final FcmTokenRepository fcmTokenRepository;
     private final ParticipantRepository participantRepository;
 
-
     @EventListener(ProjectEnterEvent.class)
     public void handle(ProjectEnterEvent event) {
 
@@ -34,6 +34,9 @@ public class EnterEventHandler {
                 .ifPresentOrElse(fcmToken -> {
                             fcmService.sendAlarm(NotificationMessageProvider.enterMember(fcmToken.getToken()));
                         },
-                        () -> log.info("FCM Token Not FOUND"));
+                        () -> {
+                            log.info("FCM Token Not FOUND");
+                            throw new FcmTokenNotFoundException();
+                        });
     }
 }
