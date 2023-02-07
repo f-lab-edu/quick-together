@@ -1,11 +1,10 @@
 package com.flab.quicktogether.member.application.login;
 
+import com.flab.quicktogether.alarm.service.RedisAlarmTokenService;
 import com.flab.quicktogether.common.SessionConst;
-import com.flab.quicktogether.member.domain.FcmToken;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.exception.BadCredentialsException;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
-import com.flab.quicktogether.member.infrastructure.FcmTokenRepository;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ public class SessionFcmLoginService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final HttpSession httpSession;
-    private final FcmTokenRepository fcmTokenRepository;
+    private final RedisAlarmTokenService redisAlarmTokenService;
 
 
     public Long login(String memberName, String password, String token) {
@@ -32,8 +31,7 @@ public class SessionFcmLoginService {
 
         httpSession.setAttribute(SessionConst.LOGIN_MEMBER, member.getId());
 
-        FcmToken fcmToken = new FcmToken(member.getId(), token);
-        fcmTokenRepository.save(fcmToken);
+        redisAlarmTokenService.saveToken(member.getId(), token);
 
         return member.getId();
     }

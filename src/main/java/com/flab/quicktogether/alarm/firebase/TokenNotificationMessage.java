@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TokenMessageRequest {
+public class TokenNotificationMessage {
 
     private final String Token;
     private final NotificationMessage notificationMessage;

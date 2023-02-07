@@ -1,8 +1,9 @@
-package com.flab.quicktogether.alarm.firebase.event;
+package com.flab.quicktogether.alarm.event;
 
-import com.flab.quicktogether.alarm.firebase.FcmTokenNotFoundException;
+import com.flab.quicktogether.alarm.firebase.AlarmTokenNotFoundException;
 import com.flab.quicktogether.alarm.firebase.NotificationMessageProvider;
-import com.flab.quicktogether.alarm.firebase.FcmService;
+import com.flab.quicktogether.alarm.service.AlarmTokenService;
+import com.flab.quicktogether.alarm.service.FcmAlarmSendService;
 import com.flab.quicktogether.member.infrastructure.FcmTokenRepository;
 import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
@@ -18,8 +19,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class EnterEventHandler {
-    private final FcmService fcmService;
-    private final FcmTokenRepository fcmTokenRepository;
+    private final FcmAlarmSendService fcmService;
+    private final AlarmTokenService alarmTokenService;
     private final ParticipantRepository participantRepository;
 
     @EventListener(ProjectEnterEvent.class)
@@ -31,14 +32,9 @@ public class EnterEventHandler {
         Participant participantAdmin = participantRepository.findAdminByProjectId(projectId)
                 .orElseThrow(ParticipantNotFoundException::new);
 
-        // 프로젝트 어드민이 로그인상태인 경우 알림을 보냄
-        fcmTokenRepository.findByMemberId(participantAdmin.getMember().getId())
-                .ifPresentOrElse(fcmToken -> {
-                            fcmService.sendAlarm(NotificationMessageProvider.enterMember(fcmToken.getToken()));
-                        },
-                        () -> {
-                            log.info("FCM Token Not FOUND");
-                            throw new FcmTokenNotFoundException();
-                        });
+        // 프로젝트 어드민에게 알림을 보냄
+        String token = alarmTokenService.getToken(participantAdmin.getMember().getId());
+        fcmService.sendAlarm(NotificationMessageProvider.enterMember(token));
+
     }
 }
