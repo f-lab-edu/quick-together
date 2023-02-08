@@ -1,10 +1,8 @@
 package com.flab.quicktogether.alarm.event;
 
-import com.flab.quicktogether.alarm.firebase.AlarmTokenNotFoundException;
-import com.flab.quicktogether.alarm.firebase.NotificationMessageProvider;
+import com.flab.quicktogether.alarm.firebase.message.NotificationMessageProvider;
+import com.flab.quicktogether.alarm.service.AlarmSendService;
 import com.flab.quicktogether.alarm.service.AlarmTokenService;
-import com.flab.quicktogether.alarm.service.FcmAlarmSendService;
-import com.flab.quicktogether.member.infrastructure.FcmTokenRepository;
 import com.flab.quicktogether.project.support.invite.event.ProjectInviteEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class InviteEventHandler {
-    private final FcmAlarmSendService fcmService;
+    private final AlarmSendService fcmService;
     private final AlarmTokenService alarmTokenService;
 
     @EventListener(ProjectInviteEvent.class)

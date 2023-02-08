@@ -1,6 +1,7 @@
-package com.flab.quicktogether.alarm.service;
+package com.flab.quicktogether.alarm.firebase;
 
-import com.flab.quicktogether.alarm.firebase.TokenNotificationMessage;
+import com.flab.quicktogether.alarm.firebase.message.TokenNotificationMessage;
+import com.flab.quicktogether.alarm.service.AlarmSendService;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class FcmAlarmSendService {
+public class FcmAlarmSendService implements AlarmSendService<Message> {
 
     public Message createMessageWithToken(TokenNotificationMessage tokenNotificationMessage){
         Message.Builder setNotification = Message.builder()
@@ -23,6 +24,7 @@ public class FcmAlarmSendService {
         return message;
     }
 
+    @Override
     public void sendAlarm(Message message)  {
         try {
             String response = FirebaseMessaging.getInstance().send(message);

@@ -1,13 +1,11 @@
 package com.flab.quicktogether.alarm.service;
 
-import com.flab.quicktogether.alarm.firebase.AlarmTokenNotFoundException;
+import com.flab.quicktogether.alarm.exception.AlarmTokenNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class RedisAlarmTokenServiceTest {

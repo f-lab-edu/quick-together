@@ -1,4 +1,4 @@
-package com.flab.quicktogether.alarm.firebase;
+package com.flab.quicktogether.alarm.firebase.message;
 
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;

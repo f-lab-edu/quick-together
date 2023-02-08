@@ -1,10 +1,8 @@
 package com.flab.quicktogether.alarm.event;
 
-import com.flab.quicktogether.alarm.firebase.AlarmTokenNotFoundException;
-import com.flab.quicktogether.alarm.firebase.NotificationMessageProvider;
+import com.flab.quicktogether.alarm.firebase.message.NotificationMessageProvider;
+import com.flab.quicktogether.alarm.service.AlarmSendService;
 import com.flab.quicktogether.alarm.service.AlarmTokenService;
-import com.flab.quicktogether.alarm.service.FcmAlarmSendService;
-import com.flab.quicktogether.member.infrastructure.FcmTokenRepository;
 import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
@@ -19,7 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class EnterEventHandler {
-    private final FcmAlarmSendService fcmService;
+    private final AlarmSendService fcmService;
     private final AlarmTokenService alarmTokenService;
     private final ParticipantRepository participantRepository;
 

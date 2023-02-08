@@ -1,4 +1,4 @@
-package com.flab.quicktogether.alarm.firebase;
+package com.flab.quicktogether.alarm.exception;
 
 import com.flab.quicktogether.globalsetting.domain.exception.ApplicationException;
 import org.springframework.http.HttpStatus;

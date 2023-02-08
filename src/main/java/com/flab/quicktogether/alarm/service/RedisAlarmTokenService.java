@@ -1,6 +1,6 @@
 package com.flab.quicktogether.alarm.service;
 
-import com.flab.quicktogether.alarm.firebase.AlarmTokenNotFoundException;
+import com.flab.quicktogether.alarm.exception.AlarmTokenNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
