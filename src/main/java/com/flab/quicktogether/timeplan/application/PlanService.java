@@ -9,12 +9,14 @@ import com.flab.quicktogether.timeplan.presentation.dto.PlanUpdateRequestDto;
 import com.flab.quicktogether.timeplan.presentation.dto.PlanCreateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 /**
  * 추후 Calendar API 적용예정으로 현재는 JPA만 지원하는 상태임.
  */
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class PlanService {
@@ -22,6 +24,7 @@ public class PlanService {
     private final PlanJpaRepository planJpaRepository;
     private final Map<String, PlanApiClient> planApiClients;
     private final PlanAPIIntegrationInfoRepository planAPIIntegrationInfoRepository;
+
     public void registerPlan(Long memberId, PlanCreateRequestDto planDto) {
         Plan plan = planDto.toEntity(memberId);
         verifyDuplicated(plan);
