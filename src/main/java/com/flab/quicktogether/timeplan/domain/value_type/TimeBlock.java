@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
@@ -19,26 +21,71 @@ import java.util.*;
 @Embeddable
 @EqualsAndHashCode
 @ToString
-public class TimeBlock {
+public class TimeBlock implements Comparable<TimeBlock> {
     @Column(name = "start_date_time")
     private LocalDateTime startDateTime;
 
     @Column(name = "end_date_time")
     private LocalDateTime endDateTime;
 
+
     protected TimeBlock() {
     }
 
-    public TimeBlock(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        verifyNaturalTimeOrder(startDateTime, endDateTime);
+    protected TimeBlock(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
 
-    private void verifyNaturalTimeOrder(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public static TimeBlock inRange(LocalDateTime startDateTime, LocalDateTime endDateTime, Range range) {
+        if (isApart(range, startDateTime, endDateTime)) return null;
+
+        return new TimeBlock(offsetRange(startDateTime, range), offsetRange(endDateTime, range));
+    }
+
+    public static TimeBlock asCommonTime(LocalDateTime localStartDateTime, LocalDateTime localEndDateTime, ZoneId zoneId) {
+        LocalDateTime utcStartDateTime = offsetUtc(localStartDateTime, zoneId);
+        LocalDateTime utcEndDateTime = offsetUtc(localEndDateTime, zoneId);
+
+        return new TimeBlock(utcStartDateTime, utcEndDateTime);
+    }
+
+    private static boolean isApart(Range range, LocalDateTime utcStartDateTime, LocalDateTime utcEndDateTime) {
+        return utcStartDateTime.compareTo(range.getEndDateTime()) >= 0
+                || utcEndDateTime.compareTo(range.getStartDateTime()) <= 0;
+    }
+
+    private static LocalDateTime offsetUtc(LocalDateTime dateTime, ZoneId zoneId) {
+        ZoneId utc = ZoneId.of("UTC");
+
+        return ZonedDateTime.of(dateTime, zoneId)
+                .withZoneSameInstant(utc)
+                .toLocalDateTime();
+    }
+
+    private static LocalDateTime offsetRange(LocalDateTime target, Range range) {
+        LocalDateTime startRange = range.getStartDateTime();
+        LocalDateTime endRange = range.getEndDateTime();
+
+        if (target.isBefore(startRange)) {
+            return startRange;
+        } else if (target.isAfter(endRange)) {
+            return endRange;
+        }
+        return target;
+    }
+
+
+    private static void verifyNaturalTimeOrder(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         if (startDateTime.isAfter(endDateTime) || startDateTime.equals(endDateTime)) {
             throw new NotNaturalTimeOrderException();
         }
+    }
+
+    public static TimeBlock of(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        verifyNaturalTimeOrder(startDateTime, endDateTime);
+
+        return new TimeBlock(startDateTime, endDateTime);
     }
 
     public List<TimeBlock> trim(TimeBlock target) {
@@ -65,29 +112,6 @@ public class TimeBlock {
         return trimmedBlocks;
 
     }
-//    TODO 간결하게 작성하면 왜 안되는지 확인 필요.
-//        if (this.startDateTime.compareTo(target.startDateTime) >= 0
-//                && this.endDateTime.compareTo(target.endDateTime) <= 0) {
-//        } else if (this.startDateTime.compareTo(target.startDateTime) <= 0
-//                && (this.endDateTime.compareTo(target.startDateTime) > 0 && this.endDateTime.compareTo(target.endDateTime) < 0)) {
-//            TimeBlock timeBlock = new TimeBlock(this.startDateTime, target.startDateTime);
-//            trimmedBlocks.add(timeBlock);
-//
-//        } else if ((this.startDateTime.compareTo(target.startDateTime) > 0 && this.startDateTime.compareTo(target.endDateTime) < 0)
-//                && this.endDateTime.compareTo(target.endDateTime) <= 0) {
-//            TimeBlock timeBlock = new TimeBlock(target.endDateTime, this.endDateTime);
-//            trimmedBlocks.add(timeBlock);
-//
-//        } else if (this.startDateTime.compareTo(target.startDateTime) < 0 && this.endDateTime.compareTo(target.endDateTime) > 0) {
-//            TimeBlock timeBlock = new TimeBlock(this.startDateTime, target.startDateTime);
-//            TimeBlock addedTimeBlock = new TimeBlock(target.endDateTime, this.endDateTime);
-//            trimmedBlocks.addAll(List.of(timeBlock, addedTimeBlock));
-//        } else {
-//            trimmedBlocks.add(this);
-//        }
-//        return trimmedBlocks;
-//    }
-
 
     public List<TimeBlock> trim(List<TimeBlock> targets) {
         List<TimeBlock> eachTrimmedTimBlock = targets.stream()
@@ -99,7 +123,60 @@ public class TimeBlock {
         return eachTrimmedTimBlock;
     }
 
+    public static List<TimeBlock> glue(List<TimeBlock> convertTimeBlock) {
+        List<LocalDateTime> timeLine = new ArrayList<>();
 
+        Iterator<TimeBlock> timeBlockIterator = convertTimeBlock.stream().iterator();
+
+        TimeBlock cur = timeBlockIterator.next();
+        LocalDateTime curStartDateTime = cur.getStartDateTime();
+        LocalDateTime curEndDateTime = cur.getEndDateTime();
+
+        timeLine.add(curStartDateTime);
+        timeLine.add(curEndDateTime);
+        while (timeBlockIterator.hasNext()) {
+            curEndDateTime = cur.getEndDateTime();
+
+            TimeBlock next = timeBlockIterator.next();
+            LocalDateTime nextStartDateTime = next.getStartDateTime();
+            LocalDateTime nextEndDateTime = next.getEndDateTime();
+
+            if (curEndDateTime.compareTo(nextStartDateTime) < 0) {
+                timeLine.add(nextStartDateTime);
+            } else {
+                timeLine.remove(curEndDateTime);
+            }
+            timeLine.add(nextEndDateTime);
+            cur = next;
+        }
+
+
+        List<TimeBlock> result = new ArrayList<>();
+        Iterator<LocalDateTime> timeLineIterator = timeLine.iterator();
+        LocalDateTime curTime = timeLineIterator.next();
+        while (timeLineIterator.hasNext()) {
+            LocalDateTime next = timeLineIterator.next();
+            result.add(TimeBlock.of(curTime, next));
+
+            if (timeLineIterator.hasNext()) {
+                curTime = timeLineIterator.next();
+            }
+        }
+        return result;
+    }
+
+    public TimeBlock offsetLocalTimeZone(ZoneId localTimeZone) {
+        ZoneId utc = ZoneId.of("UTC");
+        LocalDateTime startDateTime = offsetTimeZone(this.startDateTime, utc, localTimeZone);
+        LocalDateTime endDateTime = offsetTimeZone(this.endDateTime, utc, localTimeZone);
+        return TimeBlock.of(startDateTime, endDateTime);
+    }
+
+    private LocalDateTime offsetTimeZone(LocalDateTime dateTime, ZoneId asIs, ZoneId toBe) {
+        return ZonedDateTime.of(dateTime, asIs)
+                .withZoneSameInstant(toBe)
+                .toLocalDateTime();
+    }
 
     /**
      * 포함여부는 Overlap과 의미적으로 겹치는 부분이 존재하여 아래사항에서는 포함여부에서 제외
@@ -133,8 +210,8 @@ public class TimeBlock {
 
     private boolean isOverlappedBackwardBy(TimeBlock target) {
         return this.startDateTime.isBefore(target.startDateTime)
-        && this.endDateTime.isBefore(target.endDateTime)
-        && this.endDateTime.isAfter(target.startDateTime);
+                && this.endDateTime.isBefore(target.endDateTime)
+                && this.endDateTime.isAfter(target.startDateTime);
     }
 
     private boolean isApart(TimeBlock target) {
@@ -148,15 +225,22 @@ public class TimeBlock {
     }
 
     public boolean isIncludeIn(TimeBlock target) {
+        if (target == null) {
+            return false;
+        }
+
         return this.startDateTime.compareTo(target.startDateTime) >= 0
                 && this.endDateTime.compareTo(target.endDateTime) <= 0;
     }
 
-    public boolean isIncludeIn(List<TimeBlock> target) {
-        return target.stream()
-                .anyMatch(this::isIncludeIn);
-    }
+    public boolean isIncludeIn(List<TimeBlock> target, Integer marginalMinutes) {
+        LocalDateTime marginalStartDateTime = this.startDateTime.minusMinutes(marginalMinutes);
+        LocalDateTime marginalEndDateTime = this.endDateTime.plusMinutes(marginalMinutes);
 
+        TimeBlock marginalTimeBlock = TimeBlock.of(marginalStartDateTime, marginalEndDateTime);
+        return target.stream()
+                .anyMatch(marginalTimeBlock::isIncludeIn);
+    }
 
     private TimeBlock remainBackward(TimeBlock target) {
         return new TimeBlock(target.endDateTime, this.endDateTime);
@@ -172,6 +256,7 @@ public class TimeBlock {
         return List.of(timeBlock1, timeBlock2);
     }
 
+    @Override
     public int compareTo(TimeBlock o) {
         int compare = this.startDateTime.compareTo(o.startDateTime);
         if (compare == 0) {
@@ -189,7 +274,7 @@ public class TimeBlock {
             return new TimeBlock(this.startDateTime, this.endDateTime);
         } else if (this.startDateTime.compareTo(target.startDateTime) <= 0
                 && (this.endDateTime.compareTo(target.startDateTime) > 0
-                    && this.endDateTime.compareTo(target.endDateTime) < 0)) {
+                && this.endDateTime.compareTo(target.endDateTime) < 0)) {
             return new TimeBlock(target.startDateTime, this.endDateTime);
         } else if ((this.startDateTime.compareTo(target.startDateTime) > 0
                 && this.startDateTime.compareTo(target.endDateTime) < 0)
