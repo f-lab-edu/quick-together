@@ -1,6 +1,6 @@
 package com.flab.quicktogether.alarm.event;
 
-import com.flab.quicktogether.alarm.message.NotificationContentProvider;
+import com.flab.quicktogether.alarm.message.AlarmMessage;
 import com.flab.quicktogether.alarm.service.AlarmSendService;
 import com.flab.quicktogether.alarm.service.AlarmTokenService;
 import com.flab.quicktogether.project.support.invite.event.ProjectInviteEvent;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class InviteEventHandler {
     private final AlarmSendService alarmSendService;
     private final AlarmTokenService alarmTokenService;
-    private final NotificationContentProvider notificationContentProvider;
+    private final AlarmMessage inviteAlarmMessage;
 
     @EventListener(ProjectInviteEvent.class)
     @Async
@@ -26,7 +26,7 @@ public class InviteEventHandler {
 
         // 초대되어진 멤버에게 알림을 보냄
         String token = alarmTokenService.getToken(invitedMemberId);
-        alarmSendService.sendAlarm(token, notificationContentProvider.inviteMember());
+        alarmSendService.sendAlarm(token,inviteAlarmMessage);
 
     }
 }

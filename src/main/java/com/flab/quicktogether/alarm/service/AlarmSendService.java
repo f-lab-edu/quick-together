@@ -1,7 +1,9 @@
 package com.flab.quicktogether.alarm.service;
 
-public interface AlarmSendService<M> {
+import com.flab.quicktogether.alarm.message.AlarmMessage;
 
-    public void sendAlarm(String token, M message);
+public interface AlarmSendService<T> {
+
+    public void sendAlarm(String token, AlarmMessage<T> message);
 
 }

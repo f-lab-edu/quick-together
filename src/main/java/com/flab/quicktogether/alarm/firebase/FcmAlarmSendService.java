@@ -1,6 +1,7 @@
 package com.flab.quicktogether.alarm.firebase;
 
-import com.flab.quicktogether.alarm.message.NotificationMessage;
+import com.flab.quicktogether.alarm.message.AlarmMessage;
+import com.flab.quicktogether.alarm.message.NotificationSimpleMessage;
 import com.flab.quicktogether.alarm.service.AlarmSendService;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
@@ -8,24 +9,23 @@ import com.google.firebase.messaging.Notification;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class FcmAlarmSendService implements AlarmSendService<NotificationMessage> {
+public class FcmAlarmSendService implements AlarmSendService<NotificationSimpleMessage>{
 
 
-    private Message createMessageWithToken(String token, NotificationMessage notificationMessage) {
+    private Message createMessageWithToken(String token, NotificationSimpleMessage notificationSimpleMessage) {
         Message.Builder setNotification = Message.builder()
                 .setNotification(
                         Notification.builder()
-                                .setTitle(notificationMessage.getTitle())
-                                .setBody(notificationMessage.getBody())
+                                .setTitle(notificationSimpleMessage.getTitle())
+                                .setBody(notificationSimpleMessage.getBody())
                                 .build());
 
-        Message message = setNotification.setToken(token).build();
-        return message;
+        return setNotification.setToken(token).build();
     }
 
     @Override
-    public void sendAlarm(String token, NotificationMessage notificationMessage)  {
-        Message message = createMessageWithToken(token, notificationMessage);
+    public void sendAlarm(String token, AlarmMessage<NotificationSimpleMessage> alarmMessage)  {
+        Message message = createMessageWithToken(token, alarmMessage.createMessage());
 
         try {
             String response = FirebaseMessaging.getInstance().send(message);
@@ -36,5 +36,6 @@ public class FcmAlarmSendService implements AlarmSendService<NotificationMessage
         }
 
     }
+
 
 }

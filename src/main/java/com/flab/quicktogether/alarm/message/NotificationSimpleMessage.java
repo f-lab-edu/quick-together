@@ -5,12 +5,12 @@ import lombok.Getter;
 
 
 @Getter
-public class NotificationMessage {
-    private String title;
-    private String body;
+public class NotificationSimpleMessage {
+    private final String title;
+    private final String body;
 
     @Builder
-    public NotificationMessage(String title, String body) {
+    public NotificationSimpleMessage(String title, String body) {
         this.title = title;
         this.body = body;
     }
