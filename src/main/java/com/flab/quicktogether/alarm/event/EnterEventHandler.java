@@ -1,6 +1,6 @@
 package com.flab.quicktogether.alarm.event;
 
-import com.flab.quicktogether.alarm.firebase.message.NotificationMessageProvider;
+import com.flab.quicktogether.alarm.message.NotificationContentProvider;
 import com.flab.quicktogether.alarm.service.AlarmSendService;
 import com.flab.quicktogether.alarm.service.AlarmTokenService;
 import com.flab.quicktogether.participant.domain.Participant;
@@ -17,9 +17,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class EnterEventHandler {
-    private final AlarmSendService fcmService;
+    private final AlarmSendService alarmSendService;
     private final AlarmTokenService alarmTokenService;
     private final ParticipantRepository participantRepository;
+    private final NotificationContentProvider notificationContentProvider;
 
     @EventListener(ProjectEnterEvent.class)
     @Async
@@ -32,7 +33,7 @@ public class EnterEventHandler {
 
         // 프로젝트 어드민에게 알림을 보냄
         String token = alarmTokenService.getToken(participantAdmin.getMember().getId());
-        fcmService.sendAlarm(NotificationMessageProvider.enterMember(token));
+        alarmSendService.sendAlarm(token, notificationContentProvider.enterMember());
 
     }
 }

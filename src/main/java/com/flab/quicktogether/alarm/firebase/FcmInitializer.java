@@ -14,7 +14,7 @@ import java.io.InputStream;
 
 @Slf4j
 @Component
-public class FCMInitializer {
+public class FcmInitializer {
 
     @Value("${fcm.certification}")
     private String googleApplicationCredentials;

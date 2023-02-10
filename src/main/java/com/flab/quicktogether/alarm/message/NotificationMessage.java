@@ -1,4 +1,4 @@
-package com.flab.quicktogether.alarm.firebase.message;
+package com.flab.quicktogether.alarm.message;
 
 import lombok.Builder;
 import lombok.Getter;
