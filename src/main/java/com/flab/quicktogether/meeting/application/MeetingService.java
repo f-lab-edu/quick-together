@@ -3,6 +3,7 @@ package com.flab.quicktogether.meeting.application;
 import com.flab.quicktogether.meeting.domain.Meeting;
 import com.flab.quicktogether.meeting.domain.MeetingRepository;
 import com.flab.quicktogether.meeting.domain.exception.MeetingNotFoundException;
+import com.flab.quicktogether.meeting.presentation.MeetingResponseDto;
 import com.flab.quicktogether.meeting.presentation.dto.MeetingRequestDto;
 import com.flab.quicktogether.meeting.domain.MeetingInfo;
 import com.flab.quicktogether.project.domain.Project;
@@ -46,7 +47,22 @@ public class MeetingService {
         this.postRepository = postRepository;
     }
 
-    public void regist(Long memberId, Long projectId, MeetingRequestDto meetingRequestDto) {
+    @Transactional(readOnly = true)
+    public List<MeetingResponseDto> getMeetingForApproval(Long loginMemberId, Long projectId, String timezone) {
+        Project project = findProject(projectId);
+        project.getParticipants()
+                .checkAdminAuth(loginMemberId);
+
+        List<Meeting> meetingWaitingForAccepting = meetingRepository
+                                                    .findMeetingsByMeetingStatusIsRequested();
+        verifyExisting(meetingWaitingForAccepting);
+
+        return meetingWaitingForAccepting.stream()
+                .map(meeting -> MeetingResponseDto.from(meeting, timezone))
+                .toList();
+    }
+
+    public Long regist(Long memberId, Long projectId, MeetingRequestDto meetingRequestDto) {
 
         Project project = findProject(projectId);
 
@@ -73,7 +89,7 @@ public class MeetingService {
 
         //알람 발행
         //AlarmApi 아직 없음.
-
+        return meeting.getId();
     }
 
     public void requestRegistration(Long memberId, Long projectId, MeetingRequestDto meetingRequestDto) {
@@ -176,7 +192,7 @@ public class MeetingService {
 
     }
 
-    public void requestDeletion(Long loginMemberId, Long meetingId) {
+    public void requestCancelation(Long loginMemberId, Long meetingId) {
         Meeting meeting = findMeeting(meetingId);
         meeting.proposeDeletion(loginMemberId);
 
@@ -191,5 +207,18 @@ public class MeetingService {
     private Project findProject(Long projectId) {
         return projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
+    }
+
+    private void verifyExisting(List<Meeting> meetingWaitingForAccepting) {
+        if (meetingWaitingForAccepting.isEmpty()) {
+            throw new MeetingNotFoundException();
+        }
+    }
+
+    public MeetingResponseDto getMeeting(Long loginMemberId, Long meetingId, String timezone) {
+        Meeting meeting = findMeeting(meetingId);
+        meeting.checkParticipant(loginMemberId);
+
+        return MeetingResponseDto.from(meeting, timezone);
     }
 }
