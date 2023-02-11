@@ -4,36 +4,48 @@ import com.flab.quicktogether.meeting.domain.Meeting;
 import com.flab.quicktogether.meeting.domain.MeetingRepository;
 import com.flab.quicktogether.meeting.domain.exception.MeetingNotFoundException;
 import com.flab.quicktogether.meeting.presentation.dto.MeetingRequestDto;
-import com.flab.quicktogether.meeting.presentation.dto.MeetingInfo;
+import com.flab.quicktogether.meeting.domain.MeetingInfo;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
-import com.flab.quicktogether.project.support.post.application.ProjectPostService;
+import com.flab.quicktogether.project.support.post.domain.Post;
+import com.flab.quicktogether.project.support.post.infrastructure.PostRepository;
 import com.flab.quicktogether.timeplan.application.ScheduleService;
 import com.flab.quicktogether.timeplan.domain.plan.Plan;
 import com.flab.quicktogether.timeplan.domain.plan.PlanJpaRepository;
-import lombok.RequiredArgsConstructor;
+import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class MeetingService {
 
 
     private final ProjectRepository projectRepository;
-
     private final MeetingRepository meetingRepository;
     private final ScheduleService scheduleService;
     private final PlanJpaRepository planJpaRepository;
+    private final PostRepository postRepository;
 
-    private final ProjectPostService projectPostService;
+    @Autowired
+    public MeetingService(ProjectRepository projectRepository,
+                          MeetingRepository meetingRepository,
+                          ScheduleService scheduleService,
+                          PlanJpaRepository planJpaRepository,
+                          PostRepository postRepository) {
+        this.projectRepository = projectRepository;
+        this.meetingRepository = meetingRepository;
+        this.scheduleService = scheduleService;
+        this.planJpaRepository = planJpaRepository;
+        this.postRepository = postRepository;
+    }
 
-    @Transactional
     public void regist(Long memberId, Long projectId, MeetingRequestDto meetingRequestDto) {
 
         Project project = findProject(projectId);
@@ -56,15 +68,14 @@ public class MeetingService {
         planJpaRepository.saveAll(plans);
 
         //Post 등록
-        //Post post = meeting.createPost();
+        Post post = meeting.createPost();
+        postRepository.save(post);
 
         //알람 발행
         //AlarmApi 아직 없음.
 
-
     }
 
-    @Transactional
     public void requestRegistration(Long memberId, Long projectId, MeetingRequestDto meetingRequestDto) {
         Project project = findProject(projectId);
 
@@ -76,32 +87,99 @@ public class MeetingService {
 
         //미팅 저장
         meetingRepository.save(meeting);
+
+        //Post 등록
+        Post post = meeting.createPost();
+        postRepository.save(post);
+
     }
 
-    @Transactional
-    public void approve(Long memberId, Long meetingId) {
+    public void accept(Long memberId, Long meetingId) {
         Meeting meeting = findMeeting(meetingId);
 
-        meeting.approve(memberId);
+        meeting.acceptCreation(memberId);
 
         List<Plan> plans = meeting.createPlans();
         planJpaRepository.saveAll(plans);
 
-        //Post 등록
-        //Post post = meeting.createPost();
+//        Post 등록
+        Post post = meeting.createPost();
+        postRepository.save(post);
 
         //알람 발행
         //AlarmApi 아직 없음.
 
+    }
 
+    public void deny(Long memberId, Long meetingId) {
+        Meeting meeting = findMeeting(meetingId);
+        meeting.denyCreation(memberId);
+
+//        Post 등록
+        Post post = meeting.createPost();
+        postRepository.save(post);
+
+        //알람 발행
+        //AlarmApi 아직 없음.
     }
 
     public void modify(Long loginMemberId, Long meetingId, MeetingRequestDto meetingRequestDto) {
         Meeting meeting = findMeeting(meetingId);
-
         MeetingInfo meetingInfo = meetingRequestDto.toMeetingInfo();
 
-        meeting.update(meetingId, meetingInfo, scheduleService);
+        TimeBlock timeBlock = meeting.getTimeBlock();
+
+        //meeting과 plan의 연관관계가 없어서 값비교를 통해 간접적으로 가져와서 수정
+        List<Plan> plansMadeByThisMeeting = planJpaRepository
+                .findByPlanNameAndEqualTimePeriod(meeting.getTitle(), timeBlock.getStartDateTime(), timeBlock.getEndDateTime());
+
+        meeting.update(loginMemberId, meetingInfo, plansMadeByThisMeeting, scheduleService);
+
+
+//        List<Plan> plans = meeting.createPlans();
+//        planJpaRepository.saveAll(plans);
+
+        Post post = meeting.createPost();
+        postRepository.save(post);
+
+    }
+
+    public void requestModification(Long loginMemberId, Long meetingId, MeetingRequestDto meetingRequestDto) {
+        Meeting meeting = findMeeting(meetingId);
+        MeetingInfo meetingInfo = meetingRequestDto.toMeetingInfo();
+
+        meeting.proposeModification(loginMemberId, meetingInfo);
+
+        Post post = meeting.createPost();
+        postRepository.save(post);
+
+
+    }
+
+    public void cancel(Long loginMemberId, Long meetingId) {
+        //Meeting 캔슬
+        Meeting meeting = findMeeting(meetingId);
+        meeting.cancel(loginMemberId);
+
+        //Plan 캔슬
+        String title = meeting.getTitle();
+        TimeBlock timeBlock = meeting.getTimeBlock();
+        LocalDateTime from = timeBlock.getStartDateTime();
+        LocalDateTime to = timeBlock.getEndDateTime();
+
+        List<Plan> plansMadeByMeeting = planJpaRepository.findByPlanNameAndEqualTimePeriod(title, from, to);
+        plansMadeByMeeting.forEach(plan-> plan.cancel());
+
+        //Post발행
+        Post post = meeting.createPost();
+        postRepository.save(post);
+
+    }
+
+    public void requestDeletion(Long loginMemberId, Long meetingId) {
+        Meeting meeting = findMeeting(meetingId);
+        meeting.proposeDeletion(loginMemberId);
+
     }
 
     private Meeting findMeeting(Long meetingId) {
@@ -113,16 +191,5 @@ public class MeetingService {
     private Project findProject(Long projectId) {
         return projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
-    }
-
-    public void requestModification() {
-    }
-
-    public void delete() {
-
-    }
-
-    public void requestDelete() {
-
     }
 }

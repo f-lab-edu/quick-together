@@ -1,6 +1,5 @@
 package com.flab.quicktogether.meeting.domain;
 
-import com.flab.quicktogether.participant.domain.Participants;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.timeplan.application.ScheduleService;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
@@ -20,10 +19,13 @@ public class MeetingBuilder {
 
     private MeetingStatus meetingStatus;
 
-    public MeetingBuilder(Long memberId, Project project, MeetingStatus meetingStatus) {
+    private MeetingPostMethod meetingPostMethod;
+
+    public MeetingBuilder(Long memberId, Project project, MeetingStatus meetingStatus, MeetingPostMethod meetingPostMethod) {
         this.memberId = memberId;
         this.project = project;
         this.meetingStatus = meetingStatus;
+        this.meetingPostMethod = meetingPostMethod;
     }
 
     public MeetingBuilder setMeetingInfo(MeetingInfo meetingInfo) {
@@ -43,7 +45,7 @@ public class MeetingBuilder {
      */
     public Meeting validateAndBuild(ScheduleService scheduleService) {
 
-        Meeting newMeeting = new Meeting(memberId, project,suggestionTime, title, description,  meetingStatus, scheduleService);
+        Meeting newMeeting = new Meeting(memberId, project,suggestionTime, title, description,  meetingStatus, meetingPostMethod, scheduleService);
 
         return newMeeting;
     }

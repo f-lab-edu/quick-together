@@ -1,5 +1,6 @@
 package com.flab.quicktogether.meeting.domain;
 
+import com.flab.quicktogether.meeting.domain.exception.MeetingParticipantNotfoundException;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.participant.domain.ParticipantRole;
 import com.flab.quicktogether.participant.domain.Participants;
@@ -60,8 +61,27 @@ public class MeetingParticipants {
                 .findFirst()
                 .orElseThrow(ParticipantNotFoundException::new);
     }
-
     void ban(Long toBeDeletedParticipantId) {
         this.meetingParticipantList.remove(toBeDeletedParticipantId);
+    }
+
+    void exit(Long memberId) {
+        MeetingParticipant exitMember = findByMemberId(memberId);
+        this.meetingParticipantList.remove(exitMember);
+    }
+
+    private MeetingParticipant findByMemberId(Long memberId) {
+        checkParticipant(memberId);
+        return this.meetingParticipantList.stream()
+                .filter(meetingParticipant -> meetingParticipant.getMember().getId().equals(meetingParticipant))
+                .findFirst()
+                .orElseThrow(ParticipantNotFoundException::new);
+    }
+
+    void checkParticipant(Long memberId) {
+        this.meetingParticipantList.stream()
+                .filter(participant -> participant.getMember().getId().equals(memberId))
+                .findFirst()
+                .orElseThrow(MeetingParticipantNotfoundException::new);
     }
 }

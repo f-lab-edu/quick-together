@@ -1,13 +1,14 @@
 package com.flab.quicktogether.meeting.domain;
 
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import jakarta.persistence.Embeddable;
+import lombok.*;
 
 @Getter
 @EqualsAndHashCode
 @ToString
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MeetingInfo {
     private String title;
 

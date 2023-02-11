@@ -18,21 +18,13 @@ public class MeetingProposal {
     @Column(name = "meeting_proposal_id")
     private Long id;
 
-    private String title;
-
-    @Lob
-    private String description;
-
     @Embedded
-    private TimeBlock timeBlock;
+    private MeetingInfo meetingInfo;
 
     @Enumerated(EnumType.STRING)
     private MeetingProposalStatus status;
 
-    MeetingProposal(String title, String description, TimeBlock timeBlock) {
-        this.title = title;
-        this.description = description;
-        this.timeBlock = timeBlock;
+    MeetingProposal(MeetingInfo meetingInfo) {
         this.status = MeetingProposalStatus.REQUESTED;
     }
 

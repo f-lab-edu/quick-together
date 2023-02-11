@@ -2,7 +2,6 @@ package com.flab.quicktogether.meeting.domain;
 
 import com.flab.quicktogether.meeting.domain.exception.AlreadyApprovedMeetingException;
 import com.flab.quicktogether.meeting.domain.exception.AlreadyDeniedMeetingException;
-import com.flab.quicktogether.meeting.domain.exception.MeetingPostIllegalStateException;
 import com.flab.quicktogether.meeting.domain.exception.MeetingProposalNotFoundException;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.participant.domain.Participant;
@@ -16,10 +15,14 @@ import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 하나의 애그리거트로 크게 잡고 설계한 Entity
+ * participant 관련 기능은 별도의 Entity로 분리하여 관리하는 편이 좀더 유지보수에 용이할것으로 보임 추후 수정예정.
+ */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
@@ -56,7 +59,10 @@ public class Meeting {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MeetingProposal> meetingProposals = new ArrayList<>();
 
-    Meeting(Long memberId, Project project, TimeBlock timeBlock, String title, String description, MeetingStatus meetingStatus, ScheduleService scheduleService) {
+    @Transient
+    private MeetingPostMethod meetingPostMethod;
+
+    Meeting(Long memberId, Project project, TimeBlock timeBlock, String title, String description, MeetingStatus meetingStatus, MeetingPostMethod meetingPostMethod, ScheduleService scheduleService) {
         verifyProjectParticipant(memberId, project);
         assignHost(memberId, project);
         assignParticipants(project.getParticipants());
@@ -67,18 +73,21 @@ public class Meeting {
 
         scheduleService.validToRegist(project, timeBlock);
         this.timeBlock = timeBlock;
+
+        this.meetingPostMethod = meetingPostMethod;
+
     }
 
     public static MeetingBuilder builder(Long memberId, Project project) {
         verifyProjectAdmin(memberId, project);
 
-        return new MeetingBuilder(memberId, project, MeetingStatus.APPROVED);
+        return new MeetingBuilder(memberId, project, MeetingStatus.APPROVED, MeetingPostMethod.CREATE_APPROVAL);
     }
 
     public static MeetingBuilder requestBuilder(Long memberId, Project project) {
         verifyProjectParticipant(memberId, project);
 
-        return new MeetingBuilder(memberId, project, MeetingStatus.REQUESTED);
+        return new MeetingBuilder(memberId, project, MeetingStatus.REQUESTED, MeetingPostMethod.CREATE_REQUESTED);
     }
 
 
@@ -108,23 +117,27 @@ public class Meeting {
         this.meetingParticipants.assignParticipant(member, authority);
     }
 
-    public void approve(Long adminMemberId) {
+    public void acceptCreation(Long adminMemberId) {
         verifyApproval();
         verifyProjectAdmin(adminMemberId, project);
 
         if (this.meetingStatus.equals(MeetingStatus.REQUESTED)) {
-            this.meetingStatus=MeetingStatus.APPROVED;
+            this.meetingStatus = MeetingStatus.APPROVED;
         }
+
+        this.meetingPostMethod = MeetingPostMethod.CREATE_ACCEPTED;
     }
 
-    public void deny(Long adminMemberId) {
+    public void denyCreation(Long adminMemberId) {
         verifyDenial();
         verifyProjectAdmin(adminMemberId, project);
 
         this.meetingStatus=MeetingStatus.DENIED;
+
+        this.meetingPostMethod=MeetingPostMethod.CREATE_DENIAL;
     }
 
-    public void update(Long adminMemberId, MeetingInfo meetingInfo, ScheduleService scheduleService) {
+    public void update(Long adminMemberId, MeetingInfo meetingInfo, List<Plan> plansMadeByMeeting, ScheduleService scheduleService) {
         verifyAdmin(adminMemberId);
 
         String title = meetingInfo.getTitle();
@@ -134,24 +147,70 @@ public class Meeting {
         setTitle(title);
         setDescription(description);
         setTimeBlock(suggestionTime, scheduleService);
+
+        //미팅수정시에 미팅에 의해 만들어진 plan들을 가져와서 맞게 동기화시켜주어야함.
+        plansMadeByMeeting
+                .forEach(plan -> plan.updateEvent(this.title, this.timeBlock));
+
+        this.meetingPostMethod=MeetingPostMethod.UPDATE_APPROVAL;
+
     }
-    public void update(Long adminMemberId, Long meetingProposalId, ScheduleService scheduleService) {
+    public void proposeModification(Long memberId, MeetingInfo meetingInfo) {
+        verifyMeetingParticipant(memberId);
+        this.meetingProposals.add(new MeetingProposal(meetingInfo));
+        this.meetingPostMethod = MeetingPostMethod.UPDATE_REQUESTED;
+    }
+
+    private void update(MeetingInfo meetingInfo, ScheduleService scheduleService) {
+        String title = meetingInfo.getTitle();
+        String description = meetingInfo.getDescription();
+        TimeBlock suggestionTime = meetingInfo.getSuggestionTime();
+        setTitle(title);
+        setDescription(description);
+        setTimeBlock(suggestionTime, scheduleService);
+
+        this.meetingPostMethod = MeetingPostMethod.UPDATE_APPROVAL;
+    }
+
+    public void acceptProposal(Long adminMemberId, Long meetingProposalId, ScheduleService scheduleService) {
         verifyAdmin(adminMemberId);
 
+        MeetingProposal meetingProposal = findProposal(meetingProposalId);
+
+        meetingProposal.approve();
+
+        update(meetingProposal.getMeetingInfo(), scheduleService);
+
+        this.meetingPostMethod = MeetingPostMethod.UPDATE_APPROVAL;
+    }
+
+    private MeetingProposal findProposal(Long meetingProposalId) {
         MeetingProposal meetingProposal = meetingProposals.stream()
                 .filter(proposal -> proposal.getId()
                         .equals(meetingProposalId))
                 .findFirst()
                 .orElseThrow(MeetingProposalNotFoundException::new);
+        return meetingProposal;
+    }
 
-        meetingProposal.approve();
-        String title = meetingProposal.getTitle();
-        String description = meetingProposal.getDescription();
-        TimeBlock suggestionTime = meetingProposal.getTimeBlock();
+    public void denyProposal(Long adminMemberId, Long meetingProposalId, ScheduleService scheduleService) {
+        verifyAdmin(adminMemberId);
 
-        setTitle(title);
-        setDescription(description);
-        setTimeBlock(suggestionTime, scheduleService);
+        MeetingProposal meetingProposal = findProposal(meetingProposalId);
+
+        meetingProposal.deny();
+
+        update(meetingProposal.getMeetingInfo(), scheduleService);
+
+        this.meetingPostMethod = MeetingPostMethod.UPDATE_DENIAL;
+    }
+
+    public void proposeDeletion(Long loginMemberId) {
+        verifyMeetingParticipant(loginMemberId);
+
+    }
+    private void verifyMeetingParticipant(Long memberId) {
+        meetingParticipants.checkParticipant(memberId);
     }
 
     public void promote(Long adminMemberId, Long meetingParticipantId) {
@@ -159,6 +218,8 @@ public class Meeting {
 
         meetingParticipants.find(meetingParticipantId)
                 .promote();
+
+        this.meetingPostMethod = MeetingPostMethod.PARTICIPANT_PROMOTE;
     }
 
     public void demote(Long adminMemberId, Long meetingParticipantId) {
@@ -166,6 +227,8 @@ public class Meeting {
 
         meetingParticipants.find(meetingParticipantId)
                 .demote();
+
+        this.meetingPostMethod = MeetingPostMethod.PARTICIPANT_DEMOTE;
     }
 
     public void ban(Long adminMemberId, Long toBeDeletedParticipantId) {
@@ -173,6 +236,12 @@ public class Meeting {
         verifyAdmin(adminMemberId);
         this.meetingParticipants
                 .ban(toBeDeletedParticipantId);
+
+        this.meetingPostMethod = MeetingPostMethod.PARTICIPANT_BAN;
+    }
+
+    public void exit(Long memberId) {
+        meetingParticipants.exit(memberId);
     }
 
     public List<Plan> createPlans() {
@@ -185,9 +254,8 @@ public class Meeting {
     }
 
     public Post createPost() {
-        String startDateTime = this.timeBlock.getStartDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        String createPostContent = createPostContent(startDateTime);
-
+        LocalDateTime meetingDateTime = this.timeBlock.getStartDateTime();
+        String createPostContent = MeetingPostMethod.CREATE_APPROVAL.createMessage(meetingDateTime, this.title);
         return Post.createPost(this.project,host, createPostContent);
     }
 
@@ -199,37 +267,25 @@ public class Meeting {
         project.getParticipants()
                 .checkAdminAuth(adminMemberId);
     }
-
     private static void verifyProjectParticipant(Long adminMemberId, Project project) {
         project.getParticipants()
                 .checkParticipant(adminMemberId);
     }
+
     private void verifyApproval() {
         if (this.meetingStatus.equals(MeetingStatus.APPROVED)) {
             throw new AlreadyApprovedMeetingException();
         }
     }
-
     private void verifyDenial() {
         if (this.meetingStatus.equals(MeetingStatus.DENIED)) {
             throw new AlreadyDeniedMeetingException();
         }
     }
+
     private void setTimeBlock(TimeBlock timeBlock, ScheduleService scheduleService) {
         scheduleService.validToModify(this.id, project, timeBlock);
         this.timeBlock = timeBlock;
-    }
-
-    private String createPostContent(String startDateTime) {
-        switch (this.meetingStatus) {
-            case APPROVED:
-                return String.format("%s 미팅예정, 미팅주제 : %s", startDateTime, this.title);
-            case REQUESTED:
-                return String.format("%s 미팅제안, 미팅주제 : %s", startDateTime, this.title);
-            default :
-                throw new MeetingPostIllegalStateException();
-        }
-
     }
 
     private void setTitle(String title) {
@@ -239,7 +295,6 @@ public class Meeting {
     private void setDescription(String description) {
         this.description= nullChecked(description);
     }
-
 
     private String nullChecked(String string) {
         if (string == null) {
@@ -255,4 +310,9 @@ public class Meeting {
         return this.title.equals(planName)
                 && this.timeBlock.equals(timeBlock);
     }
+
+    public void cancel(Long adminMemberId) {
+        this.meetingStatus = MeetingStatus.CANCLED;
+    }
+
 }
