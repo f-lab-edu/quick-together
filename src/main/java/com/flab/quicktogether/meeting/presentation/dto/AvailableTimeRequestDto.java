@@ -1,4 +1,4 @@
-package com.flab.quicktogether.meeting.presentation;
+package com.flab.quicktogether.meeting.presentation.dto;
 
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import jakarta.validation.constraints.NotNull;

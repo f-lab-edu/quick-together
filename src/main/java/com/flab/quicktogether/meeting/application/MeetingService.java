@@ -3,7 +3,7 @@ package com.flab.quicktogether.meeting.application;
 import com.flab.quicktogether.meeting.domain.Meeting;
 import com.flab.quicktogether.meeting.domain.MeetingRepository;
 import com.flab.quicktogether.meeting.domain.exception.MeetingNotFoundException;
-import com.flab.quicktogether.meeting.presentation.MeetingResponseDto;
+import com.flab.quicktogether.meeting.presentation.dto.MeetingResponseDto;
 import com.flab.quicktogether.meeting.presentation.dto.MeetingRequestDto;
 import com.flab.quicktogether.meeting.domain.MeetingInfo;
 import com.flab.quicktogether.project.domain.Project;

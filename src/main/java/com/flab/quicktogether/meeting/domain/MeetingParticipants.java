@@ -10,12 +10,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ToString
 @EqualsAndHashCode
-@Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MeetingParticipants {
@@ -24,6 +24,9 @@ public class MeetingParticipants {
     @JoinColumn(name = "meeting_id")
     private List<MeetingParticipant> meetingParticipantList = new ArrayList<>();
 
+    public List<MeetingParticipant> getList() {
+        return Collections.unmodifiableList(meetingParticipantList);
+    }
 
     private MeetingParticipants(List<MeetingParticipant> meetingParticipants) {
         this.meetingParticipantList = meetingParticipants;
@@ -46,7 +49,7 @@ public class MeetingParticipants {
     }
 
     void checkAdmin(Long memberId) {
-        getMeetingParticipantList().stream()
+        meetingParticipantList.stream()
                 .filter(participant -> participant
                         .getParticipantRole().equals(ParticipantRole.ROLE_ADMIN))
                 .filter(admin -> admin.getMember()
