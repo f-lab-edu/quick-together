@@ -1,6 +1,5 @@
 package com.flab.quicktogether.timeplan.domain.planner;
 
-import com.flab.quicktogether.timeplan.domain.exception.NotAvailablePlanException;
 import com.flab.quicktogether.timeplan.domain.weekly_available_plan.WeeklyAvailablePlan;
 import com.flab.quicktogether.timeplan.domain.exception.NotMatchableTimeException;
 import com.flab.quicktogether.timeplan.domain.plan.Plan;
@@ -37,13 +36,13 @@ public class Planner {
 
     }
 
-    public void verify(SuggestionTime suggestionTimeBlock, List<WeeklyAvailablePlan> weeklyAvailablePlans, List<Plan> plans) {
-        Range range = Range.of(suggestionTimeBlock);
+    public void verify(TimeBlock suggestionTime, List<WeeklyAvailablePlan> weeklyAvailablePlans, List<Plan> plans) {
+        Range range = Range.of(suggestionTime);
 
         List<TimeBlock> commonSchedule = getCommonSchedule(range, weeklyAvailablePlans, plans);
 
-        if (!isAvailable(suggestionTimeBlock, commonSchedule)) {
-            throw new NotAvailablePlanException();
+        if (!isAvailable(suggestionTime, commonSchedule)) {
+            throw new NotMatchableTimeException();
         }
     }
 
@@ -77,6 +76,7 @@ public class Planner {
         Range range = roughlyPlan.getRange();
         return getCommonSchedule(range, weeklyAvailablePlans, plans);
     }
+
     private List<TimeBlock> getCommonSchedule(Range range, List<WeeklyAvailablePlan> weeklyAvailablePlans, List<Plan> plans) {
         List<TimeBlock> allOverlapAvailableSchedule = extractAllOverlapAvailableSchedule(weeklyAvailablePlans, range);
         return trim(allOverlapAvailableSchedule, plans);

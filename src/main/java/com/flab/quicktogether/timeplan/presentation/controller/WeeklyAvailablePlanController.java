@@ -1,6 +1,6 @@
 package com.flab.quicktogether.timeplan.presentation.controller;
 
-import com.flab.quicktogether.common.Login;
+import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.timeplan.application.WeeklyAvailablePlanService;
 import com.flab.quicktogether.timeplan.presentation.dto.AvailablePlanCreateRequestDto;
 import com.flab.quicktogether.timeplan.presentation.dto.AvailablePlanGetDto;

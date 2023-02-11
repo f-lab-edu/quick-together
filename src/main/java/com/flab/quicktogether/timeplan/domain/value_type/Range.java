@@ -1,7 +1,6 @@
 package com.flab.quicktogether.timeplan.domain.value_type;
 
 import com.flab.quicktogether.timeplan.domain.exception.NotNaturalTimeOrderException;
-import com.flab.quicktogether.timeplan.domain.planner.SuggestionTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -48,7 +47,7 @@ public final class Range {
         return asCommonTime(startDate, endDate, utc);
     }
 
-    public static Range of(SuggestionTime suggestionTime) {
+    public static Range of(TimeBlock suggestionTime) {
         LocalDateTime from = suggestionTime.getStartDateTime();
         LocalDateTime to = suggestionTime.getEndDateTime();
         return new Range(from, to);
