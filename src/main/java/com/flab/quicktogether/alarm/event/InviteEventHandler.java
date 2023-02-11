@@ -32,8 +32,7 @@ public class InviteEventHandler {
 
         // 초대되어진 멤버에게 알림을 보냄
         String token = alarmTokenService.getToken(invitedMemberId);
-        Message message = alarmMessageService.createMessage(token, inviteAlarmMessage);
-        alarmSendService.sendAlarm(token, message);
+        alarmSendService.sendAlarm(token, alarmMessageService.createMessage(token, inviteAlarmMessage));
 
     }
 }
