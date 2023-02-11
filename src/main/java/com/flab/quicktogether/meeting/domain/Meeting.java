@@ -2,17 +2,22 @@ package com.flab.quicktogether.meeting.domain;
 
 import com.flab.quicktogether.meeting.domain.exception.AlreadyApprovedMeetingException;
 import com.flab.quicktogether.meeting.domain.exception.AlreadyDeniedMeetingException;
-import com.flab.quicktogether.meeting.presentation.dto.MeetingInfo;
+import com.flab.quicktogether.meeting.domain.exception.MeetingPostIllegalStateException;
+import com.flab.quicktogether.meeting.domain.exception.MeetingProposalNotFoundException;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.participant.domain.Participant;
+import com.flab.quicktogether.participant.domain.ParticipantRole;
 import com.flab.quicktogether.participant.domain.Participants;
 import com.flab.quicktogether.project.domain.Project;
+import com.flab.quicktogether.project.support.post.domain.Post;
 import com.flab.quicktogether.timeplan.application.ScheduleService;
 import com.flab.quicktogether.timeplan.domain.plan.Plan;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -48,26 +53,20 @@ public class Meeting {
     @Enumerated(EnumType.STRING)
     private MeetingStatus meetingStatus;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MeetingProposal> meetingProposals = new ArrayList<>();
+
     Meeting(Long memberId, Project project, TimeBlock timeBlock, String title, String description, MeetingStatus meetingStatus, ScheduleService scheduleService) {
         verifyProjectParticipant(memberId, project);
         assignHost(memberId, project);
         assignParticipants(project.getParticipants());
-        scheduleService.validToRegist(project, timeBlock);
-
         this.project = project;
-        this.timeBlock = timeBlock;
-        this.title = title;
-        this.description = description;
         this.meetingStatus = meetingStatus;
-    }
+        setTitle(title);
+        setDescription(description);
 
-
-
-    private void assignHost(Long memberId, Project project) {
-        this.host = project
-                .getParticipants()
-                .findParticipant(memberId)
-                .getMember();
+        scheduleService.validToRegist(project, timeBlock);
+        this.timeBlock = timeBlock;
     }
 
     public static MeetingBuilder builder(Long memberId, Project project) {
@@ -83,12 +82,19 @@ public class Meeting {
     }
 
 
+    private void assignHost(Long memberId, Project project) {
+        this.host = project
+                .getParticipants()
+                .findParticipant(memberId)
+                .getMember();
+    }
+
     /**
      * Project Participant를 Meeting에 할당
      * Meeting 생성의 host와 프로젝트의 admin은 모두 Meeting의 admin이 됨.
      * @param participants
      */
-    public void assignParticipants(Participants participants) {
+    private void assignParticipants(Participants participants) {
         List<Participant> participantList = participants.participantsInfo();
         List<MeetingParticipant> meetingParticipants = participantList.stream()
                 .map(participant -> MeetingParticipant.assignProjectParticipant(host, participant))
@@ -97,24 +103,9 @@ public class Meeting {
         this.meetingParticipants.assignParticipants(meetingParticipants);
     }
 
-    public void assignParticipant(MeetingParticipant participant) {
-        this.meetingParticipants.assignParticipant(participant);
-    }
-
-    /**
-     * 프로젝트인원만 미팅에 참여 가능한지 아닌지의 비즈니스로직이 결정되면 위 아래중 하나를 선택하게될듯
-     * @param member
-     */
-    public void assignParticipant(Member member) {
-    }
-
-    public List<Plan> createPlans() {
-        return meetingParticipants.getMeetingParticipantList().stream()
-                .map(participant -> {
-                    Long memberId = participant.getMember().getId();
-                    return new Plan(memberId,title,timeBlock);
-                })
-                .toList();
+    public void joinParticipant(Long adminMemberId, Member member, ParticipantRole authority) {
+        verifyAdmin(adminMemberId);
+        this.meetingParticipants.assignParticipant(member, authority);
     }
 
     public void approve(Long adminMemberId) {
@@ -133,12 +124,30 @@ public class Meeting {
         this.meetingStatus=MeetingStatus.DENIED;
     }
 
-    public void update(Long memberId, MeetingInfo meetingInfo, ScheduleService scheduleService) {
-        verifyAdmin(memberId);
+    public void update(Long adminMemberId, MeetingInfo meetingInfo, ScheduleService scheduleService) {
+        verifyAdmin(adminMemberId);
 
         String title = meetingInfo.getTitle();
         String description = meetingInfo.getDescription();
         TimeBlock suggestionTime = meetingInfo.getSuggestionTime();
+
+        setTitle(title);
+        setDescription(description);
+        setTimeBlock(suggestionTime, scheduleService);
+    }
+    public void update(Long adminMemberId, Long meetingProposalId, ScheduleService scheduleService) {
+        verifyAdmin(adminMemberId);
+
+        MeetingProposal meetingProposal = meetingProposals.stream()
+                .filter(proposal -> proposal.getId()
+                        .equals(meetingProposalId))
+                .findFirst()
+                .orElseThrow(MeetingProposalNotFoundException::new);
+
+        meetingProposal.approve();
+        String title = meetingProposal.getTitle();
+        String description = meetingProposal.getDescription();
+        TimeBlock suggestionTime = meetingProposal.getTimeBlock();
 
         setTitle(title);
         setDescription(description);
@@ -166,6 +175,21 @@ public class Meeting {
                 .ban(toBeDeletedParticipantId);
     }
 
+    public List<Plan> createPlans() {
+        return meetingParticipants.getMeetingParticipantList().stream()
+                .map(participant -> {
+                    Long memberId = participant.getMember().getId();
+                    return new Plan(memberId,title,timeBlock);
+                })
+                .toList();
+    }
+
+    public Post createPost() {
+        String startDateTime = this.timeBlock.getStartDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String createPostContent = createPostContent(startDateTime);
+
+        return Post.createPost(this.project,host, createPostContent);
+    }
 
     private void verifyAdmin(Long memberId) {
         this.meetingParticipants.checkAdmin(memberId);
@@ -175,25 +199,37 @@ public class Meeting {
         project.getParticipants()
                 .checkAdminAuth(adminMemberId);
     }
+
     private static void verifyProjectParticipant(Long adminMemberId, Project project) {
         project.getParticipants()
                 .checkParticipant(adminMemberId);
     }
-
     private void verifyApproval() {
         if (this.meetingStatus.equals(MeetingStatus.APPROVED)) {
             throw new AlreadyApprovedMeetingException();
         }
     }
+
     private void verifyDenial() {
         if (this.meetingStatus.equals(MeetingStatus.DENIED)) {
             throw new AlreadyDeniedMeetingException();
         }
     }
-
     private void setTimeBlock(TimeBlock timeBlock, ScheduleService scheduleService) {
         scheduleService.validToModify(this.id, project, timeBlock);
         this.timeBlock = timeBlock;
+    }
+
+    private String createPostContent(String startDateTime) {
+        switch (this.meetingStatus) {
+            case APPROVED:
+                return String.format("%s 미팅예정, 미팅주제 : %s", startDateTime, this.title);
+            case REQUESTED:
+                return String.format("%s 미팅제안, 미팅주제 : %s", startDateTime, this.title);
+            default :
+                throw new MeetingPostIllegalStateException();
+        }
+
     }
 
     private void setTitle(String title) {

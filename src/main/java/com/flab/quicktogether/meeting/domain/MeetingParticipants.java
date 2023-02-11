@@ -35,7 +35,8 @@ public class MeetingParticipants {
         return new MeetingParticipants(meetingParticipants);
     }
 
-    void assignParticipant(MeetingParticipant meetingParticipant) {
+    void assignParticipant(Member member, ParticipantRole authority) {
+        MeetingParticipant meetingParticipant = new MeetingParticipant(member, authority);
         meetingParticipantList.add(meetingParticipant);
     }
 

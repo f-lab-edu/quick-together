@@ -24,7 +24,7 @@ public class MeetingParticipant {
     @Enumerated(EnumType.STRING)
     private ParticipantRole participantRole;
 
-    public MeetingParticipant(Member member, ParticipantRole participantRole) {
+    MeetingParticipant(Member member, ParticipantRole participantRole) {
         this.member = member;
         this.participantRole = participantRole;
     }

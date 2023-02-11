@@ -1,7 +1,5 @@
 package com.flab.quicktogether.meeting.domain;
 
-import com.flab.quicktogether.meeting.presentation.dto.MeetingInfo;
-import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.participant.domain.Participants;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.timeplan.application.ScheduleService;
@@ -45,11 +43,7 @@ public class MeetingBuilder {
      */
     public Meeting validateAndBuild(ScheduleService scheduleService) {
 
-        Participants participants = this.project.getParticipants();
-
         Meeting newMeeting = new Meeting(memberId, project,suggestionTime, title, description,  meetingStatus, scheduleService);
-
-        newMeeting.assignParticipants(participants);
 
         return newMeeting;
     }
