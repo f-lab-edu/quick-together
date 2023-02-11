@@ -150,7 +150,7 @@ public class Meeting {
 
         //미팅수정시에 미팅에 의해 만들어진 plan들을 가져와서 맞게 동기화시켜주어야함.
         plansMadeByMeeting
-                .forEach(plan -> plan.updateEvent(this.title, this.timeBlock));
+                .forEach(plan -> plan.update(this.title, this.timeBlock));
 
         this.meetingPostMethod=MeetingPostMethod.UPDATE_APPROVAL;
 
@@ -231,11 +231,11 @@ public class Meeting {
         this.meetingPostMethod = MeetingPostMethod.PARTICIPANT_DEMOTE;
     }
 
-    public void ban(Long adminMemberId, Long toBeDeletedParticipantId) {
+    public void ban(Long adminMemberId, Long meetingParticipantId) {
         verifyApproval();
         verifyAdmin(adminMemberId);
         this.meetingParticipants
-                .ban(toBeDeletedParticipantId);
+                .ban(meetingParticipantId);
 
         this.meetingPostMethod = MeetingPostMethod.PARTICIPANT_BAN;
     }
@@ -315,4 +315,7 @@ public class Meeting {
         this.meetingStatus = MeetingStatus.CANCLED;
     }
 
+    public void checkParticipant(Long memberId) {
+        meetingParticipants.checkParticipant(memberId);
+    }
 }
