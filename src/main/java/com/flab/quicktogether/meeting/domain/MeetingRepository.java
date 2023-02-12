@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
-    @Query("select m from Meeting m where m.meetingStatus = 'REQUESTED'")
-    List<Meeting> findMeetingsByMeetingStatusIsRequested();
+    List<Meeting> findMeetingsByProjectIdAndMeetingStatusIsRequested(Long projectId);
 
 }

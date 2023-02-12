@@ -245,7 +245,7 @@ public class Meeting {
     }
 
     public List<Plan> createPlans() {
-        return meetingParticipants.getMeetingParticipantList().stream()
+        return meetingParticipants.getList().stream()
                 .map(participant -> {
                     Long memberId = participant.getMember().getId();
                     return new Plan(memberId,title,timeBlock);
