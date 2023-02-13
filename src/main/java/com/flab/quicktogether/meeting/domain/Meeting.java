@@ -91,25 +91,8 @@ public class Meeting {
     }
 
 
-    private void assignHost(Long memberId, Project project) {
-        this.host = project
-                .getParticipants()
-                .findParticipant(memberId)
-                .getMember();
-    }
-
-    /**
-     * Project Participant를 Meeting에 할당
-     * Meeting 생성의 host와 프로젝트의 admin은 모두 Meeting의 admin이 됨.
-     * @param participants
-     */
-    private void assignParticipants(Participants participants) {
-        List<Participant> participantList = participants.participantsInfo();
-        List<MeetingParticipant> meetingParticipants = participantList.stream()
-                .map(participant -> MeetingParticipant.assignProjectParticipant(host, participant))
-                .toList();
-
-        this.meetingParticipants.assignParticipants(meetingParticipants);
+    public void cancel(Long adminMemberId) {
+        this.meetingStatus = MeetingStatus.CANCLED;
     }
 
     public void joinParticipant(Long adminMemberId, Member member, ParticipantRole authority) {
@@ -155,12 +138,12 @@ public class Meeting {
         this.meetingPostMethod=MeetingPostMethod.UPDATE_APPROVAL;
 
     }
+
     public void proposeModification(Long memberId, MeetingInfo meetingInfo) {
         verifyMeetingParticipant(memberId);
         this.meetingProposals.add(new MeetingProposal(meetingInfo));
         this.meetingPostMethod = MeetingPostMethod.UPDATE_REQUESTED;
     }
-
     private void update(MeetingInfo meetingInfo, ScheduleService scheduleService) {
         String title = meetingInfo.getTitle();
         String description = meetingInfo.getDescription();
@@ -209,9 +192,6 @@ public class Meeting {
         verifyMeetingParticipant(loginMemberId);
 
     }
-    private void verifyMeetingParticipant(Long memberId) {
-        meetingParticipants.checkParticipant(memberId);
-    }
 
     public void promote(Long adminMemberId, Long meetingParticipantId) {
         verifyAdmin(adminMemberId);
@@ -259,24 +239,61 @@ public class Meeting {
         return Post.createPost(this.project,host, createPostContent);
     }
 
+    public boolean equals(Plan plan) {
+        String planName = plan.getPlanName();
+        TimeBlock timeBlock = plan.getTimeBlock();
+
+        return this.title.equals(planName)
+                && this.timeBlock.equals(timeBlock);
+    }
+
+    public void checkParticipant(Long memberId) {
+        meetingParticipants.checkParticipant(memberId);
+    }
+
+    private void assignHost(Long memberId, Project project) {
+        this.host = project
+                .getParticipants()
+                .findParticipant(memberId)
+                .getMember();
+    }
+
+    /**
+     * Project Participant를 Meeting에 할당
+     * Meeting 생성의 host와 프로젝트의 admin은 모두 Meeting의 admin이 됨.
+     * @param participants
+     */
+    private void assignParticipants(Participants participants) {
+        List<Participant> participantList = participants.participantsInfo();
+        List<MeetingParticipant> meetingParticipants = participantList.stream()
+                .map(participant -> MeetingParticipant.assignProjectParticipant(host, participant))
+                .toList();
+
+        this.meetingParticipants.assignParticipants(meetingParticipants);
+    }
+
+    private void verifyMeetingParticipant(Long memberId) {
+        meetingParticipants.checkParticipant(memberId);
+    }
+
     private void verifyAdmin(Long memberId) {
         this.meetingParticipants.checkAdmin(memberId);
     }
-
     private static void verifyProjectAdmin(Long adminMemberId, Project project) {
         project.getParticipants()
                 .checkAdminAuth(adminMemberId);
     }
+
     private static void verifyProjectParticipant(Long adminMemberId, Project project) {
         project.getParticipants()
                 .checkParticipant(adminMemberId);
     }
-
     private void verifyApproval() {
         if (this.meetingStatus.equals(MeetingStatus.APPROVED)) {
             throw new AlreadyApprovedMeetingException();
         }
     }
+
     private void verifyDenial() {
         if (this.meetingStatus.equals(MeetingStatus.DENIED)) {
             throw new AlreadyDeniedMeetingException();
@@ -301,21 +318,5 @@ public class Meeting {
             return "";
         }
         return string;
-    }
-
-    public boolean equals(Plan plan) {
-        String planName = plan.getPlanName();
-        TimeBlock timeBlock = plan.getTimeBlock();
-
-        return this.title.equals(planName)
-                && this.timeBlock.equals(timeBlock);
-    }
-
-    public void cancel(Long adminMemberId) {
-        this.meetingStatus = MeetingStatus.CANCLED;
-    }
-
-    public void checkParticipant(Long memberId) {
-        meetingParticipants.checkParticipant(memberId);
     }
 }
