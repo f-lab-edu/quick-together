@@ -1,11 +1,10 @@
 package com.flab.quicktogether.timeplan.presentation.controller;
 
-import com.flab.quicktogether.common.Login;
+import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.timeplan.application.ScheduleService;
 import com.flab.quicktogether.timeplan.presentation.dto.RoughlyPlanDto;
 import com.flab.quicktogether.timeplan.presentation.dto.SuggestedTimeDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

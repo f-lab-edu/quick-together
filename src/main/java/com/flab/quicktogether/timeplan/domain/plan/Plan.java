@@ -49,7 +49,7 @@ public class Plan implements Comparable<Plan> {
         return new Plan(memberId, planName, commonTimeBlock);
     }
 
-    public void updateEvent(Plan plan) {
+    public void update(Plan plan) {
         verifyModifiable();
         if (notModified(plan)) return;
 
@@ -61,7 +61,7 @@ public class Plan implements Comparable<Plan> {
         return this.equals(plan);
     }
 
-    public void delete() {
+    public void cancel() {
         verifyModifiable();
         this.planStatus = PlanStatus.DELETED;
     }
@@ -89,6 +89,11 @@ public class Plan implements Comparable<Plan> {
     @Override
     public int compareTo(Plan o) {
         return this.timeBlock.compareTo(o.getTimeBlock());
+    }
+
+    public void update(String planName, TimeBlock timeBlock) {
+        this.planName = planName;
+        this.timeBlock = timeBlock;
     }
 
     private enum PlanStatus {

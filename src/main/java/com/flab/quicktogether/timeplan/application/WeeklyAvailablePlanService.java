@@ -39,7 +39,7 @@ public class WeeklyAvailablePlanService {
 
         weeklyAvailablePlanRepository.findByMemberId(memberId)
                 .orElseThrow(NotFoundWeeklyAvailablePlanException::new)
-                .updateAbleRoutines(newAvailablePlan);
+                .updateAvailablePlans(newAvailablePlan);
     }
 
     public AvailablePlanGetDto getAvailablePlan(Long loginMemberId, String localTimeZone) {

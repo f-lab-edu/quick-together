@@ -34,12 +34,12 @@ public class PlanService {
     public void modifyPlan(Long memberId, Long planId, PlanUpdateRequestDto planUpdateRequestDto) {
         Plan planForUpdate = planUpdateRequestDto.toEntityOf(memberId);
         findPlan(memberId, planId)
-                .updateEvent(planForUpdate);
+                .update(planForUpdate);
     }
 
     public void removePlan(Long memberId, Long planId) {
         findPlan(memberId, planId)
-                .delete();
+                .cancel();
     }
 
     private Plan findPlan(Long memberId, Long planId) {

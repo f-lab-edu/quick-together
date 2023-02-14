@@ -32,6 +32,7 @@ public class WeeklyAvailablePlan {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "time_plan_id")
+    @OrderBy("regularTimeBlock.startTime asc")
     private List<AvailablePlan> availablePlans = new ArrayList<>();
 
     public WeeklyAvailablePlan(Long memberId, List<RegularTimeBlock> regularTimeBlocks) {
@@ -73,17 +74,17 @@ public class WeeklyAvailablePlan {
         }
     }
 
-    public void updateAbleRoutines(List<AvailablePlan> newAvailablePlan) {
+    public void updateAvailablePlans(List<AvailablePlan> newAvailablePlan) {
         List<AvailablePlan> NotExistingNewRoutines = newAvailablePlan.stream()
-                .filter(ableRoutine -> !this.availablePlans.contains(ableRoutine))
+                .filter(availablePlan -> !this.availablePlans.contains(availablePlan))
                 .toList();
 
         for (AvailablePlan NotExistingNewRoutine : NotExistingNewRoutines) {
-            updateAbleRoutine(NotExistingNewRoutine);
+            updateAvailablePlans(NotExistingNewRoutine);
         }
     }
 
-    private void updateAbleRoutine(AvailablePlan newAvailablePlan) {
+    private void updateAvailablePlans(AvailablePlan newAvailablePlan) {
         List<AvailablePlan> overlappedAvailablePlan = this.availablePlans.stream()
                 .filter(ar -> !ar.getRegularTimeBlock().isSeperatedFrom(newAvailablePlan.getRegularTimeBlock()))
                 .toList();
@@ -92,13 +93,11 @@ public class WeeklyAvailablePlan {
     }
 
     public List<TimeBlock> extractAvailableTimeSchedule(Range range) {
-        List<TimeBlock> convertedSchedule =
-
-                availablePlans.stream()
-                .flatMap(ap -> ap.extractAvailableTime(range).stream())
-                .filter(Objects::nonNull)
-                .sorted()
-                .collect(Collectors.toList());
+        List<TimeBlock> convertedSchedule = availablePlans.stream()
+                        .flatMap(ap -> ap.extractAvailableTime(range).stream())
+                        .filter(Objects::nonNull)
+                        .sorted()
+                        .collect(Collectors.toList());
 
         return TimeBlock.glue(convertedSchedule);
     }
