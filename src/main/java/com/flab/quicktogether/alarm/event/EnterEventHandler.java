@@ -1,7 +1,6 @@
 package com.flab.quicktogether.alarm.event;
 
 import com.flab.quicktogether.alarm.message.AlarmMessage;
-import com.flab.quicktogether.alarm.message.SimpleMessageDto;
 import com.flab.quicktogether.alarm.service.AlarmMessageService;
 import com.flab.quicktogether.alarm.service.AlarmSendService;
 import com.flab.quicktogether.alarm.service.AlarmTokenService;
@@ -9,7 +8,6 @@ import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
 import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.support.enter.event.ProjectEnterEvent;
-import com.google.firebase.messaging.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -21,9 +19,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class EnterEventHandler {
     private final AlarmTokenService alarmTokenService;
-    private final AlarmSendService<Message> alarmSendService;
-    private final AlarmMessageService<Message, SimpleMessageDto> alarmMessageService;
-    private final AlarmMessage<SimpleMessageDto> enterAlarmMessage;
+    private final AlarmSendService alarmSendService;
+    private final AlarmMessageService alarmMessageService;
+    private final AlarmMessage enterAlarmMessage;
     private final ParticipantRepository participantRepository;
 
     @EventListener(ProjectEnterEvent.class)
