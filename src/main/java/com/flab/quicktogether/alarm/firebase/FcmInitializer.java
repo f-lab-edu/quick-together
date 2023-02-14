@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Slf4j
-@Component
+//@Component
 public class FcmInitializer {
 
     @Value("${fcm.certification}")
