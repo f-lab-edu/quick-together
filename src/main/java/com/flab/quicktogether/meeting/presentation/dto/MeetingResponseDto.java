@@ -21,7 +21,7 @@ public class MeetingResponseDto {
     private final List<MeetingParticipantDto> meetingParticipantDto;
     private final LocalDateTime startDateTime;
     private final LocalDateTime endDateTime;
-    private List<Link> links;
+//    private List<Link> links;
 
 
     public static MeetingResponseDto from(Meeting meeting, String timezone) {
@@ -56,7 +56,7 @@ public class MeetingResponseDto {
                 .description(meeting.getDescription())
                 .startDateTime(localStartTime)
                 .endDateTime(localEndTime)
-                .links(links)
+//                .links(links)
                 .meetingParticipantDto(meetingParticipantDtos)
                 .build();
     }

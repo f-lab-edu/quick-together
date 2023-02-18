@@ -2,6 +2,7 @@ package com.flab.quicktogether.meeting.application;
 
 import com.flab.quicktogether.meeting.domain.Meeting;
 import com.flab.quicktogether.meeting.domain.MeetingRepository;
+import com.flab.quicktogether.meeting.domain.MeetingStatus;
 import com.flab.quicktogether.meeting.domain.exception.MeetingNotFoundException;
 import com.flab.quicktogether.meeting.presentation.dto.MeetingResponseDto;
 import com.flab.quicktogether.meeting.presentation.dto.MeetingRequestDto;
@@ -54,7 +55,7 @@ public class MeetingService {
                 .checkAdminAuth(loginMemberId);
 
         List<Meeting> meetingWaitingForAccepting = meetingRepository
-                                                    .findMeetingsByProjectIdAndMeetingStatusIsRequested(projectId);
+                                                    .findMeetingsByProjectAndMeetingStatus(projectId, MeetingStatus.REQUESTED);
         verifyExisting(meetingWaitingForAccepting);
 
         return meetingWaitingForAccepting.stream()
