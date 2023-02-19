@@ -1,19 +1,17 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/quick-together-test
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/mysql?useSSL=false&allowPublicKeyRetrieval=true
+    username: hong
+    password: hong
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
-        default_batch_fetch_size: 500
-#        show_sql: true
-    defer-datasource-initialization: true
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
 
   redis:
     lettuce:
@@ -23,10 +21,6 @@ spring:
         min-idle: 2
     host: localhost
     port: 6379
-
-logging:
-  level:
-    sql: debug
 
 fcm:
   certification: quick-together-aa39f-firebase-adminsdk-o5u46-3a3494ce2f.json
