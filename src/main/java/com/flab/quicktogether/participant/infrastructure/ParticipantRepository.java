@@ -2,6 +2,8 @@ package com.flab.quicktogether.participant.infrastructure;
 
 import com.flab.quicktogether.participant.domain.Participant;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,5 +25,12 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
      */
     List<Participant> findByProjectId(Long projectId);
 
+
+    /**
+     * 프로젝트 어드민
+     */
+    @Query("select p from Participant p " +
+            "where p.Id = :projectId and p.participantRole = ROLE_ADMIN")
+    Optional<Participant> findAdminByProjectId(@Param("projectId") Long projectId);
 
 }

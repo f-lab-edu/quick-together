@@ -1,9 +1,11 @@
 package com.flab.quicktogether.project.support.invite.application;
 
 
+import com.flab.quicktogether.project.support.invite.event.ProjectInviteEvent;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
+import com.flab.quicktogether.project.event.Events;
 import com.flab.quicktogether.project.support.invite.domain.Invite;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.support.invite.exception.DuplicateInviteMemberException;
@@ -42,6 +44,8 @@ public class ProjectInviteService {
         Member requestMember = findMember(requestMemberId);
         Member invitedMember = findMember(invitedMemberId);
         inviteRepository.save(Invite.inviteMember(project, requestMember, invitedMember));
+
+        Events.raise(new ProjectInviteEvent(projectId, invitedMemberId));
     }
 
     private void checkInvitedNot(Long projectId, Long invitedMemberId) {
