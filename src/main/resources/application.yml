@@ -12,8 +12,8 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 500
-#        show_sql: true
-    defer-datasource-initialization: true
+        show_sql: true
+    open-in-view: false
 
   redis:
     lettuce:
@@ -30,4 +30,3 @@ logging:
 
 fcm:
   certification: quick-together-aa39f-firebase-adminsdk-o5u46-3a3494ce2f.json
-

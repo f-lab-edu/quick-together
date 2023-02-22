@@ -1,11 +1,10 @@
 package com.flab.quicktogether.member.application;
 
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.member.exception.BadCredentialsException;
 import com.flab.quicktogether.member.exception.DuplicateMemberNameException;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
 import com.flab.quicktogether.member.infrastructure.MemberRepository;
-import com.flab.quicktogether.member.presentation.dto.request.MemberRequest;
+import com.flab.quicktogether.member.application.presentation.dto.request.MemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
