@@ -3,6 +3,7 @@ package com.flab.quicktogether.project.support.search.application;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectDetailResponse;
 import com.flab.quicktogether.project.support.search.infrastructure.ProjectSearchRepository;
+import com.flab.quicktogether.project.support.search.presentation.dto.ProjectMainSimpleResponse;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleDto;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleResponse;
 import com.flab.quicktogether.project.support.like.infrastructure.ProjectLikeRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -45,6 +47,7 @@ public class ProjectSearchService {
      */
     public ProjectDetailResponse retrieveDetailProject(Long projectId, Long memberId) {
         List<Post> posts = projectPostService.retrievePosts(projectId, memberId);
+
         Project project = findProjectDetail(projectId);
         Long likes = projectLikeRepository.countByProjectId(projectId);
 
@@ -53,10 +56,15 @@ public class ProjectSearchService {
         return projectDetailResponse;
     }
 
-    public List<ProjectSimpleDto> retrieveAllProjects() {
+    public List<ProjectMainSimpleResponse> retrieveAllProjects() {
         List<ProjectSimpleDto> projects = projectSearchRepository.findByProjectsWithLikes();
+
+        List<ProjectMainSimpleResponse> collect = projects.stream()
+                .map(findProject -> new ProjectMainSimpleResponse(findProject.getProject(), findProject.getLikes()))
+                .collect(Collectors.toList());
+
         log.info("projects size = {}", projects.size());
-        return projects;
+        return collect;
     }
 
     private ProjectSimpleDto findProject(Long projectId) {

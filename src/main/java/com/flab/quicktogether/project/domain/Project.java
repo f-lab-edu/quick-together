@@ -51,12 +51,12 @@ public class Project {
 
     private LocalDateTime periodDateTime; // 모집기간
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ProjectSkillStack", joinColumns = @JoinColumn(name = "project_id"))
     @Enumerated(EnumType.STRING)
     private List<SkillStack> skillStacks = new ArrayList<>();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ProjectRecruitmentPosition", joinColumns = @JoinColumn(name = "project_id"))
     @Enumerated(EnumType.STRING)
     private List<Position> RecruitmentPositions = new ArrayList<>();

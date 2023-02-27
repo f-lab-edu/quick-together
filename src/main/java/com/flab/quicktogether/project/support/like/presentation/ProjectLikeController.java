@@ -1,5 +1,6 @@
 package com.flab.quicktogether.project.support.like.presentation;
 
+import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.project.support.like.application.ProjectLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,8 @@ public class ProjectLikeController {
     /**
      * 프로젝트 좋아요 추가
      */
-    @PostMapping("/projects/{projectId}/members/{memberId}/likes")
-    public ResponseEntity addProjectLikes(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId) {
+    @PostMapping("/projects/{projectId}/likes")
+    public ResponseEntity addProjectLikes(@PathVariable("projectId") Long projectId, @Login Long memberId) {
 
         projectLikeService.addProjectLike(projectId,memberId);
         Long total = projectLikeService.totalLikes(projectId);
@@ -39,8 +40,8 @@ public class ProjectLikeController {
     /**
      * 프로젝트 좋아요 삭제
      */
-    @DeleteMapping("/projects/{projectId}/members/{memberId}/likes")
-    public ResponseEntity cancelProjectLikes(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId) {
+    @DeleteMapping("/projects/{projectId}/likes")
+    public ResponseEntity cancelProjectLikes(@PathVariable("projectId") Long projectId, @Login Long memberId) {
 
         projectLikeService.cancelProjectLike(projectId,memberId);
         Long total = projectLikeService.totalLikes(projectId);

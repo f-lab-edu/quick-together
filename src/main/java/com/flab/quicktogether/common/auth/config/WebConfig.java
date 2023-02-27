@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -48,5 +49,14 @@ public class WebConfig implements WebMvcConfigurer {
                 //.addInterceptor(new JwtLoginCheckInterceptor(jwtProvider()))
                 .order(1)
                 .addPathPatterns("/x/**");
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8080", "http://localhost:5500","http://127.0.0.1:5500")
+                .allowCredentials(true)
+                .exposedHeaders("JSESSIONID", "Cookie","Set-Cookie");
+
     }
 }
