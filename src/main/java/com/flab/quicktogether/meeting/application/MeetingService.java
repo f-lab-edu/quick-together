@@ -54,7 +54,7 @@ public class MeetingService {
                 .checkAdminAuth(loginMemberId);
 
         List<Meeting> meetingWaitingForAccepting = meetingRepository
-                                                    .findMeetingsByProjectIdAndMeetingStatusIsRequested(projectId);
+                                                    .findMeetingsByProjectId(projectId);
         verifyExisting(meetingWaitingForAccepting);
 
         return meetingWaitingForAccepting.stream()

@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
-    List<Meeting> findMeetingsByProjectIdAndMeetingStatusIsRequested(Long projectId);
+    List<Meeting> findMeetingsByProjectId(Long projectId);
 
 }

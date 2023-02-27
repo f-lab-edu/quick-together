@@ -2,6 +2,7 @@ package com.flab.quicktogether.meeting.presentation.dto;
 
 import com.flab.quicktogether.meeting.domain.Meeting;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class MeetingResponseDto {
     private final Long id;
     private final String title;
