@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
+
 public class MemberController {
 
     private final MemberService memberService;

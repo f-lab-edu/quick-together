@@ -23,7 +23,11 @@ public class PlanService {
 
     private final PlanJpaRepository planJpaRepository;
     private final Map<String, PlanApiClient> planApiClients;
+
+//    private final CalendarApiIntegration calendarApiIntegration;
+
     private final PlanAPIIntegrationInfoRepository planAPIIntegrationInfoRepository;
+
 
     public void registerPlan(Long memberId, PlanCreateRequestDto planDto) {
         Plan plan = planDto.toEntity(memberId);

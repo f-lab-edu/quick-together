@@ -1,0 +1,17 @@
+[
+  {
+    "memberName": "관리자",
+    "content": "모임을 환영합니다.",
+    "createDateTime": "2022-09-15T13:30:00"
+  },
+  {
+    "memberName": "팀원A",
+    "content": "미팅을 요청하였습니다. projects/1/meeting-proposals/1",
+    "createDateTime": "2022-09-16T09:15:00"
+  },
+  {
+    "memberName": "관리자",
+    "content": "미팅을 수락하였습니다. projects/1/meetings/1",
+    "createDateTime": "2022-09-16T17:45:00"
+  }
+]

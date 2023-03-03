@@ -96,7 +96,7 @@ public class Plan implements Comparable<Plan> {
         this.timeBlock = timeBlock;
     }
 
-    private enum PlanStatus {
+    enum PlanStatus {
         DEFAULT, DELETED
     }
 }

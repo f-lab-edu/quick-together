@@ -25,13 +25,13 @@ public class WeeklyAvailablePlan {
 
     @Id
     @GeneratedValue
-    @Column(name = "time_plan_id")
+    @Column(name = "weekly_available_plan_id")
     private Long id;
 
     private Long memberId;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "time_plan_id")
+    @JoinColumn(name = "weekly_available_plan_id")
     @OrderBy("regularTimeBlock.startTime asc")
     private List<AvailablePlan> availablePlans = new ArrayList<>();
 
