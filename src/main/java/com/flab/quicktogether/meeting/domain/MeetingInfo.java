@@ -16,6 +16,7 @@ public class MeetingInfo {
 
     private TimeBlock suggestionTime;
 
+    @Builder
     public MeetingInfo(String title, String description, TimeBlock suggestionTime) {
         this.title = title;
         this.description = description;

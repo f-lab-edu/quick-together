@@ -16,25 +16,25 @@ public class PlanController {
 
     private final PlanService planService;
 
-    @RequestMapping(path = "/events", method = RequestMethod.POST)
+    @RequestMapping(path = "/plans", method = RequestMethod.POST)
     public ResponseEntity addPlan(@Login Long loginMemberId,
-                                  @Valid @RequestBody PlanCreateRequestDto event, BindingResult bindingResult) {
-        planService.registerPlan(loginMemberId, event);
+                                  @Valid @RequestBody PlanCreateRequestDto plan, BindingResult bindingResult) {
+        planService.registerPlan(loginMemberId, plan);
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(path = "/events/{eventId}", method = RequestMethod.PUT)
-    public ResponseEntity editEvent(@Login Long loginMemberId,
-                                    @PathVariable Long eventId,
+    @RequestMapping(path = "/plans/{planId}", method = RequestMethod.PUT)
+    public ResponseEntity editplan(@Login Long loginMemberId,
+                                    @PathVariable Long planId,
                                     @Valid @RequestBody PlanUpdateRequestDto planUpdateRequestDto,
                                     BindingResult bindingResult) {
-        planService.modifyPlan(loginMemberId, eventId, planUpdateRequestDto);
+        planService.modifyPlan(loginMemberId, planId, planUpdateRequestDto);
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(path = "/events/{eventId}", method = RequestMethod.DELETE)
-    public ResponseEntity removeEvent(@Login Long loginMemberId, @PathVariable Long eventId) {
-        planService.removePlan(loginMemberId, eventId);
+    @RequestMapping(path = "/plans/{planId}", method = RequestMethod.DELETE)
+    public ResponseEntity removeplan(@Login Long loginMemberId, @PathVariable Long planId) {
+        planService.removePlan(loginMemberId, planId);
         return ResponseEntity.ok().build();
     }
 }

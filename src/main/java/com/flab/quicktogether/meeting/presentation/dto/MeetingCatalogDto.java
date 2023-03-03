@@ -1,61 +1,50 @@
 package com.flab.quicktogether.meeting.presentation.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flab.quicktogether.meeting.domain.Meeting;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Builder
-public class MeetingResponseDto {
-    private Long id;
-    private String title;
-    private String description;
-    private List<MeetingParticipantDto> meetingParticipantDto;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
-    private List<Link> links;
+@RequiredArgsConstructor
+public class MeetingCatalogDto {
+    private final Long id;
+    private final String title;
+    private final String projectName;
 
+    @JsonProperty("start_date_time")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    private final LocalDateTime startDateTime;
 
-    public static MeetingResponseDto from(Meeting meeting, String timezone) {
+    @JsonProperty("end_date_time")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    private final LocalDateTime endDateTime;
+
+    public static MeetingCatalogDto from(Meeting meeting, String timezone) {
         ZoneId zoneId = ZoneId.of(timezone);
         TimeBlock timeBlock = meeting.getTimeBlock();
 
         LocalDateTime localStartTime = offsetTimezone(timeBlock.getStartDateTime(), zoneId);
         LocalDateTime localEndTime = offsetTimezone(timeBlock.getEndDateTime(), zoneId);
 
-        List<Link> links = new ArrayList<>();
-
-// REST API 원칙중 하나인 HATEOS를 통해 Meeting조회시 활용할수있는 기능을 path로 뽑아내고자 하는데 이렇게 노가다방식으로 해결하는것보다 좋은방법이 없을지 고민중입니다.
-// 동의, 거부, 수정, 수정요청과 같은 버튼은 이런식으로 구현하는것이 좋은지 방향성이 궁금합니다.
-//        Link.of("accept", );
-//        Link.of("deny", );
-//        Link.of("edit",);
-//        Link.of("request-edit",);
-//        Link.of("accept-edit")
-//        Link.of("promote", );
-//        Link.of("demote",);
-//        Link.of("ban",);
-//        Link.of("join",);
-
         List<MeetingParticipantDto> meetingParticipantDtos = meeting.getMeetingParticipants().getList()
                 .stream()
                 .map(participant -> MeetingParticipantDto.from(participant))
                 .toList();
 
-        return MeetingResponseDto.builder()
+        return MeetingCatalogDto.builder()
                 .id(meeting.getId())
                 .title(meeting.getTitle())
-                .description(meeting.getDescription())
                 .startDateTime(localStartTime)
                 .endDateTime(localEndTime)
-                .links(links)
-                .meetingParticipantDto(meetingParticipantDtos)
                 .build();
     }
 

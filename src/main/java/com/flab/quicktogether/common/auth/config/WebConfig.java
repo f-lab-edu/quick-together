@@ -39,14 +39,14 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
 
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry
                 .addInterceptor(new SessionLoginCheckInterceptor())
                 //.addInterceptor(new JwtLoginCheckInterceptor(jwtProvider()))
                 .order(1)
-                .addPathPatterns("/x/**");
+                .addPathPatterns("/x/**")
+                .excludePathPatterns("/");
     }
 
     @Override
@@ -55,7 +55,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:8080", "http://localhost:5500","http://127.0.0.1:5500")
                 .allowCredentials(true)
                 .allowedMethods("*")
-                .exposedHeaders("Cookie","Set-Cookie");
+                .exposedHeaders("X-AUTH-TOKEN","Cookie","Set-Cookie");
 
     }
 

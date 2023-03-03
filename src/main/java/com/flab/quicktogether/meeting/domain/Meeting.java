@@ -92,7 +92,7 @@ public class Meeting {
 
 
     public void cancel(Long adminMemberId) {
-        this.meetingStatus = MeetingStatus.CANCLED;
+        this.meetingStatus = MeetingStatus.CANCELED;
     }
 
     public void joinParticipant(Long adminMemberId, Member member, ParticipantRole authority) {
