@@ -16,12 +16,14 @@ function signUp() {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:8080/members')
     xhr.setRequestHeader('Content-type', 'application/json')
+    xhr.withCredentials = true;
     xhr.send(data)
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
         if (xhr.status === 201) {
-            window.location.href = "https://www.naver.com"
+            login(memberName, password)
+            window.location.href = "/available-plans/available-plan-form.html"
         } else {
             console.log(xhr.status, xhr.response)
         }
@@ -30,6 +32,31 @@ function signUp() {
     }
 
 
+}
+function login(memberName, password) {
+    const loginForm = {
+        memberName: memberName,
+        password: password
+    }
+
+    const data = JSON.stringify(loginForm)
+    const uri = "http://localhost:8080/login"
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', uri)
+    xhr.setRequestHeader('Content-type', 'application/json')
+    xhr.withCredentials = true
+    xhr.send(data)
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) return;
+
+        if (xhr.status === 200) {
+            //do nothing
+        } else {
+            console.log(xhr.response, xhr.status)
+        }
+
+
+    }
 }
 
 

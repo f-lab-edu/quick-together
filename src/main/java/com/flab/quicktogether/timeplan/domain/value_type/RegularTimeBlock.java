@@ -1,7 +1,9 @@
 package com.flab.quicktogether.timeplan.domain.value_type;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flab.quicktogether.timeplan.domain.exception.NotNaturalTimeOrderException;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -23,12 +25,18 @@ import java.util.stream.Collectors;
 @ToString
 public class RegularTimeBlock implements Comparable<RegularTimeBlock> {
 
+    @NotNull
+    @JsonProperty("day_of_week")
     @Column(name = "day_of_week")
     private DayOfWeek dayOfWeek;
 
+    @NotNull
+    @JsonProperty("start_time")
     @Column(name = "start_time")
     private LocalTime startTime;
 
+    @NotNull
+    @JsonProperty("end_time")
     @Column(name = "end_time")
     private LocalTime endTime;
 

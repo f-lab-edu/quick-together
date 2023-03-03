@@ -32,7 +32,6 @@ public class WeeklyAvailablePlan {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "weekly_available_plan_id")
-    @OrderBy("regularTimeBlock.startTime asc")
     private List<AvailablePlan> availablePlans = new ArrayList<>();
 
     public WeeklyAvailablePlan(Long memberId, List<RegularTimeBlock> regularTimeBlocks) {
