@@ -37,12 +37,12 @@ public class Participant {
     @Enumerated(EnumType.STRING)
     private ParticipantRole participantRole;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ParticipantPosition", joinColumns = @JoinColumn(name = "participant_id"))
     @Enumerated(EnumType.STRING)
     private List<Position> positions = new ArrayList<>();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ParticipantSkillStack", joinColumns = @JoinColumn(name = "participant_id"))
     @Enumerated(EnumType.STRING)
     private List<SkillStack> skillStacks = new ArrayList<>();

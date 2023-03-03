@@ -3,7 +3,7 @@ package com.flab.quicktogether.project.support.search.presentation;
 import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.project.support.search.application.ProjectSearchService;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectDetailResponse;
-import com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleDto;
+import com.flab.quicktogether.project.support.search.presentation.dto.ProjectMainSimpleResponse;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,13 +24,8 @@ public class ProjectSearchController {
      */
     @GetMapping("/projects")
     public Result projects() {
-        List<ProjectSimpleDto> findProjects = projectSearchService.retrieveAllProjects();
-
-        List<ProjectSimpleResponse> collect = findProjects.stream()
-                .map(findProject -> new ProjectSimpleResponse(findProject.getProject(), findProject.getLikes()))
-                .collect(Collectors.toList());
-
-        return new Result(collect);
+        List<ProjectMainSimpleResponse> projectMainSimpleResponses = projectSearchService.retrieveAllProjects();
+        return new Result(projectMainSimpleResponses);
     }
 
     /**

@@ -56,6 +56,10 @@ public class ProjectLikeService {
         return total;
     }
 
+    public boolean isLiked(Long projectId, Long memberId){
+        return projectLikeRepository.findByProjectIdAndMemberId(projectId, memberId).isPresent();
+    }
+
     private Project findProject(Long projectId) {
         return projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);

@@ -5,8 +5,6 @@ import com.flab.quicktogether.common.auth.config.jwt.JwtLoginMemberIdArgumentRes
 import com.flab.quicktogether.common.auth.config.jwt.JwtProvider;
 import com.flab.quicktogether.common.auth.config.session.SessionLoginCheckInterceptor;
 import com.flab.quicktogether.common.auth.config.session.SessionLoginMemberIdArgumentResolver;
-import com.flab.quicktogether.member.application.login.LoginService;
-import com.flab.quicktogether.member.application.login.SessionLoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,14 +20,6 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .exposedHeaders("X-AUTH-TOKEN")
-                .allowCredentials(true)
-                .allowedOrigins("http://127.0.0.1:5500","http://localhost:5500");
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -58,4 +48,15 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/x/**")
                 .excludePathPatterns("/");
     }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8080", "http://localhost:5500","http://127.0.0.1:5500")
+                .allowCredentials(true)
+                .allowedMethods("*")
+                .exposedHeaders("X-AUTH-TOKEN","Cookie","Set-Cookie");
+
+    }
+
 }
