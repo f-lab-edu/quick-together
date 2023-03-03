@@ -19,7 +19,6 @@ public class SessionLoginCheckInterceptor implements HandlerInterceptor {
         }
 
         HttpSession session = request.getSession(false);
-        log.info("sessionToId = {}", session.getAttribute(SessionConst.LOGIN_MEMBER));
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
             throw new NotAuthorizedException();
