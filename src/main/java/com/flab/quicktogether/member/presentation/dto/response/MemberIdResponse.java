@@ -1,4 +1,4 @@
-package com.flab.quicktogether.member.application.presentation.dto.response;
+package com.flab.quicktogether.member.presentation.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

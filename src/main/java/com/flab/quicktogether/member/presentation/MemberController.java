@@ -1,13 +1,13 @@
-package com.flab.quicktogether.member.application.presentation;
+package com.flab.quicktogether.member.presentation;
 
 import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.common.auth.NotRequiredLoginCheck;
 import com.flab.quicktogether.member.application.MemberService;
-import com.flab.quicktogether.member.application.presentation.dto.request.MemberRequest;
-import com.flab.quicktogether.member.application.presentation.dto.response.MemberInfoResponse;
+import com.flab.quicktogether.member.presentation.dto.request.MemberRequest;
+import com.flab.quicktogether.member.presentation.dto.response.MemberInfoResponse;
 import com.flab.quicktogether.member.domain.Member;
-import com.flab.quicktogether.member.application.presentation.dto.request.ChangePasswordRequest;
-import com.flab.quicktogether.member.application.presentation.dto.response.MemberIdResponse;
+import com.flab.quicktogether.member.presentation.dto.request.ChangePasswordRequest;
+import com.flab.quicktogether.member.presentation.dto.response.MemberIdResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
