@@ -5,8 +5,6 @@ import com.flab.quicktogether.common.auth.config.jwt.JwtLoginMemberIdArgumentRes
 import com.flab.quicktogether.common.auth.config.jwt.JwtProvider;
 import com.flab.quicktogether.common.auth.config.session.SessionLoginCheckInterceptor;
 import com.flab.quicktogether.common.auth.config.session.SessionLoginMemberIdArgumentResolver;
-import com.flab.quicktogether.member.application.login.LoginService;
-import com.flab.quicktogether.member.application.login.SessionLoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,7 +54,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8080", "http://localhost:5500","http://127.0.0.1:5500")
                 .allowCredentials(true)
-                .exposedHeaders("JSESSIONID", "Cookie","Set-Cookie");
+                .allowedMethods("*")
+                .exposedHeaders("Cookie","Set-Cookie");
 
     }
+
 }

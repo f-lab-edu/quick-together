@@ -38,6 +38,15 @@ public class ProjectLikeController {
     }
 
     /**
+     * 회원의 좋아요 여부
+     */
+    @GetMapping("/me/{projectId}/likes")
+    public ProjectIsLikedResponse retrieveProjectLikes(@PathVariable("projectId") Long projectId, @Login Long memberId) {
+        boolean liked = projectLikeService.isLiked(projectId, memberId);
+        return new ProjectIsLikedResponse(projectId, liked);
+    }
+
+    /**
      * 프로젝트 좋아요 삭제
      */
     @DeleteMapping("/projects/{projectId}/likes")
