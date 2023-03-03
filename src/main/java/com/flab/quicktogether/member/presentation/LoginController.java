@@ -1,10 +1,10 @@
-package com.flab.quicktogether.member.application.presentation;
+package com.flab.quicktogether.member.presentation;
 
 import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.common.auth.NotRequiredLoginCheck;
 import com.flab.quicktogether.member.application.login.LoginService;
-import com.flab.quicktogether.member.application.presentation.dto.request.LoginRequest;
-import com.flab.quicktogether.member.application.presentation.dto.response.MemberIdResponse;
+import com.flab.quicktogether.member.presentation.dto.request.LoginRequest;
+import com.flab.quicktogether.member.presentation.dto.response.MemberIdResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

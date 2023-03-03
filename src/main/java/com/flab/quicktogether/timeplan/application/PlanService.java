@@ -23,9 +23,9 @@ public class PlanService {
 
     private final PlanJpaRepository planJpaRepository;
     private final Map<String, PlanApiClient> planApiClients;
-
     private final PlanAPIIntegrationInfoRepository planAPIIntegrationInfoRepository;
 
+//    private final CalendarApiIntegration calendarApiIntegration;
     public void registerPlan(Long memberId, PlanCreateRequestDto planDto) {
         Plan plan = planDto.toEntity(memberId);
         verifyDuplicated(plan);

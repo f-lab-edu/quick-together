@@ -1,4 +1,4 @@
-package com.flab.quicktogether.member.application.presentation.dto.request;
+package com.flab.quicktogether.member.presentation.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

@@ -1,4 +1,4 @@
-package com.flab.quicktogether.common.auth.config;
+package com.flab.quicktogether.common;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
