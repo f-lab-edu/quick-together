@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/available_plans")
+@RequestMapping("/available-plans")
 @RequiredArgsConstructor
 public class WeeklyAvailablePlanController {
 

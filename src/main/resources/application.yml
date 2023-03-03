@@ -15,9 +15,18 @@ spring:
         show_sql: true
     open-in-view: false
 
+  redis:
+    lettuce:
+      pool:
+        max-active: 5
+        max-idle: 5
+        min-idle: 2
+    host: localhost
+    port: 6379
 
 logging:
   level:
     sql: debug
-    root: info
-    com.flab.quicktogether: debug
+
+fcm:
+  certification: quick-together-aa39f-firebase-adminsdk-o5u46-3a3494ce2f.json

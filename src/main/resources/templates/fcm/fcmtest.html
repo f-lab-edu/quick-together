@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>wewe</title>
+</head>
+<body>
+<h1>Test page!</h1>
+
+
+<script type="module">
+
+
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js'
+    import { getMessaging, getToken, onMessage} from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging.js';
+
+
+
+
+    let firebaseConfig = {
+                                ...
+    };
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // Show Notification
+        // 메시지 기능 활성화를 알림
+    const messaging = getMessaging(app);
+
+    Notification.requestPermission().then((permission) => {
+  if (permission === 'granted') {
+    console.log('Notification permission granted.');
+    // TODO(developer): Retrieve a registration token for use with FCM.
+    // ...
+  } else {
+    console.log('Unable to get permission to notify.');
+  }
+});
+
+getToken(messaging, { vapidKey: 'BE0HGP15Jh7a88zuJ7qoH9UZFMlhIF_R0eh53ewonzBei2Enx4048iHZ_rZzCPTZQ0V2iC0UZe5QNji1jhXcBVY' }).then((currentToken) => {
+  if (currentToken) {
+    console.log(currentToken)
+  } else {
+    // Show permission request UI
+    console.log('No registration token available. Request permission to generate one.');
+    // ...
+  }
+}).catch((err) => {
+  console.log('An error occurred while retrieving token. ', err);
+  // ...
+});
+
+
+
+
+</script>
+
+</body>
+
+</html>
