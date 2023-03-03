@@ -27,7 +27,7 @@ public class PlanApiIntegrationInfo {
     @Lob
     private String authToken;
 
-    private enum Api {
+    enum Api {
         SERVER,
         GOOGLE,
         NAVER,

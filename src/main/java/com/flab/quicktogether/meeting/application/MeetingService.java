@@ -55,7 +55,7 @@ public class MeetingService {
                 .checkAdminAuth(loginMemberId);
 
         List<Meeting> meetingWaitingForAccepting = meetingRepository
-                                                    .findMeetingsByProjectAndMeetingStatus(projectId, MeetingStatus.REQUESTED);
+                                                    .findMeetingsByProjectAndMeetingStatus(projectId, MeetingStatus.APPROVED);
         verifyExisting(meetingWaitingForAccepting);
 
         return meetingWaitingForAccepting.stream()
@@ -84,7 +84,7 @@ public class MeetingService {
         List<Plan> plans = meeting.createPlans();
         planJpaRepository.saveAll(plans);
 
-        //Post 등록
+        //ProjectPost.json 등록
         Post post = meeting.createPost();
         postRepository.save(post);
 
@@ -105,7 +105,7 @@ public class MeetingService {
         //미팅 저장
         meetingRepository.save(meeting);
 
-        //Post 등록
+        //ProjectPost.json 등록
         Post post = meeting.createPost();
         postRepository.save(post);
 
@@ -119,7 +119,7 @@ public class MeetingService {
         List<Plan> plans = meeting.createPlans();
         planJpaRepository.saveAll(plans);
 
-//        Post 등록
+//        ProjectPost.json 등록
         Post post = meeting.createPost();
         postRepository.save(post);
 
@@ -132,7 +132,7 @@ public class MeetingService {
         Meeting meeting = findMeeting(meetingId);
         meeting.denyCreation(memberId);
 
-//        Post 등록
+//        ProjectPost.json 등록
         Post post = meeting.createPost();
         postRepository.save(post);
 

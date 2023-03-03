@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,6 +22,14 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .exposedHeaders("X-AUTH-TOKEN")
+                .allowCredentials(true)
+                .allowedOrigins("http://127.0.0.1:5500","http://localhost:5500");
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -40,13 +49,13 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
 
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry
                 .addInterceptor(new SessionLoginCheckInterceptor())
                 //.addInterceptor(new JwtLoginCheckInterceptor(jwtProvider()))
                 .order(1)
-                .addPathPatterns("/x/**");
+                .addPathPatterns("/x/**")
+                .excludePathPatterns("/");
     }
 }

@@ -28,7 +28,7 @@ public class SessionLoginService implements LoginService{
         memberRepository.save(proto);
         memberRepository.save(hong);
     }
-
+            
     public Long login(String memberName, String password) {
         Member member = memberRepository.findByMemberName(memberName)
                 .orElseThrow(MemberNotFoundException::new);
