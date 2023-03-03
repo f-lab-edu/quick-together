@@ -3,7 +3,6 @@ package com.flab.quicktogether.meeting.presentation.dto;
 import com.flab.quicktogether.meeting.domain.Meeting;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -13,14 +12,14 @@ import java.util.List;
 
 
 @Builder
-@RequiredArgsConstructor
 public class MeetingResponseDto {
-    private final Long id;
-    private final String title;
-    private final List<MeetingParticipantDto> meetingParticipantDto;
-    private final LocalDateTime startDateTime;
-    private final LocalDateTime endDateTime;
-//    private List<Link> links;
+    private Long id;
+    private String title;
+    private String description;
+    private List<MeetingParticipantDto> meetingParticipantDto;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+    private List<Link> links;
 
 
     public static MeetingResponseDto from(Meeting meeting, String timezone) {
@@ -52,9 +51,10 @@ public class MeetingResponseDto {
         return MeetingResponseDto.builder()
                 .id(meeting.getId())
                 .title(meeting.getTitle())
+                .description(meeting.getDescription())
                 .startDateTime(localStartTime)
                 .endDateTime(localEndTime)
-//                .links(links)
+                .links(links)
                 .meetingParticipantDto(meetingParticipantDtos)
                 .build();
     }

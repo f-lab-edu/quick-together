@@ -14,9 +14,11 @@ import java.util.List;
 @Data
 public class ProjectDetailResponse {
 
+    private Long projectId;
     private String projectName; // 프로젝트 이름
 
-    private Long founder;
+    private String founderName;
+    private Long founderId;
 
     private ProjectDescriptionInfo projectDescriptionInfo; // 프로젝트 설명 정보
 
@@ -41,8 +43,10 @@ public class ProjectDetailResponse {
 
 
     public ProjectDetailResponse(Project p, Long likes, List<Post> allPosts) {
+        projectId = p.getId();
         projectName = p.getProjectName();
-        founder = p.getFounder().getId();
+        founderId = p.getFounder().getId();
+        founderName = p.getFounder().getMemberName();
         startDateTime = p.getStartDateTime();
         periodDateTime = p.getPeriodDateTime();
         meetingMethod = p.getMeetingMethod();
