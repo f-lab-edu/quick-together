@@ -34,6 +34,8 @@ public class ProjectDetailResponse {
 
     private LocalDateTime periodDateTime; // 모집기간
 
+    private LocalDateTime createDateTime; // 생성일
+
     private List<SkillStack> projectSkillStacks = new ArrayList<>();
 
     private List<Position> recruitPositions = new ArrayList<>();
@@ -49,6 +51,7 @@ public class ProjectDetailResponse {
         founderName = p.getFounder().getMemberName();
         startDateTime = p.getStartDateTime();
         periodDateTime = p.getPeriodDateTime();
+        createDateTime = p.getCreateDateTime();
         meetingMethod = p.getMeetingMethod();
         projectDescriptionInfo = p.getProjectDescriptionInfo();
         projectStatus = p.getProjectStatus();
