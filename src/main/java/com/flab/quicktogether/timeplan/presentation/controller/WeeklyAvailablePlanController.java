@@ -24,14 +24,14 @@ public class WeeklyAvailablePlanController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<AvailablePlanGetDto> getTimePlan(@Login Long loginMemberId,
-                                                           @RequestParam String timezone) {
-        AvailablePlanGetDto timePlanGetRequestDto = availableTimeService.getAvailablePlan(loginMemberId, timezone);
+                                                           @RequestParam String timeZone) {
+        AvailablePlanGetDto timePlanGetRequestDto = availableTimeService.getAvailablePlan(loginMemberId, timeZone);
         return ResponseEntity.ok(timePlanGetRequestDto);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<HttpStatus> postTimePlan(@Login Long loginMemberId,
-                                                   @Valid @RequestBody AvailablePlanCreateRequestDto timePlanCreateRequestDto, BindingResult bindingResult) {
+                                                   @Valid @RequestBody AvailablePlanCreateRequestDto timePlanCreateRequestDto) {
         availableTimeService.registerWeeklyAvailableRoutine(loginMemberId, timePlanCreateRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

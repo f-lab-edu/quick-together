@@ -17,14 +17,14 @@ import java.util.List;
 @ToString
 public class AvailablePlanCreateRequestDto {
 
-    private String timezone;
+    private String timeZone;
     private List<RegularTimeBlock> availablePlans = new ArrayList<>();
 
     protected AvailablePlanCreateRequestDto() {
     }
 
     public WeeklyAvailablePlan toEntityOf(Long memberId) {
-        ZoneId localTimeZone = ZoneId.of(timezone);
+        ZoneId localtimeZone = ZoneId.of(timeZone);
 
         List<RegularTimeBlock> regularTimeBlocks = availablePlans.stream()
                 .flatMap(dto -> {
@@ -32,7 +32,7 @@ public class AvailablePlanCreateRequestDto {
                     LocalTime startTime = dto.getStartTime();
                     LocalTime endTime = dto.getEndTime();
 
-                    return RegularTimeBlock.asCommonTime(dayOfWeek, startTime, endTime, localTimeZone)
+                    return RegularTimeBlock.asCommonTime(dayOfWeek, startTime, endTime, localtimeZone)
                             .stream();
                 })
                 .toList();

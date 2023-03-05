@@ -63,27 +63,27 @@ public class RegularTimeBlock implements Comparable<RegularTimeBlock> {
      * @param localDayOfWeek 지역시간대 기준 요일
      * @param localStartTime 지역시간대 기준 시작시간
      * @param endTime 지역시간대 기준 종료시간
-     * @param localTimeZone 지역시간대
+     * @param localtimeZone 지역시간대
      * @return 통일된 시간대로 변환된 RegularTimeBlock
      */
-    public static List<RegularTimeBlock> asCommonTime(DayOfWeek localDayOfWeek, LocalTime localStartTime, LocalTime endTime, ZoneId localTimeZone) {
+    public static List<RegularTimeBlock> asCommonTime(DayOfWeek localDayOfWeek, LocalTime localStartTime, LocalTime endTime, ZoneId localtimeZone) {
         ZoneId utc = ZoneId.of("UTC");
         LocalDate standardDate = getStandardDate(localDayOfWeek);
 
-        ZonedDateTime startZonedDateTime = offset(standardDate,localStartTime,  localTimeZone, utc);
-        ZonedDateTime endZonedDateTime = offset(standardDate, endTime, localTimeZone, utc);
+        ZonedDateTime startZonedDateTime = offset(standardDate,localStartTime,  localtimeZone, utc);
+        ZonedDateTime endZonedDateTime = offset(standardDate, endTime, localtimeZone, utc);
 
         endZonedDateTime = checkMidnightEndTime(endTime, endZonedDateTime);
 
         return createRelativeTimeBlocks(startZonedDateTime, endZonedDateTime);
     }
 
-    public List<RegularTimeBlock> toLocalTimeZone(ZoneId localTimeZone) {
+    public List<RegularTimeBlock> toLocaltimeZone(ZoneId localtimeZone) {
         ZoneId utc = ZoneId.of("UTC");
         LocalDate standardDate = getStandardDate(dayOfWeek);
 
-        ZonedDateTime startZonedDateTime = offset(standardDate, startTime, utc, localTimeZone);
-        ZonedDateTime endZonedDateTime = offset(standardDate, endTime, utc, localTimeZone);
+        ZonedDateTime startZonedDateTime = offset(standardDate, startTime, utc, localtimeZone);
+        ZonedDateTime endZonedDateTime = offset(standardDate, endTime, utc, localtimeZone);
 
         endZonedDateTime = checkMidnightEndTime(endTime, endZonedDateTime);
 

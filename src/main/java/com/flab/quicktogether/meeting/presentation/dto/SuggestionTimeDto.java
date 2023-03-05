@@ -9,17 +9,17 @@ import java.time.ZoneId;
 public class SuggestionTimeDto {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
-    private String timezone;
+    private String timeZone;
 
     @Builder
-    public SuggestionTimeDto(LocalDateTime startDateTime, LocalDateTime endDateTime, String timezone) {
+    public SuggestionTimeDto(LocalDateTime startDateTime, LocalDateTime endDateTime, String timeZone) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.timezone = timezone;
+        this.timeZone = timeZone;
     }
 
     public TimeBlock toTimeBlock() {
-        ZoneId zoneId = ZoneId.of(timezone);
+        ZoneId zoneId = ZoneId.of(timeZone);
         return TimeBlock.asCommonTime(startDateTime, endDateTime, zoneId);
     }
 }

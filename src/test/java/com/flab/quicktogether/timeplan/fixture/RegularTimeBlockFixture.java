@@ -17,18 +17,18 @@ public class RegularTimeBlockFixture {
         return create(UTC, date, fromTo);
     }
 
-    public static List<RegularTimeBlock> create(ZoneId localTimeZone, LocalDate localDate, String[] fromTo) {
+    public static List<RegularTimeBlock> create(ZoneId localtimeZone, LocalDate localDate, String[] fromTo) {
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
         return Arrays.stream(fromTo)
-                .flatMap(s -> convertTimeBlock(localTimeZone, dayOfWeek, s).stream())
+                .flatMap(s -> convertTimeBlock(localtimeZone, dayOfWeek, s).stream())
                 .collect(Collectors.toList());
     }
 
-    private static List<RegularTimeBlock> convertTimeBlock(ZoneId timezone, DayOfWeek dayOfWeek, String s) {
+    private static List<RegularTimeBlock> convertTimeBlock(ZoneId timeZone, DayOfWeek dayOfWeek, String s) {
         String[] split = s.split("~");
         LocalTime startTime = LocalTime.parse(split[0]);
         LocalTime endTime = LocalTime.parse(split[1]);
 
-        return RegularTimeBlock.asCommonTime(dayOfWeek, startTime, endTime, timezone);
+        return RegularTimeBlock.asCommonTime(dayOfWeek, startTime, endTime, timeZone);
     }
 }

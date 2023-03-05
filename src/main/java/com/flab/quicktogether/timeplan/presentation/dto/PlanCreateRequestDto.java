@@ -26,10 +26,10 @@ public class PlanCreateRequestDto {
     private LocalDateTime endDateTime;
 
     @NotNull
-    private String timezone;
+    private String timeZone;
 
     public Plan toEntity(Long memberId) {
-        TimeBlock timeBlock = TimeBlock.asCommonTime(startDateTime, endDateTime, ZoneId.of(timezone));
+        TimeBlock timeBlock = TimeBlock.asCommonTime(startDateTime, endDateTime, ZoneId.of(timeZone));
         return new Plan(memberId, eventName, timeBlock);
     }
 }
