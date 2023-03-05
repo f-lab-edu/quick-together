@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface InviteRepository extends JpaRepository<Invite, Long> {
@@ -18,4 +19,13 @@ public interface InviteRepository extends JpaRepository<Invite, Long> {
             "join fetch i.invitedMember m " +
             "where p.Id = :projectId and m.Id = :invitedMember and i.inviteStatus = WAIT")
     Optional<Invite> findByProjectIdAndInvitedMemberIdWithWait(@Param("projectId") Long projectId, @Param("invitedMember") Long invitedMember);
+
+    /**
+     * 특정 멤버가 프로젝트에 초대되어 WAIT 상태인 것을 반환
+     */
+    @Query("select i from Invite i " +
+            "join fetch i.project p " +
+            "join fetch i.invitedMember m " +
+            "where m.Id = :invitedMember and i.inviteStatus = WAIT")
+    List<Invite> findByInvitedMemberIdWithWait(@Param("invitedMember") Long invitedMember);
 }

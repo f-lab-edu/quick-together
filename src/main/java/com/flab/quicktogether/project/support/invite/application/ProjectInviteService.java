@@ -13,9 +13,13 @@ import com.flab.quicktogether.project.support.invite.exception.InviteNotFoundExc
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import com.flab.quicktogether.project.support.invite.infrastructure.InviteRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
+import com.flab.quicktogether.project.support.invite.presentation.ProjectInviteResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -31,6 +35,17 @@ public class ProjectInviteService {
     public Invite retrieveInvitedMember(Long projectId, Long invitedMemberId) {
         Invite invite = findInvite(projectId, invitedMemberId);
         return invite;
+    }
+
+    public List<ProjectInviteResponse> retrieveAllInvitation(Long invitedMemberId) {
+
+        List<Invite> invites = inviteRepository.findByInvitedMemberIdWithWait(invitedMemberId);
+
+        List<ProjectInviteResponse> collect = invites.stream()
+                .map(findInvite -> new ProjectInviteResponse(findInvite))
+                .collect(Collectors.toList());
+
+        return collect;
     }
 
     @Transactional
