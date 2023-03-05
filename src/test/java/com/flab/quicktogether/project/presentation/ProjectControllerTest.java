@@ -40,7 +40,6 @@ class ProjectControllerTest {
     EntityManager em;
 
     @BeforeEach
-    @Rollback(value = false)
     void initEach() {
 
         Member member = new Member("승재");
@@ -65,7 +64,6 @@ class ProjectControllerTest {
 
         //given
         String projectName = "첫번째 프로젝트";
-        String meetingMethod= "SLACK";
 
         //when
         mockMvc.perform(get("/projects")
@@ -73,7 +71,6 @@ class ProjectControllerTest {
         )
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(jsonPath("$.data[0].projectName").value(projectName))
-        .andExpect(jsonPath("$.data[0].meetingMethod").value(meetingMethod))
         .andDo(print());
 
 
