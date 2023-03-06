@@ -5,6 +5,10 @@ import com.flab.quicktogether.common.auth.NotRequiredLoginCheck;
 import com.flab.quicktogether.member.application.login.LoginService;
 import com.flab.quicktogether.member.application.presentation.dto.request.LoginRequest;
 import com.flab.quicktogether.member.application.presentation.dto.response.MemberIdResponse;
+import com.flab.quicktogether.member.application.presentation.dto.response.MemberSimpleResponse;
+import com.flab.quicktogether.member.domain.Member;
+import com.flab.quicktogether.member.exception.MemberNotFoundException;
+import com.flab.quicktogether.member.infrastructure.MemberRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
 
     private final LoginService loginService;
+    private final MemberRepository memberRepository;
 
     @NotRequiredLoginCheck
     @RequestMapping(path = "/login", method = RequestMethod.POST)
@@ -27,7 +32,8 @@ public class LoginController {
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public ResponseEntity checkLogin(@Login Long memberId) {
-        return ResponseEntity.ok(new MemberIdResponse(memberId));
+        Member findMember = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        return ResponseEntity.ok(new MemberSimpleResponse(memberId, findMember.getMemberName()));
     }
 
 
