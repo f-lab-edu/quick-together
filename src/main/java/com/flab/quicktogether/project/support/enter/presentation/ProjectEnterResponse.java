@@ -17,14 +17,18 @@ public class ProjectEnterResponse {
     private Long projectId;
 
     @NotNull
-    private Long enterMember;
+    private Long enterMemberId;
+
+    @NotNull
+    private String enterMemberName;
 
     @NotNull
     private ProjectJoinStatus enterStatus;
 
     public ProjectEnterResponse(Enter enter) {
         this.projectId = enter.getProject().getId();
-        this.enterMember = enter.getEnterMember().getId();
+        this.enterMemberId = enter.getEnterMember().getId();
+        this.enterMemberName = enter.getEnterMember().getMemberName();
         this.enterStatus = enter.getEnterStatus();
     }
 }
