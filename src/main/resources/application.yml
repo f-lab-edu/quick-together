@@ -1,38 +1,9 @@
 spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: 1
+  profiles:
+    active: local
 
   jpa:
-    hibernate:
-      ddl-auto: create
     properties:
       hibernate:
-        format_sql: true
         default_batch_fetch_size: 500
-        show_sql: true
     open-in-view: false
-#    defer-datasource-initialization: true
-#
-#  sql:
-#    init:
-#      mode: always
-
-  redis:
-    lettuce:
-      pool:
-        max-active: 5
-        max-idle: 5
-        min-idle: 2
-    host: localhost
-    port: 6379
-
-logging:
-  level:
-    sql: debug
-
-fcm:
-  certification: quick-together-aa39f-firebase-adminsdk-o5u46-3a3494ce2f.json
-

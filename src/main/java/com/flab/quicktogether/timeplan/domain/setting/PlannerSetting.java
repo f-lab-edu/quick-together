@@ -25,8 +25,9 @@ public class PlannerSetting {
     @Enumerated(EnumType.STRING)
     private MinuteUnit minuteUnit = MinuteUnit.TEN;
 
-    private Integer marginalMinutes = 0;
+    private Integer marginalMinutes;
 
+    @Column(name = "limits") // limit이 mariadb에서 예약어로 인식
     private Integer limit;
 
     @Builder
