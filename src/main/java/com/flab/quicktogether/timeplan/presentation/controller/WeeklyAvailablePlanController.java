@@ -24,7 +24,7 @@ public class WeeklyAvailablePlanController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<AvailablePlanGetDto> getTimePlan(@Login Long loginMemberId,
-                                                           @RequestParam String timeZone) {
+                                                           @RequestParam("timeZone") String timeZone) {
         AvailablePlanGetDto timePlanGetRequestDto = availableTimeService.getAvailablePlan(loginMemberId, timeZone);
         return ResponseEntity.ok(timePlanGetRequestDto);
     }

@@ -1,31 +1,32 @@
 package com.flab.quicktogether.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.util.StdDateFormat;
-import com.google.firebase.database.util.JsonMapper;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.Schema;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @OpenAPIDefinition
 @Configuration
 public class SpringDocConfig {
 
-    private final ObjectMapper objectMapper;
-
-    @Autowired
-    public SpringDocConfig(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    @PostConstruct
+    public void init(){
+        Schema<LocalTime> schema = new Schema<>();
+        schema.example(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))).type("string");
+        SpringDocUtils.getConfig().replaceWithSchema(LocalTime.class, schema);
     }
 
     @Bean
