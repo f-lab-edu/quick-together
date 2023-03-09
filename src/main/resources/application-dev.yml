@@ -1,6 +1,9 @@
+server:
+  port: 80
+
 spring:
   datasource:
-    url: jdbc:mariadb://34.64.211.41:3306/quick_together
+    url: jdbc:mariadb://35.216.29.90:3306/quick_together
     driver-class-name: org.mariadb.jdbc.Driver
     username: sa
     password: 1
