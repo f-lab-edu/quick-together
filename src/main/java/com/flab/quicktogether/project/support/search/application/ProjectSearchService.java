@@ -35,8 +35,13 @@ public class ProjectSearchService {
     /**
      * 프로젝트 간단 조회 (프로젝트 정보)
      */
+    @Transactional
     public ProjectSimpleResponse retrieveSimpleProject(Long projectId) {
-        ProjectSimpleDto projectSimpleDto = findProject(projectId);
+        ProjectSimpleDto projectSimpleDto = findProjectWithLikes(projectId);
+
+        Project project = projectSimpleDto.getProject();
+        project.plusViews();
+
         ProjectSimpleResponse projectSimpleResponse = new ProjectSimpleResponse(projectSimpleDto.getProject(), projectSimpleDto.getLikes());
 
         return projectSimpleResponse;
@@ -67,7 +72,7 @@ public class ProjectSearchService {
         return collect;
     }
 
-    private ProjectSimpleDto findProject(Long projectId) {
+    private ProjectSimpleDto findProjectWithLikes(Long projectId) {
         return projectSearchRepository.findByProjectIdWithLikes(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
     }

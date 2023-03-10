@@ -84,6 +84,10 @@ public class Project {
 
     }
 
+    public void plusViews(){
+        this.views = this.views + 1;
+    }
+
     public void changeProjectName(String editProjectName){
         this.projectName = editProjectName;
     }
