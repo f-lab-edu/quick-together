@@ -1,9 +1,10 @@
 package com.flab.quicktogether.project.presentation.dto.request;
 
 
+import com.flab.quicktogether.common.Position;
+import com.flab.quicktogether.common.SkillStack;
 import com.flab.quicktogether.project.application.dto.CreateProjectRequestDto;
 import com.flab.quicktogether.project.domain.MeetingMethod;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,6 +32,12 @@ public class CreateProjectRequest {
 
     @NotNull @DateTimeFormat
     private LocalDateTime periodDateTime; // 모집기간
+
+    @NotNull
+    private List<SkillStack> skillStacks = new ArrayList<>();
+
+    @NotNull
+    private List<Position> RecruitmentPositions = new ArrayList<>();
 
     @NotNull
     private MeetingMethod meetingMethod; // 미팅 방법
@@ -49,6 +58,8 @@ public class CreateProjectRequest {
                 .meetingMethod(this.getMeetingMethod())
                 .projectSummary(this.getProjectSummary())
                 .projectDescription(this.getProjectDescription())
+                .skillStacks(this.getSkillStacks())
+                .recruitmentPositions(this.getRecruitmentPositions())
                 .build();
         return dto;
     }

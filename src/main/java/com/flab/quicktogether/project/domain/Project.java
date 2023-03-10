@@ -59,12 +59,13 @@ public class Project {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ProjectRecruitmentPosition", joinColumns = @JoinColumn(name = "project_id"))
     @Enumerated(EnumType.STRING)
-    private List<Position> RecruitmentPositions = new ArrayList<>();
+    private List<Position> recruitmentPositions = new ArrayList<>();
 
 
     @Builder()
     public Project(String projectName, Member founder, String projectSummary, String projectDescription,
-                   MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime) {
+                   MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime,
+                   List<SkillStack> skillStacks, List<Position> recruitmentPositions) {
 
         Assert.hasText(projectName,"projectName must not be empty");
         Assert.notNull(founder, "projectFounder must not be null");
@@ -79,6 +80,8 @@ public class Project {
         this.meetingMethod = meetingMethod;
         this.startDateTime = startDateTime;
         this.periodDateTime = periodDateTime;
+        this.skillStacks = skillStacks;
+        this.recruitmentPositions = recruitmentPositions;
 
         this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, projectDescription);
 
