@@ -12,6 +12,7 @@ import com.flab.quicktogether.participant.exception.DuplicateParticipantPosition
 import com.flab.quicktogether.participant.exception.DuplicateParticipantSkillStackException;
 import com.flab.quicktogether.participant.exception.ParticipantNotFoundException;
 import com.flab.quicktogether.common.Position;
+import com.flab.quicktogether.participant.presentation.dto.response.ParticipantResponse;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.common.SkillStack;
 import com.flab.quicktogether.project.exception.*;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -40,9 +42,15 @@ public class ParticipantService {
     /**
      * 구성원 전체 조회
      */
-    public List<Participant> retrieveAllParticipants(Long projectId) {
+    public List<ParticipantResponse> retrieveAllParticipants(Long projectId) {
         findProject(projectId);
-        return participantRepository.findByProjectId(projectId);
+
+        List<Participant> findParticipants = participantRepository.findByProjectId(projectId);
+
+        List<ParticipantResponse> collect = findParticipants.stream()
+                .map(p -> new ParticipantResponse(p))
+                .collect(Collectors.toList());
+        return collect;
     }
 
     /**
