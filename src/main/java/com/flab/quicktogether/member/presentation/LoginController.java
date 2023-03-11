@@ -41,8 +41,4 @@ public class LoginController {
         return ResponseEntity.ok(new MemberIdResponse(memberId));
     }
 
-
-
-
-
 }

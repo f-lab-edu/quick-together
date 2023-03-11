@@ -22,12 +22,12 @@ public class MeetingResponseDto {
     private List<Link> links;
 
 
-    public static MeetingResponseDto from(Meeting meeting, String timezone) {
-        ZoneId zoneId = ZoneId.of(timezone);
+    public static MeetingResponseDto from(Meeting meeting, String timeZone) {
+        ZoneId zoneId = ZoneId.of(timeZone);
         TimeBlock timeBlock = meeting.getTimeBlock();
 
-        LocalDateTime localStartTime = offsetTimezone(timeBlock.getStartDateTime(), zoneId);
-        LocalDateTime localEndTime = offsetTimezone(timeBlock.getEndDateTime(), zoneId);
+        LocalDateTime localStartTime = offsettimeZone(timeBlock.getStartDateTime(), zoneId);
+        LocalDateTime localEndTime = offsettimeZone(timeBlock.getEndDateTime(), zoneId);
 
         List<Link> links = new ArrayList<>();
 
@@ -59,7 +59,7 @@ public class MeetingResponseDto {
                 .build();
     }
 
-    private static LocalDateTime offsetTimezone(LocalDateTime dateTime, ZoneId zoneId) {
+    private static LocalDateTime offsettimeZone(LocalDateTime dateTime, ZoneId zoneId) {
         ZoneId utc = ZoneId.of("UTC");
 
         return ZonedDateTime.of(dateTime, utc)

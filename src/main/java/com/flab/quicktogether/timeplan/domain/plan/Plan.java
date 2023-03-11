@@ -44,8 +44,8 @@ public class Plan implements Comparable<Plan> {
         this.timeBlock = timeBlock;
     }
 
-    public static Plan asCommonTime(Long memberId, String planName, LocalDateTime startDateTime, LocalDateTime endDateTime, ZoneId localTimeZone) {
-        TimeBlock commonTimeBlock = TimeBlock.asCommonTime(startDateTime, endDateTime, localTimeZone);
+    public static Plan asCommonTime(Long memberId, String planName, LocalDateTime startDateTime, LocalDateTime endDateTime, ZoneId localtimeZone) {
+        TimeBlock commonTimeBlock = TimeBlock.asCommonTime(startDateTime, endDateTime, localtimeZone);
         return new Plan(memberId, planName, commonTimeBlock);
     }
 

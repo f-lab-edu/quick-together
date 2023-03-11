@@ -24,15 +24,16 @@ public class PlanController {
     }
 
     @RequestMapping(path = "/plans/{planId}", method = RequestMethod.PUT)
-    public ResponseEntity editPlan(@Login Long loginMemberId,
-                                    @PathVariable Long planId,
-                                    @Valid @RequestBody PlanUpdateRequestDto planUpdateRequestDto) {
+    public ResponseEntity editplan(@Login Long loginMemberId,
+                                    @PathVariable("planId") Long planId,
+                                    @Valid @RequestBody PlanUpdateRequestDto planUpdateRequestDto,
+                                    BindingResult bindingResult) {
         planService.modifyPlan(loginMemberId, planId, planUpdateRequestDto);
         return ResponseEntity.ok().build();
     }
 
     @RequestMapping(path = "/plans/{planId}", method = RequestMethod.DELETE)
-    public ResponseEntity removeplan(@Login Long loginMemberId, @PathVariable Long planId) {
+    public ResponseEntity removeplan(@Login Long loginMemberId, @PathVariable("planId") Long planId) {
         planService.removePlan(loginMemberId, planId);
         return ResponseEntity.ok().build();
     }

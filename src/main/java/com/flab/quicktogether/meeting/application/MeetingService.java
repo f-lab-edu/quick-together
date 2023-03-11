@@ -49,7 +49,7 @@ public class MeetingService {
     }
 
     @Transactional(readOnly = true)
-    public List<MeetingResponseDto> getMeetingForApproval(Long loginMemberId, Long projectId, String timezone) {
+    public List<MeetingResponseDto> getMeetingForApproval(Long loginMemberId, Long projectId, String timeZone) {
         Project project = findProject(projectId);
         project.getParticipants()
                 .checkAdminAuth(loginMemberId);
@@ -59,7 +59,7 @@ public class MeetingService {
         verifyExisting(meetingWaitingForAccepting);
 
         return meetingWaitingForAccepting.stream()
-                .map(meeting -> MeetingResponseDto.from(meeting, timezone))
+                .map(meeting -> MeetingResponseDto.from(meeting, timeZone))
                 .toList();
     }
 
@@ -216,10 +216,10 @@ public class MeetingService {
         }
     }
 
-    public MeetingResponseDto getMeeting(Long loginMemberId, Long meetingId, String timezone) {
+    public MeetingResponseDto getMeeting(Long loginMemberId, Long meetingId, String timeZone) {
         Meeting meeting = findMeeting(meetingId);
         meeting.checkParticipant(loginMemberId);
 
-        return MeetingResponseDto.from(meeting, timezone);
+        return MeetingResponseDto.from(meeting, timeZone);
     }
 }
