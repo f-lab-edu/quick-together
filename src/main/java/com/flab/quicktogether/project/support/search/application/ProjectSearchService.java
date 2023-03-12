@@ -12,9 +12,14 @@ import com.flab.quicktogether.project.support.post.domain.Post;
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,6 +74,18 @@ public class ProjectSearchService {
                 .collect(Collectors.toList());
 
         log.info("projects size = {}", projects.size());
+        return collect;
+    }
+
+    public List<ProjectMainSimpleResponse> retrievePagingProjects(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<ProjectSimpleDto> pageProjects = projectSearchRepository.findByPagingProjectsWithLikes(pageable);
+
+        List<ProjectMainSimpleResponse> collect = pageProjects.getContent().stream()
+                .map(findProject -> new ProjectMainSimpleResponse(findProject.getProject(), findProject.getLikes()))
+                .collect(Collectors.toList());
+
+        log.info("page size = {}", pageProjects.getSize());
         return collect;
     }
 

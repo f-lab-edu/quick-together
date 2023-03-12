@@ -2,6 +2,8 @@ package com.flab.quicktogether.project.support.search.infrastructure;
 
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,6 +34,16 @@ public interface ProjectSearchRepository extends JpaRepository<Project, Long> {
             "group by p"
     )
     List<ProjectSimpleDto> findByProjectsWithLikes();
+
+    /**
+     * 프로젝트 전체 조회 페이징 처리
+     * 프로젝트들에 좋아요 개수를 세팅한다.
+     */
+    @Query("select new com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleDto(p,count(l)) from Project p " +
+            "left outer join Likes l on l.project = p " +
+            "group by p"
+    )
+    Page<ProjectSimpleDto> findByPagingProjectsWithLikes(Pageable pageable);
 
     /**
      * 프로젝트 단건 조회
