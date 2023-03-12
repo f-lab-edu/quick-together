@@ -60,6 +60,10 @@ public class ProjectDetailResponse {
         recruitPositions = p.getRecruitmentPositions();
         this.likes = likes;
 
+        // 프록시 객체 초기화
+        if(projectSkillStacks.size() != 0) projectSkillStacks.get(0);
+        if(recruitPositions.size() != 0) recruitPositions.get(0);
+
         for (Post post : allPosts) {
             posts.add(new PostInfoDto(post.getMember().getMemberName(), post.getContent(), post.getCreateDateTime()));
         }
