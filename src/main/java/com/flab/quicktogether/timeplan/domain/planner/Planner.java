@@ -94,7 +94,7 @@ public class Planner {
 
     private List<TimeBlock> applySetting(List<TimeBlock> allIncludedCandidateTimes, PlannerSetting plannerSetting) {
         Comparator<TimeBlock> comparator = plannerSetting.getSequencePriority().getComparator();
-        Integer limit = plannerSetting.getLimit();
+        Integer limit = plannerSetting.getLimits();
 
         Stream<TimeBlock> sortedTimeBlock = allIncludedCandidateTimes.stream()
                 .sorted(comparator);

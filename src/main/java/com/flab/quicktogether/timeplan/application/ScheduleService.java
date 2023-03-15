@@ -59,7 +59,7 @@ public class ScheduleService {
                 .findByProjectIdAndMemberId(projectId, memberId)
                 .orElseThrow(ParticipantNotFoundException::new);
 
-        ZoneId zoneId = ZoneId.of(roughlyPlanDto.getTimezone());
+        ZoneId zoneId = ZoneId.of(roughlyPlanDto.getTimeZone());
         RoughlyPlan roughlyPlan = roughlyPlanDto.toEntity();
         LocalDateTime limit = roughlyPlan.getRange().getStartDateTime();
 
@@ -71,10 +71,10 @@ public class ScheduleService {
 
         List<TimeBlock> suggestedBlock = planner.suggestTime(roughlyPlan, weeklyAvailablePlansInProject, plansInProject, plannerSetting);
 
-        List<TimeBlock> suggestedBlockAsLocalTimeZone = suggestedBlock.stream()
-                .map(block -> block.offsetLocalTimeZone(zoneId))
+        List<TimeBlock> suggestedBlockAsLocaltimeZone = suggestedBlock.stream()
+                .map(block -> block.offsetLocaltimeZone(zoneId))
                 .toList();
-        return SuggestedTimeDto.from(suggestedBlockAsLocalTimeZone);
+        return SuggestedTimeDto.from(suggestedBlockAsLocaltimeZone);
     }
 
     public void validToRegist(Project project, TimeBlock suggestionTime) {

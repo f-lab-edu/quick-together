@@ -55,6 +55,9 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
 	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+
+	//SpringDoc - swagger
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 }
 
 dependencyManagement {
@@ -65,4 +68,8 @@ dependencyManagement {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs.add("-parameters")
 }

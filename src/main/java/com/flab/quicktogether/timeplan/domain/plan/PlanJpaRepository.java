@@ -14,7 +14,15 @@ public interface PlanJpaRepository extends JpaRepository<Plan, Long> {
 
     Optional<Plan> findByIdAndMemberId(Long planId, Long memberId);
 
-    boolean existsByPlanNameAndTimeBlock(String planName, TimeBlock timeBlock);
+    boolean existsByPlanNameAndTimeBlockAndPlanStatusNot(String planName, TimeBlock timeBlock, Plan.PlanStatus planStatus);
+    @Query("select pl from Plan pl " +
+            "where pl.memberId = :memberId " +
+            "and not(pl.planStatus = 'DELETED') "+
+            "and pl.timeBlock.startDateTime >= :from " +
+            "and pl.timeBlock.endDateTime <= :to")
+    List<Plan> findAllByMemberIdAndTimeBlockBetween(@Param("memberId") Long memberId,
+                                             @Param("from") LocalDateTime from,
+                                             @Param("to") LocalDateTime to);
 
     @Query("select distinct pl from Plan pl " +
             "where pl.memberId in (select p.member from Participant p " +

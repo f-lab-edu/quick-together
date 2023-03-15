@@ -7,9 +7,11 @@ import com.flab.quicktogether.member.presentation.dto.request.LoginRequest;
 import com.flab.quicktogether.member.presentation.dto.response.MemberIdResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class LoginController {
@@ -21,7 +23,7 @@ public class LoginController {
     public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest) {
 
         Long loginId = loginService.login(loginRequest.getMemberName(),loginRequest.getPassword());
-
+        log.info("로그인 성공" + loginId);
         return ResponseEntity.ok(new MemberIdResponse(loginId));
     }
 
@@ -38,9 +40,5 @@ public class LoginController {
 
         return ResponseEntity.ok(new MemberIdResponse(memberId));
     }
-
-
-
-
 
 }

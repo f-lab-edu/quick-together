@@ -3,6 +3,7 @@ package com.flab.quicktogether.member.presentation;
 import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.common.auth.NotRequiredLoginCheck;
 import com.flab.quicktogether.member.application.MemberService;
+import com.flab.quicktogether.member.application.SignUpAndFirstLoginUseCase;
 import com.flab.quicktogether.member.presentation.dto.request.MemberRequest;
 import com.flab.quicktogether.member.presentation.dto.response.MemberInfoResponse;
 import com.flab.quicktogether.member.domain.Member;
@@ -22,10 +23,11 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
-
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final SignUpAndFirstLoginUseCase signUpAndFirstLoginUseCase;
 
     /**
      * 회원 가입
@@ -34,7 +36,7 @@ public class MemberController {
     @RequestMapping(path = "/members", method = RequestMethod.POST)
     public ResponseEntity signUp(@RequestBody @Valid MemberRequest memberRequest) {
 
-        Long memberId = memberService.createMember(memberRequest);
+        Long memberId = signUpAndFirstLoginUseCase.execute(memberRequest);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

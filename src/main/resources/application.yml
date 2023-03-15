@@ -31,7 +31,16 @@ spring:
 
 logging:
   level:
-    sql: debug
+    sql: error
+    com:
+      flab:
+        quicktogether: info
+    org:
+      springframework:
+       core:
+         LocalVariableTableParameterNameDiscoverer:
+
+
 
 fcm:
   certification: quick-together-aa39f-firebase-adminsdk-o5u46-3a3494ce2f.json

@@ -1,5 +1,6 @@
 package com.flab.quicktogether.meeting.presentation.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flab.quicktogether.meeting.domain.MeetingParticipant;
 import com.flab.quicktogether.participant.domain.ParticipantRole;
 import lombok.AccessLevel;
@@ -8,8 +9,14 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MeetingParticipantDto {
+
+    @JsonProperty("meeting_member_id")
     private Long meetingMemberId;
+
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("participant_role")
     private ParticipantRole participantRole;
 
     private MeetingParticipantDto(Long meetingMemberId, String name, ParticipantRole participantRole) {

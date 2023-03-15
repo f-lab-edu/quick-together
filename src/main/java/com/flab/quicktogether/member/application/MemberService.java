@@ -1,5 +1,6 @@
 package com.flab.quicktogether.member.application;
 
+import com.flab.quicktogether.member.application.login.LoginService;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.exception.DuplicateMemberNameException;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;
@@ -19,16 +20,18 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final LoginService loginService;
+
     @Transactional
     public Long createMember(MemberRequest memberRequest){
 
         validateDuplicateMemberName(memberRequest);
-
+        String pwBeforeEncoded = memberRequest.getPassword();
         memberRequest.setPassword(passwordEncoder.encode(memberRequest.getPassword()));
 
         Member member = memberRequest.toEntity();
         Member savedMember = memberRepository.save(member);
-
+        loginService.login(memberRequest.getMemberName(), pwBeforeEncoded);
         return savedMember.getId();
 
     }
