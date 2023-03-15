@@ -7,6 +7,7 @@ import com.flab.quicktogether.timeplan.presentation.dto.AvailablePlanGetDto;
 import com.flab.quicktogether.timeplan.presentation.dto.AvailablePlanRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/available-plans")
 @RequiredArgsConstructor
@@ -30,8 +31,9 @@ public class WeeklyAvailablePlanController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<HttpStatus> postTimePlan(@Login Long loginMemberId,
+    public ResponseEntity<HttpStatus> postWeeklyAvailablePlan(@Login Long loginMemberId,
                                                    @Valid @RequestBody AvailablePlanCreateRequestDto timePlanCreateRequestDto) {
+        log.info("dto={}", timePlanCreateRequestDto);
         availableTimeService.registerWeeklyAvailableRoutine(loginMemberId, timePlanCreateRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

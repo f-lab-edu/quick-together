@@ -21,7 +21,7 @@ public class QPlannerSetting extends EntityPathBase<PlannerSetting> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> limit = createNumber("limit", Integer.class);
+    public final NumberPath<Integer> limits = createNumber("limits", Integer.class);
 
     public final NumberPath<Integer> marginalMinutes = createNumber("marginalMinutes", Integer.class);
 

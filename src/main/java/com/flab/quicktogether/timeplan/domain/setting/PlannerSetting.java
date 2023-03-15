@@ -27,15 +27,15 @@ public class PlannerSetting {
 
     private Integer marginalMinutes = 0;
 
-    private Integer limit;
+    private Integer limits;
 
     @Builder
-    public PlannerSetting(Long memberId, SequencePriority sequencePriority, MinuteUnit minuteUnit, Integer marginalMinutes, Integer limit) {
+    public PlannerSetting(Long memberId, SequencePriority sequencePriority, MinuteUnit minuteUnit, Integer marginalMinutes, Integer limits) {
         this.memberId = memberId;
         this.sequencePriority = checkDefault(sequencePriority);
         this.minuteUnit = checkDefault(minuteUnit);
         this.marginalMinutes = checkDefault(marginalMinutes);
-        this.limit = limit;
+        this.limits = limits;
     }
 
     private Integer checkDefault(Integer marginalSpace) {

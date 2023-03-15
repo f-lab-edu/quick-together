@@ -18,7 +18,7 @@ public class ScheduleController {
     @RequestMapping(path = "/schedules/{projectId}", method = RequestMethod.GET)
     public ResponseEntity<SuggestedTimeDto> informAvailableTime(@Login Long memberId,
                                                                 @PathVariable("projectId") Long projectId,
-                                                                @RequestParam RoughlyPlanDto roughlyPlanDto) {
+                                                                @ModelAttribute RoughlyPlanDto roughlyPlanDto) {
         SuggestedTimeDto suggestedTimeDto = scheduleService
                 .suggestAvailableTime(memberId, projectId, roughlyPlanDto);
 

@@ -62,7 +62,6 @@ public class TimeBlock implements Comparable<TimeBlock> {
                 .withZoneSameInstant(utc)
                 .toLocalDateTime();
     }
-
     private static LocalDateTime offsetRange(LocalDateTime target, Range range) {
         LocalDateTime startRange = range.getStartDateTime();
         LocalDateTime endRange = range.getEndDateTime();

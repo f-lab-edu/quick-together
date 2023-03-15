@@ -317,7 +317,7 @@ body {
 .signup-image,
 .signin-form,
 .signin-image {
-  width: 50%;
+  width: 80%;
   overflow: hidden;
 }
 
