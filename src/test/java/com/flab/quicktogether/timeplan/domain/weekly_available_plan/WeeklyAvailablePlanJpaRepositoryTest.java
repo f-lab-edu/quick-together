@@ -22,7 +22,6 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@Rollback(false)
 @Transactional
 class WeeklyAvailablePlanJpaRepositoryTest {
 

@@ -8,8 +8,6 @@ import com.flab.quicktogether.participant.infrastructure.ParticipantRepository;
 import com.flab.quicktogether.project.domain.Project;
 import com.flab.quicktogether.project.fixture.ProjectFixture;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
-import com.flab.quicktogether.timeplan.domain.plan.Plan;
-import com.flab.quicktogether.timeplan.domain.plan.PlanJpaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.flab.quicktogether.project.fixture.ProjectFixture.FOUNDER;
 import static com.flab.quicktogether.timeplan.fixture.PlanFixture.*;
 import static com.flab.quicktogether.timeplan.fixture.PlanFixture.FIXED_DATE;
 import static com.flab.quicktogether.timeplan.fixture.PlanFixture.OUT_DATE;
@@ -31,7 +30,6 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @Transactional
-@Rollback(value = false)
 class PlanJpaRepositoryTest {
 
     @Autowired
@@ -46,9 +44,9 @@ class PlanJpaRepositoryTest {
 
     //fixture
     Member testMember1 = new Member("testMember");
-    Member founder = ProjectFixture.FOUNDER;
-    Project project = ProjectFixture.NORMAL_FIXTURE1;
-    Participant participant = new Participant(testMember1, project, ParticipantRole.ROLE_ADMIN);
+    Member founder = FOUNDER;
+    Project projectByFounder = ProjectFixture.NORMAL_FIXTURE1;
+    Participant participant = new Participant(testMember1, projectByFounder, ParticipantRole.ROLE_ADMIN);
 
     Plan outDatePlan1;
     Plan outDatePlan2;
@@ -56,6 +54,7 @@ class PlanJpaRepositoryTest {
     Plan legalPlan2;
     Plan overLimitPlan1;
     @BeforeEach
+    @Rollback(false)
     public void beforeEach() throws Exception {
 
         //Member 저장
@@ -66,7 +65,7 @@ class PlanJpaRepositoryTest {
         Long testMemberId1 = memberRepository.findById(testMember1.getId()).get().getId();
 
         //Project 저장
-        projectRepository.save(project);
+        projectRepository.save(projectByFounder);
 
         //Participant 저장
 
@@ -95,7 +94,7 @@ class PlanJpaRepositoryTest {
     @Test
     void findByProjectIdAndAfterCurrent() {
         //given
-        Long projectId = projectRepository.findById(1L).get().getId();
+        Long projectId = projectRepository.findByFounder(FOUNDER).get().getId();
 
         //when
         List<Plan> result = planJpaRepository.findByProjectId(projectId, LIMIT_DATE);
