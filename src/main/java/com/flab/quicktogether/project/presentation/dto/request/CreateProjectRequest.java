@@ -48,6 +48,15 @@ public class CreateProjectRequest {
     @NotNull
     private String projectDescription; // 프로젝트 상세설명
 
+    public CreateProjectRequest(Long memberId, String projectName, LocalDateTime startDateTime, LocalDateTime periodDateTime, MeetingMethod meetingMethod, String projectSummary, String projectDescription) {
+        this.memberId = memberId;
+        this.projectName = projectName;
+        this.startDateTime = startDateTime;
+        this.periodDateTime = periodDateTime;
+        this.meetingMethod = meetingMethod;
+        this.projectSummary = projectSummary;
+        this.projectDescription = projectDescription;
+    }
 
     public CreateProjectRequestDto toServiceDto() {
         CreateProjectRequestDto dto = CreateProjectRequestDto.builder()
