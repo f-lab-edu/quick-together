@@ -13,12 +13,18 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        show_sql: false
         dialect: org.hibernate.dialect.MySQLDialect
     defer-datasource-initialization: true
 
   sql:
     init:
       mode: always
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
 
   redis:
     lettuce:
