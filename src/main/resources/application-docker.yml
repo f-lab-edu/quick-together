@@ -1,5 +1,6 @@
 server:
   port: ${SERVER_PORT}
+  tomcat.max-threads: ${SERVER_THREAD}
 
 spring:
   datasource:
@@ -7,6 +8,8 @@ spring:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: ${DB_POOL}
   jpa:
     hibernate:
       ddl-auto: create
