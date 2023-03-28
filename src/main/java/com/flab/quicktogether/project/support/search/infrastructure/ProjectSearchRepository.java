@@ -1,7 +1,6 @@
 package com.flab.quicktogether.project.support.search.infrastructure;
 
 import com.flab.quicktogether.project.domain.Project;
-import com.flab.quicktogether.project.support.search.presentation.dto.ProjectDetailDto;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
