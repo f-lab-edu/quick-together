@@ -26,6 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -131,7 +132,7 @@ class ProjectServiceTest {
     @DisplayName("없는 프로젝트 조회 시 ProjectNotFoundException 발생한다.")
     void findProjectException() {
 
-        Assertions.assertThrows(ProjectNotFoundException.class,() -> projectService.retrieveBasicProject(1L));
+        Assertions.assertThrows(ProjectNotFoundException.class,() -> projectService.retrieveBasicProject(0L));
 
 
     }
@@ -206,6 +207,8 @@ class ProjectServiceTest {
                 .meetingMethod(meetingMethod)
                 .projectSummary(projectSummary)
                 .projectDescription(projectDescription)
+                .recruitmentPositions(new HashSet<>())
+                .skillStacks(new HashSet<>())
                 .build();
 
         Long createProjectId = projectService.createProject(createProjectRequestDto);
@@ -216,7 +219,7 @@ class ProjectServiceTest {
 
         Project findProject = projectRepository.findById(project.getId()).get();
 
-        Assertions.assertEquals(findProject.getSkillStacks().get(0), skillStack);
+        Assertions.assertEquals(findProject.getSkillStacks().contains(skillStack), true);
     }
 
     @Test
@@ -231,6 +234,8 @@ class ProjectServiceTest {
                 .meetingMethod(meetingMethod)
                 .projectSummary(projectSummary)
                 .projectDescription(projectDescription)
+                .recruitmentPositions(new HashSet<>())
+                .skillStacks(new HashSet<>())
                 .build();
 
         Long createProjectId = projectService.createProject(createProjectRequestDto);
@@ -247,6 +252,7 @@ class ProjectServiceTest {
     @DisplayName("프로젝트에 모집 포지션을 추가한다.")
     void addRecruitmentPosition() {
 
+
         CreateProjectRequestDto createProjectRequestDto = CreateProjectRequestDto.builder()
                 .projectName(projectName)
                 .memberId(member.getId())
@@ -255,17 +261,20 @@ class ProjectServiceTest {
                 .meetingMethod(meetingMethod)
                 .projectSummary(projectSummary)
                 .projectDescription(projectDescription)
+                .recruitmentPositions(new HashSet<>())
+                .skillStacks(new HashSet<>())
                 .build();
 
         Long createProjectId = projectService.createProject(createProjectRequestDto);
         Project project = projectRepository.findById(createProjectId).get();
+
         Position position = Position.BACKEND;
 
         projectService.addRecruitmentPosition(project.getId(),new EditRecruitmentPositionsRequestDto(position));
 
         Project findProject = projectRepository.findById(project.getId()).get();
 
-        Assertions.assertEquals(findProject.getRecruitmentPositions().get(0), position);
+        Assertions.assertEquals(findProject.getRecruitmentPositions().contains(position), true);
     }
 
     @Test
@@ -280,6 +289,8 @@ class ProjectServiceTest {
                 .meetingMethod(meetingMethod)
                 .projectSummary(projectSummary)
                 .projectDescription(projectDescription)
+                .recruitmentPositions(new HashSet<>())
+                .skillStacks(new HashSet<>())
                 .build();
 
         Long createProjectId = projectService.createProject(createProjectRequestDto);

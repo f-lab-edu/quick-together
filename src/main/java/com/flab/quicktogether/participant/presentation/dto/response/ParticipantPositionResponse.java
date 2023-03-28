@@ -5,8 +5,8 @@ import com.flab.quicktogether.common.Position;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +20,7 @@ public class ParticipantPositionResponse {
     private Long projectId;
 
     @NotNull
-    private List<Position> positions = new ArrayList<>();
+    private Set<Position> positions = new HashSet<>();
 
     public ParticipantPositionResponse(Long projectId, Long memberId, Participant participant) {
         this.memberId = memberId;

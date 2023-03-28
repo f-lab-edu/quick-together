@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -105,7 +106,7 @@ public class ParticipantService {
     }
 
     private void validateDuplicatePosition(Participant participant, Position newPosition) {
-        List<Position> positions = participant.getPositions();
+        Set<Position> positions = participant.getPositions();
         positions.stream()
                 .filter(position -> position.equals(newPosition))
                 .forEach(position -> {
@@ -135,7 +136,7 @@ public class ParticipantService {
     }
 
     private void validateDuplicateSkillStack(Participant participant, SkillStack newSkillStack) {
-        List<SkillStack> skillStacks = participant.getSkillStacks();
+        Set<SkillStack> skillStacks = participant.getSkillStacks();
         skillStacks.stream()
                 .filter(skillStack -> skillStack.equals(newSkillStack))
                 .forEach(skillStack -> {

@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -34,10 +34,10 @@ public class CreateProjectRequest {
     private LocalDateTime periodDateTime; // 모집기간
 
     @NotNull
-    private List<SkillStack> skillStacks = new ArrayList<>();
+    private Set<SkillStack> skillStacks = new HashSet<>();
 
     @NotNull
-    private List<Position> RecruitmentPositions = new ArrayList<>();
+    private Set<Position> RecruitmentPositions = new HashSet<>();
 
     @NotNull
     private MeetingMethod meetingMethod; // 미팅 방법

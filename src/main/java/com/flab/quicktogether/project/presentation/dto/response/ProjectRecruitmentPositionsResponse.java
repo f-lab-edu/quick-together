@@ -5,8 +5,8 @@ import com.flab.quicktogether.project.domain.Project;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +16,7 @@ public class ProjectRecruitmentPositionsResponse {
     private Long projectId;
 
     @NotNull
-    private List<Position> RecruitmentPositions = new ArrayList<>();
+    private Set<Position> RecruitmentPositions = new HashSet<>();
 
     public ProjectRecruitmentPositionsResponse(Long projectId, Project project) {
         this.projectId = projectId;

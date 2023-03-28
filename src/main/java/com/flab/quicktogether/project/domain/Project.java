@@ -11,8 +11,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Getter
@@ -54,18 +54,17 @@ public class Project {
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "ProjectSkillStack", joinColumns = @JoinColumn(name = "project_id"))
     @Enumerated(EnumType.STRING)
-    private List<SkillStack> skillStacks = new ArrayList<>();
+    private Set<SkillStack> skillStacks = new HashSet<>();
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "ProjectRecruitmentPosition", joinColumns = @JoinColumn(name = "project_id"))
     @Enumerated(EnumType.STRING)
-    private List<Position> recruitmentPositions = new ArrayList<>();
-
+    private Set<Position> recruitmentPositions = new HashSet<>();
 
     @Builder()
     public Project(String projectName, Member founder, String projectSummary, String projectDescription,
                    MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime,
-                   List<SkillStack> skillStacks, List<Position> recruitmentPositions) {
+                   Set<SkillStack> skillStacks, Set<Position> recruitmentPositions) {
 
         Assert.hasText(projectName,"projectName must not be empty");
         Assert.notNull(founder, "projectFounder must not be null");

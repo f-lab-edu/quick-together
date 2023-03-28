@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -82,7 +83,7 @@ public class ProjectService {
     }
 
     private void validateDuplicateSkillStack(Project project, SkillStack newSkillStack) {
-        List<SkillStack> skillStacks = project.getSkillStacks();
+        Set<SkillStack> skillStacks = project.getSkillStacks();
         skillStacks.stream()
                 .filter(skillStack -> skillStack.equals(newSkillStack))
                 .forEach(skillStack -> {
@@ -112,7 +113,7 @@ public class ProjectService {
     }
 
     private void validateDuplicateRecruitmentPosition(Project project, Position newRecruitmentPosition) {
-        List<Position> positions = project.getRecruitmentPositions();
+        Set<Position> positions = project.getRecruitmentPositions();
         positions.stream()
                 .filter(position -> position.equals(newRecruitmentPosition))
                 .forEach(position -> {

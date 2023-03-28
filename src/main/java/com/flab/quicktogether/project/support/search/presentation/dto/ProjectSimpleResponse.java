@@ -9,8 +9,8 @@ import com.flab.quicktogether.project.domain.ProjectStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class ProjectSimpleResponse {
@@ -34,9 +34,9 @@ public class ProjectSimpleResponse {
     private LocalDateTime periodDateTime; // 모집기간
 
     private LocalDateTime createDateTime; // 생성일
-    private List<SkillStack> projectSkillStacks = new ArrayList<>();
+    private Set<SkillStack> projectSkillStacks = new HashSet<>();
 
-    private List<Position> recruitPositions = new ArrayList<>();
+    private Set<Position> recruitPositions = new HashSet<>();
 
 
 

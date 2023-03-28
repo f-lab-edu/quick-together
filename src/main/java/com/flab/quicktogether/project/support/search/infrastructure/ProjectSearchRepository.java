@@ -1,6 +1,7 @@
 package com.flab.quicktogether.project.support.search.infrastructure;
 
 import com.flab.quicktogether.project.domain.Project;
+import com.flab.quicktogether.project.support.search.presentation.dto.ProjectDetailDto;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +20,12 @@ public interface ProjectSearchRepository extends JpaRepository<Project, Long> {
      * 프로젝트 상세 조회
      * 프로젝트에 구성원과 멤버를 한 번에 가져온다.
      */
-    @Query("select p from Project p " +
-            "join fetch p.participants.participants " +
-            "join fetch p.participants.participants.member " +
+    @Query("select distinct p from Project p " +
+            "LEFT JOIN fetch p.skillStacks " +
+            "LEFT JOIN fetch p.recruitmentPositions " +
+            "JOIN fetch p.participants.participants.member " +
+            "LEFT JOIN fetch p.participants.participants.skillStacks " +
+            "LEFT JOIN fetch p.participants.participants.positions " +
             "where p.Id = :projectId")
     Optional<Project> findByProjectIdWithDetail(@Param("projectId") Long projectId);
 

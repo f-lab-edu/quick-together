@@ -10,8 +10,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.flab.quicktogether.participant.domain.ParticipantRole.*;
 import static com.flab.quicktogether.participant.domain.ParticipantRole.ROLE_ADMIN;
@@ -37,15 +37,15 @@ public class Participant {
     @Enumerated(EnumType.STRING)
     private ParticipantRole participantRole;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "ParticipantPosition", joinColumns = @JoinColumn(name = "participant_id"))
     @Enumerated(EnumType.STRING)
-    private List<Position> positions = new ArrayList<>();
+    private Set<Position> positions = new HashSet<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "ParticipantSkillStack", joinColumns = @JoinColumn(name = "participant_id"))
     @Enumerated(EnumType.STRING)
-    private List<SkillStack> skillStacks = new ArrayList<>();
+    private Set<SkillStack> skillStacks = new HashSet<>();
 
 
     public Participant(Member member, Project project, ParticipantRole participantRole) {

@@ -9,7 +9,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class ProjectDetailResponse {
@@ -36,9 +38,9 @@ public class ProjectDetailResponse {
 
     private LocalDateTime createDateTime; // 생성일
 
-    private List<SkillStack> projectSkillStacks = new ArrayList<>();
+    private Set<SkillStack> projectSkillStacks = new HashSet<>();
 
-    private List<Position> recruitPositions = new ArrayList<>();
+    private Set<Position> recruitPositions = new HashSet<>();
     private List<ParticipantInfoDto> participants = new ArrayList<>();
     private List<PostInfoDto> posts = new ArrayList<>();
 
@@ -59,10 +61,6 @@ public class ProjectDetailResponse {
         projectSkillStacks = p.getSkillStacks();
         recruitPositions = p.getRecruitmentPositions();
         this.likes = likes;
-
-        // 프록시 객체 초기화
-        if(projectSkillStacks.size() != 0) projectSkillStacks.get(0);
-        if(recruitPositions.size() != 0) recruitPositions.get(0);
 
         for (Post post : allPosts) {
             posts.add(new PostInfoDto(post.getMember().getMemberName(), post.getContent(), post.getCreateDateTime()));

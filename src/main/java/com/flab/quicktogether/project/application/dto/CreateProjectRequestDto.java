@@ -9,8 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 public class CreateProjectRequestDto {
@@ -22,13 +22,13 @@ public class CreateProjectRequestDto {
     private String projectSummary; // 프로젝트 간단 설명
     private String projectDescription; // 프로젝트 상세설명
 
-    private List<SkillStack> skillStacks = new ArrayList<>();
+    private Set<SkillStack> skillStacks = new HashSet<>();
 
-    private List<Position> recruitmentPositions = new ArrayList<>();
+    private Set<Position> recruitmentPositions = new HashSet<>();
 
 
     @Builder
-    public CreateProjectRequestDto(Long memberId, String projectName, LocalDateTime startDateTime, LocalDateTime periodDateTime, MeetingMethod meetingMethod, String projectSummary, String projectDescription, List<SkillStack> skillStacks, List<Position> recruitmentPositions) {
+    public CreateProjectRequestDto(Long memberId, String projectName, LocalDateTime startDateTime, LocalDateTime periodDateTime, MeetingMethod meetingMethod, String projectSummary, String projectDescription, Set<SkillStack> skillStacks, Set<Position> recruitmentPositions) {
         this.memberId = memberId;
         this.projectName = projectName;
         this.startDateTime = startDateTime;
