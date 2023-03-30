@@ -59,8 +59,8 @@ public class ProjectSearchController {
      * 권한: 로그인 and 프로젝트 구성원
      */
     @GetMapping("/projects/{projectId}/detail")
-    public ProjectDetailResponse projectDetail(@PathVariable("projectId") Long projectId, @Login Long memberId) {
-        ProjectDetailResponse projectDetailResponse = projectSearchService.retrieveDetailProject(projectId, memberId);
+    public ProjectDetailResponse projectDetail(@PathVariable("projectId") Long projectId, Long memberId) {
+        ProjectDetailResponse projectDetailResponse = projectSearchService.retrieveDetailProject(projectId, 1L);
         return projectDetailResponse;
     }
 
