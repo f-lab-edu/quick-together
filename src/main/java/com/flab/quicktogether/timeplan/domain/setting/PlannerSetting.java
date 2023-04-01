@@ -20,23 +20,30 @@ public class PlannerSetting {
     private Long memberId;
 
     @Enumerated(EnumType.STRING)
-    private SequencePriority sequencePriority = SequencePriority.FAST;
+    private SequencePriority sequencePriority;
 
     @Enumerated(EnumType.STRING)
-    private MinuteUnit minuteUnit = MinuteUnit.TEN;
+    private MinuteUnit minuteUnit;
 
     private Integer marginalMinutes;
 
     @Column(name = "limits") // limit이 mariadb에서 예약어로 인식
-    private Integer limit;
+    private int limit;
 
     @Builder
-    public PlannerSetting(Long memberId, SequencePriority sequencePriority, MinuteUnit minuteUnit, Integer marginalMinutes, Integer limit) {
+    public PlannerSetting(Long memberId, SequencePriority sequencePriority, MinuteUnit minuteUnit, Integer marginalMinutes, int limit) {
         this.memberId = memberId;
         this.sequencePriority = checkDefault(sequencePriority);
         this.minuteUnit = checkDefault(minuteUnit);
         this.marginalMinutes = checkDefault(marginalMinutes);
-        this.limit = limit;
+        this.limit = checkNull(limit);
+    }
+
+    private int checkNull(Integer limit) {
+        if (limit == null) {
+            return 0;
+        }
+        return limit;
     }
 
     private Integer checkDefault(Integer marginalSpace) {

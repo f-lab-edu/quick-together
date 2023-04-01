@@ -229,7 +229,7 @@ public class Meeting {
         return meetingParticipants.getList().stream()
                 .map(participant -> {
                     Long memberId = participant.getMember().getId();
-                    return new Plan(memberId,title,timeBlock);
+                    return Plan.madeByMeeting(memberId,title,timeBlock);
                 })
                 .toList();
     }

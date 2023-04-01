@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mariadb://35.216.29.90:3306/quick_together
+    url: jdbc:mariadb://10.178.0.14:3306/quick_together
     driver-class-name: org.mariadb.jdbc.Driver
     username: sa
     password: 1

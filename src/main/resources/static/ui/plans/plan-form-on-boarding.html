@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>
+        계획 추가하기
+    </title>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+        body{
+            text-align: center;
+
+        }
+        #calendar {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .event-command {
+            position: relative;
+            bottom: 48px;
+            margin: 10px;
+            padding: 4px;
+            z-index: 4;
+        }
+
+        .event-button {
+            background-color: #6dabe4;
+            color: white;
+            margin: 4px;
+            border: 0px;
+            border-radius: 4px;
+            padding: 4px;
+            z-index: 4;
+        }
+
+        .event-button:hover {
+            background-color: #386089;
+            z-index: 4;
+            color: white;
+        }
+
+        .input-timezone{
+            position: relative;
+            text-align: right;
+        }
+
+        .calendar-form{
+            margin: 10px;
+            padding: 10px;
+        }
+        .form-submit {
+            display: inline-block;
+            background: #6dabe4;
+            color: #fff;
+            border: 0;
+            width: auto;
+            padding: 15px 39px;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -o-border-radius: 5px;
+            -ms-border-radius: 5px;
+            margin-top: 25px;
+            cursor: pointer;
+        }
+        .form-submit:hover {
+            background: #4292dc;
+        }
+
+    </style>
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
+    <script src='/host-info.js'></script>
+    <script src="plan-form.js"></script>
+    <script src="ko.global.min.js"></script>
+</head>
+
+<body>
+
+<div class="calendar-form">
+<!--    캘린더 부분-->
+    <div id='calendar'></div>
+
+<!--    시간대 라디오버튼-->
+    <div class="input-timezone">
+        <span> 시간대 </span>
+        <label class="radio-block">
+            <input type="radio" class="timezone" name="timezone" value="Asia/Seoul" checked>
+            아시아/서울
+        </label>
+        <label class="radio-block">
+            <input type="radio" class="timezone" name="timezone" value="America/Los_Angeles">
+            미국/로스엔젤레스
+        </label>
+        <label class="radio-block">
+            <input type="radio" class="timezone" name="timezone" value="Europe/London">
+            유럽/런던
+        </label>
+    </div>
+
+    <button type="submit" class="submit-able-plan form-submit" onclick=location.href="completion.html">
+        제출하기</button>
+</div>
+
+</body>
+
+</html>
+
+</html>

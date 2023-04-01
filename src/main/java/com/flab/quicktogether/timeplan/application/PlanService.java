@@ -5,12 +5,15 @@ import com.flab.quicktogether.timeplan.domain.plan.PlanApiClient;
 import com.flab.quicktogether.timeplan.domain.plan.PlanJpaRepository;
 import com.flab.quicktogether.timeplan.domain.exception.DuplicatePlanException;
 import com.flab.quicktogether.timeplan.domain.exception.NotFoundPlanException;
+import com.flab.quicktogether.timeplan.presentation.dto.PlanGetResponseDto;
+import com.flab.quicktogether.timeplan.presentation.dto.PlanSearchCondition;
 import com.flab.quicktogether.timeplan.presentation.dto.PlanUpdateRequestDto;
 import com.flab.quicktogether.timeplan.presentation.dto.PlanCreateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,8 +52,20 @@ public class PlanService {
     }
 
     private void verifyDuplicated(Plan plan) {
-        if (planJpaRepository.existsByPlanNameAndTimeBlock(plan.getPlanName(), plan.getTimeBlock())) {
+        if (planJpaRepository.existsByPlanNameAndTimeBlockAndPlanStatusNot(plan.getPlanName(), plan.getTimeBlock(), Plan.PlanStatus.DELETED)) {
             throw new DuplicatePlanException();
         }
+
+    }
+
+    public List<PlanGetResponseDto> getPlans(Long loginMemberId, PlanSearchCondition condition) {
+        List<Plan> plans = planJpaRepository
+                .findAllByMemberIdAndTimeBlockBetween(loginMemberId, condition.getFrom(), condition.getTo());
+        List<PlanGetResponseDto> planGetResponseDtos = plans.stream()
+                .map(p -> PlanGetResponseDto.from(p, condition.makeZoneId()))
+                .toList();
+
+        System.out.println("planGetResponseDtos = " + planGetResponseDtos);
+        return planGetResponseDtos;
     }
 }

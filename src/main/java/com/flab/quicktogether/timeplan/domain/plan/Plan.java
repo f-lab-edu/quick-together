@@ -44,8 +44,20 @@ public class Plan implements Comparable<Plan> {
         this.timeBlock = timeBlock;
     }
 
-    public static Plan asCommonTime(Long memberId, String planName, LocalDateTime startDateTime, LocalDateTime endDateTime, ZoneId localTimeZone) {
-        TimeBlock commonTimeBlock = TimeBlock.asCommonTime(startDateTime, endDateTime, localTimeZone);
+    Plan(Long memberId, String planName, TimeBlock timeBlock, PlanStatus planStatus) {
+        this.memberId = memberId;
+        this.planName = nullProcess(planName);
+
+        verifyNotExpire(timeBlock);
+        this.timeBlock = timeBlock;
+        this.planStatus = planStatus;
+    }
+    public static Plan madeByMeeting(Long memberId, String planName, TimeBlock timeBlock){
+        return new Plan(memberId,planName,timeBlock,PlanStatus.MADE_BY_MEETING);
+    }
+
+    public static Plan asCommonTime(Long memberId, String planName, LocalDateTime startDateTime, LocalDateTime endDateTime, ZoneId localtimeZone) {
+        TimeBlock commonTimeBlock = TimeBlock.asCommonTime(startDateTime, endDateTime, localtimeZone);
         return new Plan(memberId, planName, commonTimeBlock);
     }
 
@@ -96,7 +108,7 @@ public class Plan implements Comparable<Plan> {
         this.timeBlock = timeBlock;
     }
 
-    enum PlanStatus {
-        DEFAULT, DELETED
+    public enum PlanStatus {
+        DEFAULT, DELETED, MADE_BY_MEETING
     }
 }

@@ -15,7 +15,7 @@ import com.flab.quicktogether.timeplan.domain.exception.NotFoundPlannerSettingEx
 import com.flab.quicktogether.timeplan.domain.plan.Plan;
 import com.flab.quicktogether.timeplan.domain.plan.PlanJpaRepository;
 import com.flab.quicktogether.timeplan.domain.setting.PlannerSetting;
-import com.flab.quicktogether.timeplan.domain.setting.ScheduleSettingRepository;
+import com.flab.quicktogether.timeplan.domain.setting.PlannerSettingRepository;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import com.flab.quicktogether.timeplan.presentation.dto.RoughlyPlanDto;
 import com.flab.quicktogether.timeplan.presentation.dto.SuggestedTimeDto;
@@ -35,7 +35,7 @@ public class ScheduleService {
     private final PlanJpaRepository planJpaRepository;
     private final WeeklyAvailablePlanRepository weeklyAvailablePlanRepository;
     private final ParticipantRepository participantRepository;
-    private final ScheduleSettingRepository scheduleSettingRepository;
+    private final PlannerSettingRepository plannerSettingRepository;
     private final Planner planner;
 
     @Autowired
@@ -43,13 +43,13 @@ public class ScheduleService {
                            PlanJpaRepository planJpaRepository,
                            WeeklyAvailablePlanRepository weeklyAvailablePlanRepository,
                            ParticipantRepository participantRepository,
-                           ScheduleSettingRepository scheduleSettingRepository,
+                           PlannerSettingRepository plannerSettingRepository,
                            Planner planner) {
         this.meetingRepository = meetingRepository;
         this.planJpaRepository = planJpaRepository;
         this.weeklyAvailablePlanRepository = weeklyAvailablePlanRepository;
         this.participantRepository = participantRepository;
-        this.scheduleSettingRepository = scheduleSettingRepository;
+        this.plannerSettingRepository = plannerSettingRepository;
         this.planner = planner;
     }
 
@@ -59,22 +59,22 @@ public class ScheduleService {
                 .findByProjectIdAndMemberId(projectId, memberId)
                 .orElseThrow(ParticipantNotFoundException::new);
 
-        ZoneId zoneId = ZoneId.of(roughlyPlanDto.getTimezone());
+        ZoneId zoneId = ZoneId.of(roughlyPlanDto.getTimeZone());
         RoughlyPlan roughlyPlan = roughlyPlanDto.toEntity();
         LocalDateTime limit = roughlyPlan.getRange().getStartDateTime();
 
         List<WeeklyAvailablePlan> weeklyAvailablePlansInProject = weeklyAvailablePlanRepository.findByProjectId(projectId);
         List<Plan> plansInProject = planJpaRepository.findByProjectId(projectId, limit);
 
-        PlannerSetting plannerSetting = scheduleSettingRepository.findScheduleSettingByMemberId(memberId)
+        PlannerSetting plannerSetting = plannerSettingRepository.findScheduleSettingByMemberId(memberId)
                 .orElseThrow(NotFoundPlannerSettingException::new);
 
         List<TimeBlock> suggestedBlock = planner.suggestTime(roughlyPlan, weeklyAvailablePlansInProject, plansInProject, plannerSetting);
 
-        List<TimeBlock> suggestedBlockAsLocalTimeZone = suggestedBlock.stream()
-                .map(block -> block.offsetLocalTimeZone(zoneId))
+        List<TimeBlock> suggestedBlockAsLocaltimeZone = suggestedBlock.stream()
+                .map(block -> block.offsetLocaltimeZone(zoneId))
                 .toList();
-        return SuggestedTimeDto.from(suggestedBlockAsLocalTimeZone);
+        return SuggestedTimeDto.from(suggestedBlockAsLocaltimeZone);
     }
 
     public void validToRegist(Project project, TimeBlock suggestionTime) {

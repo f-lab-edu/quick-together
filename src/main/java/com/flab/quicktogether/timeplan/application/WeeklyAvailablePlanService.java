@@ -42,8 +42,8 @@ public class WeeklyAvailablePlanService {
                 .updateAvailablePlans(newAvailablePlan);
     }
 
-    public AvailablePlanGetDto getAvailablePlan(Long loginMemberId, String localTimeZone) {
-        ZoneId zoneId = ZoneId.of(localTimeZone);
+    public AvailablePlanGetDto getAvailablePlan(Long loginMemberId, String localtimeZone) {
+        ZoneId zoneId = ZoneId.of(localtimeZone);
 
         WeeklyAvailablePlan weeklyAvailablePlan = weeklyAvailablePlanRepository.findByMemberId(loginMemberId)
                 .orElseThrow(NotFoundWeeklyAvailablePlanException::new);

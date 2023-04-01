@@ -1,7 +1,7 @@
 package com.flab.quicktogether.member.application.login;
 
 import com.flab.quicktogether.alarm.service.RedisAlarmTokenService;
-import com.flab.quicktogether.common.SessionConst;
+import com.flab.quicktogether.common.auth.config.session.SessionConst;
 import com.flab.quicktogether.member.domain.Member;
 import com.flab.quicktogether.member.exception.BadCredentialsException;
 import com.flab.quicktogether.member.exception.MemberNotFoundException;

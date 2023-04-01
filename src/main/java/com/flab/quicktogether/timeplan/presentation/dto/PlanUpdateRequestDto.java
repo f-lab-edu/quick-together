@@ -1,6 +1,7 @@
 package com.flab.quicktogether.timeplan.presentation.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flab.quicktogether.timeplan.domain.plan.Plan;
 import com.flab.quicktogether.timeplan.domain.value_type.TimeBlock;
 import jakarta.validation.constraints.Future;
@@ -16,16 +17,21 @@ import java.time.ZoneId;
 @NoArgsConstructor
 @ToString
 public class PlanUpdateRequestDto {
+
+    @JsonProperty("event_name")
     private String eventName;
 
     @NotNull
+    @JsonProperty("start_date_time")
     private LocalDateTime startDateTime;
 
     @NotNull
     @Future
+    @JsonProperty("end_date_time")
     private LocalDateTime endDateTime;
 
     @NotNull
+    @JsonProperty("time_zone")
     private String timeZone;
 
     public Plan toEntityOf(Long memberId) {
