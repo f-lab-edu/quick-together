@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlannerSetting {
-
     @Id
     @GeneratedValue
     @Column(name = "schedule_priority_id")
@@ -36,12 +35,20 @@ public class PlannerSetting {
         this.sequencePriority = checkDefault(sequencePriority);
         this.minuteUnit = checkDefault(minuteUnit);
         this.marginalMinutes = checkDefault(marginalMinutes);
-        this.limit = checkNull(limit);
+        this.limit = checkLimitDefault(limit);
     }
 
-    private int checkNull(Integer limit) {
+    public Long update(PlannerSetting plannerSetting) {
+        this.sequencePriority = checkDefault(plannerSetting.sequencePriority);
+        this.minuteUnit = checkDefault(plannerSetting.minuteUnit);
+        this.marginalMinutes = checkDefault(plannerSetting.marginalMinutes);
+        this.limit = checkLimitDefault(plannerSetting.limit);
+        return this.id;
+    }
+
+    private int checkLimitDefault(Integer limit) {
         if (limit == null) {
-            return 0;
+            return 10;
         }
         return limit;
     }
@@ -66,5 +73,4 @@ public class PlannerSetting {
         }
         return sequencePriority;
     }
-
 }

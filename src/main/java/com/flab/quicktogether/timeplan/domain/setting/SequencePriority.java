@@ -19,7 +19,4 @@ public enum SequencePriority {
         this.value =value;
     }
 
-
-
-
 }
