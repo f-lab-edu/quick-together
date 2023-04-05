@@ -37,7 +37,7 @@ public class LoginController {
     }
 
 
-    @RequestMapping(path = "/logout", method = RequestMethod.GET)
+    @RequestMapping(path = "/logout", method = RequestMethod.DELETE)
     public ResponseEntity logout(@Login Long memberId) {
 
         loginService.logout();
