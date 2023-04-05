@@ -1,6 +1,7 @@
 package com.flab.quicktogether.timeplan.presentation.controller;
 
 import com.flab.quicktogether.common.auth.Login;
+import com.flab.quicktogether.timeplan.application.PlannerSettingService;
 import com.flab.quicktogether.timeplan.application.ScheduleService;
 import com.flab.quicktogether.timeplan.presentation.dto.RoughlyPlanDto;
 import com.flab.quicktogether.timeplan.presentation.dto.SuggestedTimeDto;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
-
 
     @RequestMapping(path = "/schedules/{projectId}", method = RequestMethod.GET)
     public ResponseEntity<SuggestedTimeDto> informAvailableTime(@Login Long memberId,

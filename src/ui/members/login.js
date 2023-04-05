@@ -9,7 +9,7 @@ function login(){
     }
     //JSON직렬화
     const data = JSON.stringify(loginForm)
-    const uri = `${API_HOST}/login`
+    const uri = `${window.location.host}/login`
     let xhr = new XMLHttpRequest();
     xhr.open('POST', uri)
     xhr.setRequestHeader('Content-type', 'application/json')

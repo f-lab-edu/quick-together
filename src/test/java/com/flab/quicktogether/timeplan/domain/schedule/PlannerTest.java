@@ -41,6 +41,7 @@ class PlannerTest {
 
         PlannerSetting plannerSetting = PlannerSetting.builder()
                 .minuteUnit(MinuteUnit.TEN)
+                .limit(10)
                 .build();
 
         List<RegularTimeBlock> block1 = RegularTimeBlockFixture.create(FIXED_DATE, "19:00~21:00");
@@ -70,6 +71,7 @@ class PlannerTest {
 
         PlannerSetting plannerSetting = PlannerSetting.builder()
                 .minuteUnit(MinuteUnit.TEN)
+                .limit(10)
                 .build();
 
         List<RegularTimeBlock> block1 = RegularTimeBlockFixture.create(FIXED_DATE, "19:00~21:00");
@@ -104,6 +106,7 @@ class PlannerTest {
 
         PlannerSetting plannerSetting = PlannerSetting.builder()
                 .minuteUnit(MinuteUnit.TEN)
+                .limit(10)
                 .build();
 
         List<RegularTimeBlock> block1 = RegularTimeBlockFixture.create(FIXED_DATE, "19:00~21:00");
@@ -168,6 +171,7 @@ class PlannerTest {
 
         PlannerSetting plannerSetting = PlannerSetting.builder()
                 .minuteUnit(MinuteUnit.TEN)
+                .limit(10)
                 .build();
 
         List<RegularTimeBlock> block1 = RegularTimeBlockFixture.create(FIXED_DATE, "19:00~21:00");
@@ -202,6 +206,7 @@ class PlannerTest {
         PlannerSetting plannerSetting = PlannerSetting.builder()
                 .minuteUnit(MinuteUnit.TEN)
                 .marginalMinutes(10)
+                .limit(10)
                 .build();
 
         List<RegularTimeBlock> block1 = RegularTimeBlockFixture.create(FIXED_DATE, "19:00~21:00");

@@ -1,10 +1,11 @@
-function signUp() {
+import { API_HOST, UI_HOST } from "../host-info.js";
+
+export function signUp() {
     const memberName = document.getElementById("memberName").value
     const password = document.getElementById("password").value
     const passwordCheck = document.getElementById("re-pass").value
     const name = document.getElementById("name").value
     const email = document.getElementById("email").value
-
 
     validate(memberName, '^[a-z0-9]{4,20}$', "아이디는 영어 소문자와 숫자만 사용하여 4~20자리여야 합니다.");
     validate(password, '^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,16}$', "비밀번호는 영문, 숫자, 특수문자를 포함하여 8~16자리여야 합니다.");
@@ -34,7 +35,7 @@ function signUp() {
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
         if (xhr.status === 201) {
-            window.location.href = `${UI_HOST}/available-plans/available-plan-form.html`;
+            window.location.href = `../available-plans/available-plan-form.html`;
         } else {
             alert(JSON.parse(xhr.response).message)
         }

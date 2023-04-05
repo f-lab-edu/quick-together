@@ -31,6 +31,7 @@ class WeeklyAvailablePlanJpaRepositoryTest {
     @Autowired
     private final MemberRepository memberRepository;
 
+    Member member;
     @Autowired
     public WeeklyAvailablePlanJpaRepositoryTest(MemberRepository memberRepository, WeeklyAvailablePlanRepository weeklyAvailablePlanRepository) {
         this.memberRepository = memberRepository;
@@ -39,7 +40,7 @@ class WeeklyAvailablePlanJpaRepositoryTest {
 
     @BeforeEach
     public void init() {
-        Member member = new Member("testMember");
+        member = new Member("testMember");
         memberRepository.save(member);
     }
 
@@ -47,7 +48,7 @@ class WeeklyAvailablePlanJpaRepositoryTest {
     @DisplayName("AvailablePlan 을 저장하고 찾으면 기존 저장된 AvailablePlan을 반환한다.")
     void save(){
         //given
-        Long memberId = memberRepository.findById(1L).get().getId();
+        Long memberId = memberRepository.findById(member.getId()).get().getId();
         List<RegularTimeBlock> dayEqualRoutines = AvailablePlanFixture.DAY_EQUAL_AVAILABLE_PLAN;
 
         WeeklyAvailablePlan weeklyAvailablePlan = new WeeklyAvailablePlan(memberId, dayEqualRoutines);
@@ -55,7 +56,7 @@ class WeeklyAvailablePlanJpaRepositoryTest {
         //when
         weeklyAvailablePlanRepository.save(weeklyAvailablePlan);
 
-        WeeklyAvailablePlan result = weeklyAvailablePlanRepository.findByMemberId(1L).get();
+        WeeklyAvailablePlan result = weeklyAvailablePlanRepository.findByMemberId(memberId).get();
         //then
         Assertions.assertThat(result).isEqualTo(weeklyAvailablePlan);
     }

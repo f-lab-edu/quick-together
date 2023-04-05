@@ -46,7 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
                 //.addInterceptor(new JwtLoginCheckInterceptor(jwtProvider()))
                 .order(1)
                 .addPathPatterns("/x/**")
-                .excludePathPatterns("/");
+                .excludePathPatterns("/","/ui/**");
     }
 
     @Override
