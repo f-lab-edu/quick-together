@@ -1,0 +1,45 @@
+server:
+  port: 80
+
+spring:
+  datasource:
+    url: jdbc:mariadb://10.178.0.14:3306/quick_together
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: sa
+    password: 1
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQLDialect
+  #    defer-datasource-initialization: true
+#
+#  sql:
+#    init:
+#      mode: always
+
+#현재 redis는 사용안하는것으로 확인됨.
+  redis:
+    lettuce:
+      pool:
+        max-active: 5
+        max-idle: 5
+        min-idle: 2
+    host: localhost
+    port: 6379
+
+logging:
+  level:
+    sql: debug
+    com:
+      flab:
+        quicktogether: debug
+
+fcm:
+  certification: quick-together-aa39f-firebase-adminsdk-o5u46-3a3494ce2f.json
+

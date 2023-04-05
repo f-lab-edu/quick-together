@@ -23,10 +23,10 @@ public class RoughlyPlanDto {
     private Integer planDurationMinute;
 
     @NotNull
-    private String timezone;
+    private String timeZone;
     private MinuteUnit minuteUnit;
     public RoughlyPlan toEntity() {
-        ZoneId zoneId = ZoneId.of(timezone);
+        ZoneId zoneId = ZoneId.of(timeZone);
         Range range = Range.asCommonTime(from, to, zoneId);
         return new RoughlyPlan(range, planDurationMinute, minuteUnit);
     }

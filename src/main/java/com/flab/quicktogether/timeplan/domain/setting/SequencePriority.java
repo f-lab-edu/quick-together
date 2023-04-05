@@ -6,16 +6,17 @@ import lombok.Getter;
 import java.util.Comparator;
 
 public enum SequencePriority {
-    FAST(new FastTimeBlockComparator()),
-    LATE(new LateTimeBlockComparator());
+    FAST(new FastTimeBlockComparator(),"fast"),
+    LATE(new LateTimeBlockComparator(), "late");
 
+    @Getter
+    private final String value;
     @Getter
     private final Comparator<TimeBlock> comparator;
 
-    SequencePriority(Comparator<TimeBlock> comparator) {
+    SequencePriority(Comparator<TimeBlock> comparator, String value) {
         this.comparator = comparator;
+        this.value =value;
     }
-
-
 
 }

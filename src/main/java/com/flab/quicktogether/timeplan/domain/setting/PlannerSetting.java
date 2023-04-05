@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlannerSetting {
-
     @Id
     @GeneratedValue
     @Column(name = "schedule_priority_id")
@@ -20,22 +19,38 @@ public class PlannerSetting {
     private Long memberId;
 
     @Enumerated(EnumType.STRING)
-    private SequencePriority sequencePriority = SequencePriority.FAST;
+    private SequencePriority sequencePriority;
 
     @Enumerated(EnumType.STRING)
-    private MinuteUnit minuteUnit = MinuteUnit.TEN;
+    private MinuteUnit minuteUnit;
 
-    private Integer marginalMinutes = 0;
+    private Integer marginalMinutes;
 
-    private Integer limit;
+    @Column(name = "limits") // limit이 mariadb에서 예약어로 인식
+    private int limit;
 
     @Builder
-    public PlannerSetting(Long memberId, SequencePriority sequencePriority, MinuteUnit minuteUnit, Integer marginalMinutes, Integer limit) {
+    public PlannerSetting(Long memberId, SequencePriority sequencePriority, MinuteUnit minuteUnit, Integer marginalMinutes, int limit) {
         this.memberId = memberId;
         this.sequencePriority = checkDefault(sequencePriority);
         this.minuteUnit = checkDefault(minuteUnit);
         this.marginalMinutes = checkDefault(marginalMinutes);
-        this.limit = limit;
+        this.limit = checkLimitDefault(limit);
+    }
+
+    public Long update(PlannerSetting plannerSetting) {
+        this.sequencePriority = checkDefault(plannerSetting.sequencePriority);
+        this.minuteUnit = checkDefault(plannerSetting.minuteUnit);
+        this.marginalMinutes = checkDefault(plannerSetting.marginalMinutes);
+        this.limit = checkLimitDefault(plannerSetting.limit);
+        return this.id;
+    }
+
+    private int checkLimitDefault(Integer limit) {
+        if (limit == null) {
+            return 10;
+        }
+        return limit;
     }
 
     private Integer checkDefault(Integer marginalSpace) {
@@ -58,5 +73,4 @@ public class PlannerSetting {
         }
         return sequencePriority;
     }
-
 }

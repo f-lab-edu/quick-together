@@ -12,6 +12,14 @@ public enum MinuteUnit {
         this.unitValue = unitValue;
     }
 
+    public static MinuteUnit valueOf(int unitValue) {
+        for (MinuteUnit minuteUnit : MinuteUnit.values()) {
+            if (minuteUnit.getUnitValue() == unitValue) {
+                return minuteUnit;
+            }
+        }
+        throw new IllegalArgumentException("해당하는 분 단위가 없습니다.");
+    }
     public int getUnitValue() {
         return this.unitValue;
     }

@@ -1,10 +1,10 @@
 package com.flab.quicktogether.common.auth.config.session;
 
-import com.flab.quicktogether.common.SessionConst;
 import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.member.exception.NotAuthorizedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

@@ -1,5 +1,6 @@
 package com.flab.quicktogether.timeplan.presentation.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flab.quicktogether.timeplan.domain.value_type.RegularTimeBlock;
 import com.flab.quicktogether.timeplan.domain.weekly_available_plan.WeeklyAvailablePlan;
 import lombok.EqualsAndHashCode;
@@ -11,20 +12,23 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @EqualsAndHashCode
 @ToString
 public class AvailablePlanCreateRequestDto {
+    @JsonProperty("time_zone")
+    private String timeZone;
 
-    private String timezone;
+    @JsonProperty("available_plans")
     private List<RegularTimeBlock> availablePlans = new ArrayList<>();
 
     protected AvailablePlanCreateRequestDto() {
     }
 
     public WeeklyAvailablePlan toEntityOf(Long memberId) {
-        ZoneId localTimeZone = ZoneId.of(timezone);
+        ZoneId localtimeZone = ZoneId.of(timeZone);
 
         List<RegularTimeBlock> regularTimeBlocks = availablePlans.stream()
                 .flatMap(dto -> {
@@ -32,10 +36,10 @@ public class AvailablePlanCreateRequestDto {
                     LocalTime startTime = dto.getStartTime();
                     LocalTime endTime = dto.getEndTime();
 
-                    return RegularTimeBlock.asCommonTime(dayOfWeek, startTime, endTime, localTimeZone)
+                    return RegularTimeBlock.asCommonTime(dayOfWeek, startTime, endTime, localtimeZone)
                             .stream();
                 })
-                .toList();
+                .collect(Collectors.toList());
 
         return new WeeklyAvailablePlan(memberId, regularTimeBlocks);
     }

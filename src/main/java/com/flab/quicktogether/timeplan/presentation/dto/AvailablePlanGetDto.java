@@ -22,12 +22,12 @@ public class AvailablePlanGetDto {
         this.availablePlans.addAll(availablePlans);
     }
 
-    public static AvailablePlanGetDto from(WeeklyAvailablePlan weeklyAvailablePlan, ZoneId localTimeZone) {
+    public static AvailablePlanGetDto from(WeeklyAvailablePlan weeklyAvailablePlan, ZoneId localtimeZone) {
         List<RegularTimeBlock> localAvailablePlans =
                 weeklyAvailablePlan.getAvailablePlans().stream()
                 .flatMap(availablePlan -> availablePlan
                         .getRegularTimeBlock()
-                        .toLocalTimeZone(localTimeZone).stream())
+                        .toLocaltimeZone(localtimeZone).stream())
                 .toList();
 
         List<RegularTimeBlock> gluedRegularBlocks = RegularTimeBlock.glue(localAvailablePlans);

@@ -62,7 +62,6 @@ public class TimeBlock implements Comparable<TimeBlock> {
                 .withZoneSameInstant(utc)
                 .toLocalDateTime();
     }
-
     private static LocalDateTime offsetRange(LocalDateTime target, Range range) {
         LocalDateTime startRange = range.getStartDateTime();
         LocalDateTime endRange = range.getEndDateTime();
@@ -165,14 +164,14 @@ public class TimeBlock implements Comparable<TimeBlock> {
         return result;
     }
 
-    public TimeBlock offsetLocalTimeZone(ZoneId localTimeZone) {
+    public TimeBlock offsetLocaltimeZone(ZoneId localtimeZone) {
         ZoneId utc = ZoneId.of("UTC");
-        LocalDateTime startDateTime = offsetTimeZone(this.startDateTime, utc, localTimeZone);
-        LocalDateTime endDateTime = offsetTimeZone(this.endDateTime, utc, localTimeZone);
+        LocalDateTime startDateTime = offsettimeZone(this.startDateTime, utc, localtimeZone);
+        LocalDateTime endDateTime = offsettimeZone(this.endDateTime, utc, localtimeZone);
         return TimeBlock.of(startDateTime, endDateTime);
     }
 
-    private LocalDateTime offsetTimeZone(LocalDateTime dateTime, ZoneId asIs, ZoneId toBe) {
+    private LocalDateTime offsettimeZone(LocalDateTime dateTime, ZoneId asIs, ZoneId toBe) {
         return ZonedDateTime.of(dateTime, asIs)
                 .withZoneSameInstant(toBe)
                 .toLocalDateTime();

@@ -13,7 +13,11 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
     /**
      * 특정 프로젝트에 특정 구성원 정보
      */
-    Optional<Participant> findByProjectIdAndMemberId(Long projectId, Long memberId);
+    @Query("select distinct p from Participant p " +
+            "LEFT JOIN fetch p.skillStacks " +
+            "LEFT JOIN fetch p.positions " +
+            "where p.project.Id = :projectId and p.member.Id = :memberId" )
+    Optional<Participant> findByProjectIdAndMemberId(@Param("projectId") Long projectId, @Param("memberId") Long memberId);
 
     /**
      * 특정 회원이 참여하고 있는 프로젝트들과 정보

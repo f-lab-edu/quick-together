@@ -18,6 +18,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 하나의 애그리거트로 크게 잡고 설계한 Entity
@@ -25,10 +26,10 @@ import java.util.List;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode
 @ToString
 @Getter
 public class Meeting {
+
 
     @Id
     @GeneratedValue
@@ -228,7 +229,7 @@ public class Meeting {
         return meetingParticipants.getList().stream()
                 .map(participant -> {
                     Long memberId = participant.getMember().getId();
-                    return new Plan(memberId,title,timeBlock);
+                    return Plan.madeByMeeting(memberId,title,timeBlock);
                 })
                 .toList();
     }
@@ -318,5 +319,17 @@ public class Meeting {
             return "";
         }
         return string;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Meeting meeting)) return false;
+        return getId().equals(meeting.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
