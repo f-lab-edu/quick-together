@@ -11,8 +11,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Getter
@@ -51,20 +51,20 @@ public class Project {
 
     private LocalDateTime periodDateTime; // 모집기간
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "ProjectSkillStack", joinColumns = @JoinColumn(name = "project_id"))
     @Enumerated(EnumType.STRING)
-    private List<SkillStack> skillStacks = new ArrayList<>();
+    private Set<SkillStack> skillStacks = new HashSet<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "ProjectRecruitmentPosition", joinColumns = @JoinColumn(name = "project_id"))
     @Enumerated(EnumType.STRING)
-    private List<Position> RecruitmentPositions = new ArrayList<>();
-
+    private Set<Position> recruitmentPositions = new HashSet<>();
 
     @Builder()
     public Project(String projectName, Member founder, String projectSummary, String projectDescription,
-                   MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime) {
+                   MeetingMethod meetingMethod, LocalDateTime startDateTime, LocalDateTime periodDateTime,
+                   Set<SkillStack> skillStacks, Set<Position> recruitmentPositions) {
 
         Assert.hasText(projectName,"projectName must not be empty");
         Assert.notNull(founder, "projectFounder must not be null");
@@ -79,9 +79,15 @@ public class Project {
         this.meetingMethod = meetingMethod;
         this.startDateTime = startDateTime;
         this.periodDateTime = periodDateTime;
+        this.skillStacks = skillStacks;
+        this.recruitmentPositions = recruitmentPositions;
 
         this.projectDescriptionInfo = new ProjectDescriptionInfo(projectSummary, projectDescription);
 
+    }
+
+    public void plusViews(){
+        this.views = this.views + 1;
     }
 
     public void changeProjectName(String editProjectName){

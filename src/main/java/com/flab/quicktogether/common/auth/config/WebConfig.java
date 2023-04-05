@@ -1,7 +1,5 @@
 package com.flab.quicktogether.common.auth.config;
 
-import com.flab.quicktogether.common.auth.config.jwt.JwtLoginCheckInterceptor;
-import com.flab.quicktogether.common.auth.config.jwt.JwtLoginMemberIdArgumentResolver;
 import com.flab.quicktogether.common.auth.config.jwt.JwtProvider;
 import com.flab.quicktogether.common.auth.config.session.SessionLoginCheckInterceptor;
 import com.flab.quicktogether.common.auth.config.session.SessionLoginMemberIdArgumentResolver;
@@ -23,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(4);
     }
 
     @Bean
@@ -52,7 +50,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080", "http://localhost:5500","http://127.0.0.1:5500")
+                .allowedOriginPatterns("*")
                 .allowCredentials(true)
                 .allowedMethods("*")
                 .exposedHeaders("X-AUTH-TOKEN","Cookie","Set-Cookie");

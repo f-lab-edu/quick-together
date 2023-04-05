@@ -28,11 +28,11 @@ public class QParticipant extends EntityPathBase<Participant> {
 
     public final EnumPath<ParticipantRole> participantRole = createEnum("participantRole", ParticipantRole.class);
 
-    public final ListPath<com.flab.quicktogether.common.Position, EnumPath<com.flab.quicktogether.common.Position>> positions = this.<com.flab.quicktogether.common.Position, EnumPath<com.flab.quicktogether.common.Position>>createList("positions", com.flab.quicktogether.common.Position.class, EnumPath.class, PathInits.DIRECT2);
+    public final SetPath<com.flab.quicktogether.common.Position, EnumPath<com.flab.quicktogether.common.Position>> positions = this.<com.flab.quicktogether.common.Position, EnumPath<com.flab.quicktogether.common.Position>>createSet("positions", com.flab.quicktogether.common.Position.class, EnumPath.class, PathInits.DIRECT2);
 
     public final com.flab.quicktogether.project.domain.QProject project;
 
-    public final ListPath<com.flab.quicktogether.common.SkillStack, EnumPath<com.flab.quicktogether.common.SkillStack>> skillStacks = this.<com.flab.quicktogether.common.SkillStack, EnumPath<com.flab.quicktogether.common.SkillStack>>createList("skillStacks", com.flab.quicktogether.common.SkillStack.class, EnumPath.class, PathInits.DIRECT2);
+    public final SetPath<com.flab.quicktogether.common.SkillStack, EnumPath<com.flab.quicktogether.common.SkillStack>> skillStacks = this.<com.flab.quicktogether.common.SkillStack, EnumPath<com.flab.quicktogether.common.SkillStack>>createSet("skillStacks", com.flab.quicktogether.common.SkillStack.class, EnumPath.class, PathInits.DIRECT2);
 
     public QParticipant(String variable) {
         this(Participant.class, forVariable(variable), INITS);

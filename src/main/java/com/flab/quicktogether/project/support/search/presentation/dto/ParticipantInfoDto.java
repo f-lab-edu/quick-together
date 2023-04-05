@@ -4,15 +4,15 @@ import com.flab.quicktogether.common.Position;
 import com.flab.quicktogether.common.SkillStack;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class ParticipantInfoDto {
     String memberName;
-    List<SkillStack> skillStacks;
-    List<Position> positions;
+    Set<SkillStack> skillStacks;
+    Set<Position> positions;
 
-    public ParticipantInfoDto(String memberName, List<SkillStack> skillStacks, List<Position> positions) {
+    public ParticipantInfoDto(String memberName, Set<SkillStack> skillStacks, Set<Position> positions) {
         this.memberName = memberName;
         this.skillStacks = skillStacks;
         this.positions = positions;

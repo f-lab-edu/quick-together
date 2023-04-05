@@ -1,7 +1,7 @@
 package com.flab.quicktogether.project.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Lob;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -10,10 +10,11 @@ import java.util.Objects;
 @Getter
 public class ProjectDescriptionInfo {
 
-    @Lob
+
+    @Column(columnDefinition = "LONGTEXT")
     private String projectSummary; // 프로젝트 간단 설명
 
-    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String projectDescription; // 프로젝트 상세설명
 
     protected ProjectDescriptionInfo() {

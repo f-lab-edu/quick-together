@@ -4,10 +4,12 @@ import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.project.support.search.application.ProjectSearchService;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectDetailResponse;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectMainSimpleResponse;
+import com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleDto;
 import com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +28,20 @@ public class ProjectSearchController {
     public Result projects() {
         List<ProjectMainSimpleResponse> projectMainSimpleResponses = projectSearchService.retrieveAllProjects();
         return new Result(projectMainSimpleResponses);
+    }
+
+    /**
+     * 프로젝트 페이징 전체 조회
+     * 권한: any
+     */
+    @GetMapping("/page/projects")
+    public Result pagingProjects(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+
+        List<ProjectMainSimpleResponse> projectPageMainSimpleResponses = projectSearchService.retrievePagingProjects(pageNo, pageSize, sortBy);
+        return new Result(projectPageMainSimpleResponses);
     }
 
     /**
@@ -50,7 +66,7 @@ public class ProjectSearchController {
 
     @Data
     @AllArgsConstructor
-    static class Result<T>{
+    static class Result<T> {
         private T data;
     }
 

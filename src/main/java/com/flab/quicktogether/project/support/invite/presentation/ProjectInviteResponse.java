@@ -17,18 +17,29 @@ public class ProjectInviteResponse {
     private Long projectId;
 
     @NotNull
-    private Long requestMember;
+    private String projectName;
+    @NotNull
+    private Long requestMemberId;
 
     @NotNull
-    private Long invitedMember;
+    private String requestMemberName;
+
+    @NotNull
+    private Long invitedMemberId;
+
+    @NotNull
+    private String invitedMemberName;
 
     @NotNull
     private ProjectJoinStatus inviteStatus;
 
     public ProjectInviteResponse(Invite invite) {
         this.projectId = invite.getProject().getId();
-        this.requestMember = invite.getRequestMember().getId();
-        this.invitedMember = invite.getInvitedMember().getId();
+        this.projectName = invite.getProject().getProjectName();
+        this.requestMemberId = invite.getRequestMember().getId();
+        this.requestMemberName = invite.getRequestMember().getMemberName();
+        this.invitedMemberId = invite.getInvitedMember().getId();
+        this.invitedMemberName = invite.getInvitedMember().getMemberName();
         this.inviteStatus = invite.getInviteStatus();
     }
 }

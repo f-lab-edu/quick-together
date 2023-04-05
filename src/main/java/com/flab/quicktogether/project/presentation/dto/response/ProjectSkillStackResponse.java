@@ -5,8 +5,8 @@ import com.flab.quicktogether.common.SkillStack;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +16,7 @@ public class ProjectSkillStackResponse {
     private Long projectId;
 
     @NotNull
-    private List<SkillStack> skillStacks = new ArrayList<>();
+    private Set<SkillStack> skillStacks = new HashSet<>();
 
     public ProjectSkillStackResponse(Long projectId, Project project) {
         this.projectId = projectId;

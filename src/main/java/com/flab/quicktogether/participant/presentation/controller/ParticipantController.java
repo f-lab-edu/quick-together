@@ -1,6 +1,7 @@
 package com.flab.quicktogether.participant.presentation.controller;
 
 
+import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.participant.application.ParticipantService;
 import com.flab.quicktogether.participant.domain.Participant;
 import com.flab.quicktogether.participant.presentation.dto.response.ParticipantResponse;
@@ -14,7 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,14 +27,8 @@ public class ParticipantController {
      */
     @GetMapping("/projects/{id}/members")
     public Result<ParticipantResponse> retrieveAllParticipants(@PathVariable("id") Long id){
-
-        List<Participant> findParticipants = participantService.retrieveAllParticipants(id);
-
-        List<ParticipantResponse> collect = findParticipants.stream()
-                .map(p -> new ParticipantResponse(p))
-                .collect(Collectors.toList());
-
-        return new Result(collect);
+        List<ParticipantResponse> participantResponses = participantService.retrieveAllParticipants(id);
+        return new Result(participantResponses);
     }
 
     /**
@@ -64,8 +58,8 @@ public class ParticipantController {
     /**
      * 해당 프로젝트에 멤버 삭제
      */
-    @DeleteMapping("/projects/{projectId}/members/{memberId}")
-    public HttpStatus leaveProject(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId){
+    @DeleteMapping("/projects/{projectId}/members")
+    public HttpStatus leaveProject(@PathVariable("projectId") Long projectId, @Login Long memberId){
 
         participantService.leaveProject(projectId,memberId);
 

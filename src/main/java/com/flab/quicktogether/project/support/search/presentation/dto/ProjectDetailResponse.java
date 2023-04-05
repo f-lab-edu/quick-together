@@ -9,7 +9,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class ProjectDetailResponse {
@@ -34,9 +36,11 @@ public class ProjectDetailResponse {
 
     private LocalDateTime periodDateTime; // 모집기간
 
-    private List<SkillStack> projectSkillStacks = new ArrayList<>();
+    private LocalDateTime createDateTime; // 생성일
 
-    private List<Position> recruitPositions = new ArrayList<>();
+    private Set<SkillStack> projectSkillStacks = new HashSet<>();
+
+    private Set<Position> recruitPositions = new HashSet<>();
     private List<ParticipantInfoDto> participants = new ArrayList<>();
     private List<PostInfoDto> posts = new ArrayList<>();
 
@@ -49,6 +53,7 @@ public class ProjectDetailResponse {
         founderName = p.getFounder().getMemberName();
         startDateTime = p.getStartDateTime();
         periodDateTime = p.getPeriodDateTime();
+        createDateTime = p.getCreateDateTime();
         meetingMethod = p.getMeetingMethod();
         projectDescriptionInfo = p.getProjectDescriptionInfo();
         projectStatus = p.getProjectStatus();

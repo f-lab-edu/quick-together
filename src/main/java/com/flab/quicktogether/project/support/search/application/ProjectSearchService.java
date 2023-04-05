@@ -12,9 +12,14 @@ import com.flab.quicktogether.project.support.post.domain.Post;
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,8 +40,13 @@ public class ProjectSearchService {
     /**
      * 프로젝트 간단 조회 (프로젝트 정보)
      */
+    @Transactional
     public ProjectSimpleResponse retrieveSimpleProject(Long projectId) {
-        ProjectSimpleDto projectSimpleDto = findProject(projectId);
+        ProjectSimpleDto projectSimpleDto = findProjectWithLikes(projectId);
+
+        Project project = projectSimpleDto.getProject();
+        project.plusViews();
+
         ProjectSimpleResponse projectSimpleResponse = new ProjectSimpleResponse(projectSimpleDto.getProject(), projectSimpleDto.getLikes());
 
         return projectSimpleResponse;
@@ -67,7 +77,19 @@ public class ProjectSearchService {
         return collect;
     }
 
-    private ProjectSimpleDto findProject(Long projectId) {
+    public List<ProjectMainSimpleResponse> retrievePagingProjects(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<ProjectSimpleDto> pageProjects = projectSearchRepository.findByPagingProjectsWithLikes(pageable);
+
+        List<ProjectMainSimpleResponse> collect = pageProjects.getContent().stream()
+                .map(findProject -> new ProjectMainSimpleResponse(findProject.getProject(), findProject.getLikes()))
+                .collect(Collectors.toList());
+
+        log.info("page size = {}", pageProjects.getSize());
+        return collect;
+    }
+
+    private ProjectSimpleDto findProjectWithLikes(Long projectId) {
         return projectSearchRepository.findByProjectIdWithLikes(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
     }

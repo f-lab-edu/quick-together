@@ -13,9 +13,13 @@ import com.flab.quicktogether.project.support.enter.exception.EnterNotFoundExcep
 import com.flab.quicktogether.project.exception.ProjectNotFoundException;
 import com.flab.quicktogether.project.support.enter.infrastructure.EnterRepository;
 import com.flab.quicktogether.project.infrastructure.ProjectRepository;
+import com.flab.quicktogether.project.support.enter.presentation.ProjectEnterResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -31,6 +35,28 @@ public class ProjectEnterService {
     public Enter retrieveEnterMember(Long projectId, Long enterMemberId) {
         Enter Enter = findEnter(projectId, enterMemberId);
         return Enter;
+    }
+
+    public List<ProjectEnterResponse> retrieveAllEnterMemberByProjectId(Long projectId) {
+        List<Enter> enterMembers = enterRepository.findByProjectIdWithWait(projectId);
+
+        List<ProjectEnterResponse> collect = enterMembers.stream()
+                .map(findEnterMember -> new ProjectEnterResponse(findEnterMember))
+                .collect(Collectors.toList());
+
+        return collect;
+    }
+
+    /**
+     * 해당 멤버가 입장 신청한 프로젝트 반환
+     */
+    public List<ProjectEnterResponse> retrieveAllEnterMember(Long enterMemberId) {
+        List<Enter> enterMembers = enterRepository.findByEnterMemberIdWithWait(enterMemberId);
+
+        List<ProjectEnterResponse> collect = enterMembers.stream()
+                .map(findEnterMember -> new ProjectEnterResponse(findEnterMember))
+                .collect(Collectors.toList());
+        return collect;
     }
 
     /**
@@ -91,4 +117,6 @@ public class ProjectEnterService {
         return memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFoundException::new);
     }
+
+
 }

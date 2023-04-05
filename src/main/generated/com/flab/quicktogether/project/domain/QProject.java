@@ -40,9 +40,9 @@ public class QProject extends EntityPathBase<Project> {
 
     public final EnumPath<ProjectStatus> projectStatus = createEnum("projectStatus", ProjectStatus.class);
 
-    public final ListPath<com.flab.quicktogether.common.Position, EnumPath<com.flab.quicktogether.common.Position>> RecruitmentPositions = this.<com.flab.quicktogether.common.Position, EnumPath<com.flab.quicktogether.common.Position>>createList("RecruitmentPositions", com.flab.quicktogether.common.Position.class, EnumPath.class, PathInits.DIRECT2);
+    public final SetPath<com.flab.quicktogether.common.Position, EnumPath<com.flab.quicktogether.common.Position>> recruitmentPositions = this.<com.flab.quicktogether.common.Position, EnumPath<com.flab.quicktogether.common.Position>>createSet("recruitmentPositions", com.flab.quicktogether.common.Position.class, EnumPath.class, PathInits.DIRECT2);
 
-    public final ListPath<com.flab.quicktogether.common.SkillStack, EnumPath<com.flab.quicktogether.common.SkillStack>> skillStacks = this.<com.flab.quicktogether.common.SkillStack, EnumPath<com.flab.quicktogether.common.SkillStack>>createList("skillStacks", com.flab.quicktogether.common.SkillStack.class, EnumPath.class, PathInits.DIRECT2);
+    public final SetPath<com.flab.quicktogether.common.SkillStack, EnumPath<com.flab.quicktogether.common.SkillStack>> skillStacks = this.<com.flab.quicktogether.common.SkillStack, EnumPath<com.flab.quicktogether.common.SkillStack>>createSet("skillStacks", com.flab.quicktogether.common.SkillStack.class, EnumPath.class, PathInits.DIRECT2);
 
     public final DateTimePath<java.time.LocalDateTime> startDateTime = createDateTime("startDateTime", java.time.LocalDateTime.class);
 

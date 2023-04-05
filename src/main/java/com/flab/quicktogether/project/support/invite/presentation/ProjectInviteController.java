@@ -4,11 +4,14 @@ import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.project.support.invite.application.ProjectInviteService;
 import com.flab.quicktogether.project.support.invite.domain.Invite;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +28,15 @@ public class ProjectInviteController {
 
         Invite invite = projectInviteService.retrieveInvitedMember(projectId, invitedMemberId);
         return ResponseEntity.ok(new ProjectInviteResponse(invite));
+    }
+
+    /**
+     * 특정 멤버 초대장들
+     */
+    @GetMapping("/invites")
+    public Result inviteMember(@Login Long invitedMemberId) {
+        List<ProjectInviteResponse> invites = projectInviteService.retrieveAllInvitation(invitedMemberId);
+        return new Result(invites);
     }
 
 
@@ -62,5 +74,11 @@ public class ProjectInviteController {
         projectInviteService.rejectInvite(projectId, invitedMemberId);
 
         return ResponseEntity.ok().build();
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T>{
+        private T data;
     }
 }

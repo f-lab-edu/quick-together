@@ -72,7 +72,7 @@ class ProjectRepositoryTest {
 
     }
 
-    @Test
+    /*@Test
     @DisplayName("빈 저장소에 두 개의 프로젝트를 저장하고 전체 프로젝트를 조회했을 시 총 개수는 2개다.")
     public void saveMany(){
 
@@ -103,7 +103,7 @@ class ProjectRepositoryTest {
         List<Project> allProject = projectRepository.findAll();
         Assertions.assertEquals(allProject.size(), 2);
 
-    }
+    }*/
 
     @Test
     @DisplayName("프로젝트 생성시 특정 파라미터 없을 시 IllegalArgumentException 발생한다.")

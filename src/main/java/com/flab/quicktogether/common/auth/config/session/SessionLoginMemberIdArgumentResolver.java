@@ -24,7 +24,6 @@ public class SessionLoginMemberIdArgumentResolver implements HandlerMethodArgume
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 
         HttpSession session = request.getSession(false);
-
         if (session == null) {
             throw new NotAuthorizedException();
         }

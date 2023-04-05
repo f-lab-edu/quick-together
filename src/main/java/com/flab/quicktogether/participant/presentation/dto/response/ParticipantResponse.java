@@ -9,8 +9,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -33,10 +33,10 @@ public class ParticipantResponse {
     private ParticipantRole participantRole;
 
     @NotNull
-    private List<Position> positions = new ArrayList<>();
+    private Set<Position> positions = new HashSet<>();
 
     @NotNull
-    private List<SkillStack> skillStacks = new ArrayList<>();
+    private Set<SkillStack> skillStacks = new HashSet<>();
 
     public ParticipantResponse(Participant participant) {
         this.MemberId = participant.getMember().getId();

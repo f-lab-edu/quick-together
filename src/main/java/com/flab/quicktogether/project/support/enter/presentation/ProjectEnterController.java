@@ -5,11 +5,14 @@ import com.flab.quicktogether.common.auth.Login;
 import com.flab.quicktogether.project.support.enter.application.ProjectEnterService;
 import com.flab.quicktogether.project.support.enter.domain.Enter;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,10 +26,19 @@ public class ProjectEnterController {
      */
     @GetMapping("/projects/{projectId}/members/{enterMemberId}/enters")
     public ResponseEntity retrieveMember(@PathVariable("projectId") Long projectId,
-                                      @PathVariable("enterMemberId") Long enterMemberId) {
+                                         @PathVariable("enterMemberId") Long enterMemberId) {
 
         Enter enter = projectEnterService.retrieveEnterMember(projectId, enterMemberId);
         return ResponseEntity.ok(new ProjectEnterResponse(enter));
+    }
+
+    /**
+     * 해당 멤버가 입장신청한 리스트
+     */
+    @GetMapping("/enters")
+    public Result enteredAllMember(@Login Long memberId) {
+        List<ProjectEnterResponse> enterMembers = projectEnterService.retrieveAllEnterMember(memberId);
+        return new Result(enterMembers);
     }
 
 
@@ -43,6 +55,16 @@ public class ProjectEnterController {
     }
 
     /**
+     * 해당 프로젝트 입장 신청한 멤버들 조회
+     */
+    @GetMapping("/projects/{projectId}/members/enters")
+    public Result retrieveAllEnteredMember(@PathVariable("projectId") Long projectId,
+                                                   @Login Long memberId) {
+        List<ProjectEnterResponse> enterMembers = projectEnterService.retrieveAllEnterMemberByProjectId(projectId);
+        return new Result(enterMembers);
+    }
+
+    /**
      * 프로젝트 입장 신청 수락
      */
     @PostMapping("/projects/{projectId}/members/enters")
@@ -50,7 +72,7 @@ public class ProjectEnterController {
                                       @Login Long adminMemberId,
                                       @RequestBody @Valid EnterMemberRequest enterMemberRequest) {
 
-        projectEnterService.acceptEnter(projectId, adminMemberId,enterMemberRequest.getEnterMemberId());
+        projectEnterService.acceptEnter(projectId, adminMemberId, enterMemberRequest.getEnterMemberId());
         return ResponseEntity.ok().build();
     }
 
@@ -62,7 +84,13 @@ public class ProjectEnterController {
                                       @Login Long adminMemberId,
                                       @RequestBody @Valid EnterMemberRequest enterMemberRequest) {
 
-        projectEnterService.rejectEnter(projectId, adminMemberId,enterMemberRequest.getEnterMemberId());
+        projectEnterService.rejectEnter(projectId, adminMemberId, enterMemberRequest.getEnterMemberId());
         return ResponseEntity.ok().build();
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T> {
+        private T data;
     }
 }

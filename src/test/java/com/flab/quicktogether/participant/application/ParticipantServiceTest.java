@@ -162,7 +162,7 @@ class ParticipantServiceTest {
 
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
 
-        Assertions.assertEquals(findParticipant.getPositions().get(0), addPosition);
+        Assertions.assertEquals(findParticipant.getPositions().contains(addPosition), true);
 
     }
 
@@ -206,7 +206,7 @@ class ParticipantServiceTest {
 
         Participant findParticipant = participantService.retrieveParticipant(projectId, memberId);
 
-        Assertions.assertEquals(findParticipant.getSkillStacks().get(0), addSkillStack);
+        Assertions.assertEquals(findParticipant.getSkillStacks().contains(addSkillStack), true);
     }
 
     @Test
