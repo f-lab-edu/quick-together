@@ -1,7 +1,5 @@
 package com.flab.quicktogether.common.auth.config;
 
-import com.flab.quicktogether.common.auth.config.jwt.JwtLoginCheckInterceptor;
-import com.flab.quicktogether.common.auth.config.jwt.JwtLoginMemberIdArgumentResolver;
 import com.flab.quicktogether.common.auth.config.jwt.JwtProvider;
 import com.flab.quicktogether.common.auth.config.session.SessionLoginCheckInterceptor;
 import com.flab.quicktogether.common.auth.config.session.SessionLoginMemberIdArgumentResolver;
@@ -23,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(4);
     }
 
     @Bean
