@@ -1,6 +1,4 @@
-import { API_HOST, UI_HOST } from "../host-info.js";
-
-export function signUp() {
+function signUp() {
     const memberName = document.getElementById("memberName").value
     const password = document.getElementById("password").value
     const passwordCheck = document.getElementById("re-pass").value
@@ -35,7 +33,7 @@ export function signUp() {
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
         if (xhr.status === 201) {
-            window.location.href = `../available-plans/available-plan-form.html`;
+            window.location.href = `/schedule/available-plans/available-plan-form.html`;
         } else {
             alert(JSON.parse(xhr.response).message)
         }

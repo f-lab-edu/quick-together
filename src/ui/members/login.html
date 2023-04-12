@@ -32,19 +32,18 @@
                         <h2 class="form-title">로그인</h2>
                         <div class="form-group">
                             <label for="memberName"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="your_name" id="memberName" placeholder="아이디"
-                            pattern="^[a-z0-9]{4,20}$"/>
+                            <input type="text" name="your_name" id="memberName" placeholder="아이디" value="proto" />
                         </div>
                         <div class="form-group">
                             <label for="password"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="your_pass" id="password" placeholder="비밀번호" />
+                            <input type="password" name="your_pass" id="password" placeholder="비밀번호" value="1111" />
                         </div>
                         <div class="form-group">
                             <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
                             <label for="remember-me" class="label-agree-term"><span><span></span></span>기억하기</label>
                         </div>
                         <div class="form-group form-button">
-                            <input type="submit" class="form-submit" onClick="login()" />
+                            <input type="submit" class="form-submit" onClick="login()" value="로그인" />
                         </div>
                         <div class="social-login">
                             <span class="social-label">Or login with</span>
@@ -72,6 +71,9 @@
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="js/main.js"></script>
     <script src="login.js"></script>
+
+    <!-- env 설정 파일 적용 -->
+    <script type="text/javascript" src="/env.js"></script>
 
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 

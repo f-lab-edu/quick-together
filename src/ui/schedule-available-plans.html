@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Quick Together</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/blog/">
+    <link rel="stylesheet" href="/css/available-plans.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- header 로그인 css -->
+    <link rel="stylesheet" href="css/header-login.css">
+
+    <!-- sidebar css -->
+    <link rel="stylesheet" href="css/sidebar.css">
+
+    <!-- calendar css -->
+    <link rel="stylesheet" href="css/calendar.css">
+
+    <meta name="theme-color" content="#7952b3">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dongle:wght@400&display=swap');
+
+        body {
+            /* font-family: 'Dongle', sans-serif;*/
+            font-size: 15px;
+            transition: opacity ease-in 0.2s;
+            display: grid;
+            grid-template-columns: 1fr 6fr;
+            grid-template-rows: 100px auto;
+            grid-template-areas:
+                'header header'
+                'aside main';
+
+        }
+
+        body[unresolved] {
+            opacity: 0;
+            display: block;
+            overflow: hidden;
+            position: relative;
+        }
+
+        main {
+            grid-area: main;
+            display: flex;
+            flex-direction: column;
+            margin-left: 1em;
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900&amp;display=swap" rel="stylesheet">
+    <!-- Custom styles for this template -->
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
+    <script src='/env.js'></script>
+    <script src="/schedule/plans/plan-form.js"></script>
+    <script src="/schedule/plans/ko.global.min.js"></script>
+</head>
+
+<body>
+    <!-- 로그인 헤더, 정보 추가 -->
+    <span>
+        <script src="login-check/login.js"></script>
+        <script type="module" src="header/login-header.js"></script>
+    </span>
+    <header id="header-login"></header>
+
+    <!-- 사이드 바 -->
+    <script type="module" src="schedule/sidebar/schedule-sidebar.js"></script>
+    <aside id="sidebar-schedule"></aside>
+
+    <!-- main -->
+    <main>
+        <section class="signup">
+            <div class="container">
+                <h2 class="page-title">시간설정</h2>
+                <div class="description">동료와 함께 모일 수 있는 시간을 알려주세요.</div>
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <div class="title-section">
+                            <h2 class="form-title">시간대 설정</h2>
+                            <div class="form-group">
+                                <label class="radio-block">
+                                    <input type="radio" class="timezone" name="timezone" value="Asia/Seoul">
+                                    아시아/서울
+                                </label>
+                                <label class="radio-block">
+                                    <input type="radio" class="timezone" name="timezone" value="America/Los_Angeles">
+                                    미국/로스엔젤레스
+                                </label>
+                                <label class="radio-block">
+                                    <input type="radio" class="timezone" name="timezone" value="Europe/London">
+                                    유럽/런던
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="signup-form">
+                        <h2 class="form-title">가능한 시간</h2>
+                        <div class="form-group">
+                            <div class="plan-area"></div>
+                        </div>
+
+                        <div class="plan-adder">
+                            <span class="adder-title">추가하기 </span>
+                            <input type="button" class="day-of-week-button" value="월" onclick="createPlan(event)">
+                            <input type="button" class="day-of-week-button" value="화" onclick="createPlan(event)">
+                            <input type="button" class="day-of-week-button" value="수" onclick="createPlan(event)">
+                            <input type="button" class="day-of-week-button" value="목" onclick="createPlan(event)">
+                            <input type="button" class="day-of-week-button" value="금" onclick="createPlan(event)">
+                            <input type="button" class="day-of-week-button" value="토" onclick="createPlan(event)">
+                            <input type="button" class="day-of-week-button" value="일" onclick="createPlan(event)">
+                        </div>
+                        <button type="submit" class="submit-able-plan form-submit" onclick="registAblePlan()">
+                            제출하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+
+    <!-- env 설정 파일 적용 -->
+    <script type="text/javascript" src="env.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
+    <script src="/schedule/available-plans/available-plans.js"></script>
+
+</body>
+
+</html>

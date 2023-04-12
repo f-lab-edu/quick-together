@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .plan-card {
+            position: relative;
+            border-top: 1px gray solid;
+            border-left: 1px gray solid;
+            border-right: 2px gray solid;
+            border-bottom: 2px gray solid;
+            border-radius: 6px;
+            margin: 3px;
+            width: 98%;
+        }
+
+        .range-picker {
+            margin: 1%;
+        }
+
+        .time-picker {
+            margin: 2%;
+        }
+
+        .day-of-week {
+            margin-top: 10px;
+            margin-left: 10px;
+            font-size: 20px;
+        }
+
+        .day-of-week-button {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            margin-left: 2%;
+            border: 0px;
+            border-bottom: 1px rgb(179, 179, 179) solid;
+            border-right: 1px rgb(179, 179, 179) solid;
+            background-color: aliceblue;
+        }
+
+        .day-of-week-button:hover {
+            background-color: #6dabe4;
+            color: white;
+        }
+
+        .description {
+            font-size: 15px;
+        }
+
+        .plan-adder {
+            align-items: center;
+            border-top: 1px gray solid;
+            border-left: 1px gray solid;
+            border-right: 2px gray solid;
+            border-bottom: 2px gray solid;
+            border-radius: 6px;
+            margin: 3px;
+            width: 98%;
+        }
+
+        .button-close {
+            position: absolute;
+            top: 5%;
+            right: 0%;
+
+            border: 0px;
+            border-bottom: 1px rgb(179, 179, 179) solid;
+            border-right: 1px rgb(179, 179, 179) solid;
+            background-color: aliceblue;
+        }
+
+        .button-close:hover {
+            background-color: #6dabe4;
+            color: white;
+        }
+
+        .submit-able-plan {
+            float: right;
+
+        }
+
+        button {
+            border: 0px;
+            width: 200px;
+        }
+
+        .page-title {
+            font-size: 50px;
+            margin-left: 60px;
+            margin-top: 60px;
+        }
+
+        .description {
+            margin-left: 65px;
+            margin-top: 5px;
+        }
+
+        .radio-block {
+            margin-left: 10px;
+        }
+
+        .adder-title {
+            margin: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <title>시간 설정하기</title>
+    <script src="/env.js"></script>
+    <script>
+        function createPlan(event) {
+            let planArea = document.getElementsByClassName("plan-area")[0]
+            let element = document.createElement('div')
+
+
+            //관리하기 위해서 id 생성
+            const id = 'plan-card-' + new Date().getTime();
+            element.setAttribute('id', id)
+            element.setAttribute('class', 'plan-card')
+            const dayOfWeek = event.target.value
+            element.innerHTML = `
+            <div class="day-of-week" name="day-of-week">${dayOfWeek}</div>
+            <input type="button" class="time-picker button-close" onclick="closePlan('${id}')" value="x">
+            <div class="range-picker">
+                <input type="time" name="start-time" class="time-picker" required/>~
+                <input type="time" name="end-time" class="time-picker" required/>
+            </div> 
+            `
+            planArea.appendChild(element)
+
+            //스크롤 이동
+            const addedDiv = document.getElementById(id)
+            const addedScrollPosition = addedDiv.offsetTop
+
+            window.scrollTo({
+                top: addedScrollPosition,
+                behavior: 'smooth'
+            })
+        }
+        //plan card 닫기
+        function closePlan(id) {
+            let plan = document.getElementById(id)
+            if (plan != null) {
+                plan.remove()
+            }
+
+        }
+    </script>
+
+    <!-- 등록 -->
+    <script>
+        function registAblePlan() {
+
+            //timezone 가져오기
+            const timezoneList = document.getElementsByName('timezone')
+            const timezone = getRadioCheckedValue(timezoneList);
+
+            //RelativeTimeBlock 가져오기
+            const dayOfWeekList = document.getElementsByName("day-of-week")
+            const startTimeList = document.getElementsByName('start-time')
+            const endTimeList = document.getElementsByName('end-time')
+
+            const dayMap = new Map([
+                ['월', 'MONDAY'],
+                ['화', 'TUESDAY'],
+                ['수', 'WEDNESDAY'],
+                ['목', 'THURSDAY'],
+                ['금', 'FRIDAY'],
+                ['토', 'SATURDAY'],
+                ['일', 'SUNDAY']
+            ]);
+
+            const availablePlans = [];
+            for (let i = 0; i < dayOfWeekList.length; i++) {
+                const dayOfWeek = dayMap.get(dayOfWeekList[i].innerText)
+                const startTime = startTimeList[i].value
+                const endTime = endTimeList[i].value
+
+                availablePlans.push({
+                    day_of_week: dayOfWeek,
+                    start_time: startTime,
+                    end_time: endTime
+                })
+            }
+
+            const availablePlanRequestDto = {
+                time_zone: timezone,
+                available_plans: availablePlans
+            }
+
+            const data = JSON.stringify(availablePlanRequestDto)
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', `${API_HOST}/available-plans`)
+            xhr.setRequestHeader('Content-type', 'application/json')
+            xhr.withCredentials = true;
+
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState !== XMLHttpRequest.DONE) return;
+                if (xhr.status === 201) {
+                    window.location.href = `/schedule/plans/plan-form-on-boarding.html`;
+                } else {
+                    console.log(xhr.response, xhr.status)
+                }
+            }
+            xhr.send(data);
+        }
+
+        function getRadioCheckedValue(timezoneList) {
+            let checkedValue = null;
+            for (let i = 0; i < timezoneList.length; i++) {
+                if (timezoneList[i].checked == true) {
+                    checkedValue = timezoneList[i].value
+                    break
+                }
+            }
+            return checkedValue;
+        }
+    </script>
+
+</head>
+
+<body>
+    <!-- Available Plans form -->
+    <section class="signup">
+        <div class="container">
+            <h2 class="page-title">시간설정</h2>
+            <div class="description">동료와 함께 모일 수 있는 시간을 알려주세요.</div>
+            <div class="signup-content">
+                <div class="signup-form">
+                    <div class="title-section">
+                        <h2 class="form-title">시간대 설정</h2>
+                        <div class="form-group">
+                            <label class="radio-block">
+                                <input type="radio" class="timezone" name="timezone" value="Asia/Seoul">
+                                아시아/서울
+                            </label>
+                            <label class="radio-block">
+                                <input type="radio" class="timezone" name="timezone" value="America/Los_Angeles">
+                                미국/로스엔젤레스
+                            </label>
+                            <label class="radio-block">
+                                <input type="radio" class="timezone" name="timezone" value="Europe/London">
+                                유럽/런던
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="signup-form">
+                    <h2 class="form-title">가능한 시간</h2>
+                    <div class="form-group">
+                        <div class="plan-area"></div>
+                    </div>
+
+                    <div class="plan-adder">
+                        <span class="adder-title">추가하기 </span>
+                        <input type="button" class="day-of-week-button" value="월" onclick="createPlan(event)">
+                        <input type="button" class="day-of-week-button" value="화" onclick="createPlan(event)">
+                        <input type="button" class="day-of-week-button" value="수" onclick="createPlan(event)">
+                        <input type="button" class="day-of-week-button" value="목" onclick="createPlan(event)">
+                        <input type="button" class="day-of-week-button" value="금" onclick="createPlan(event)">
+                        <input type="button" class="day-of-week-button" value="토" onclick="createPlan(event)">
+                        <input type="button" class="day-of-week-button" value="일" onclick="createPlan(event)">
+                    </div>
+                    <button type="submit" class="submit-able-plan form-submit" onclick="registAblePlan()">
+                        제출하기</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>

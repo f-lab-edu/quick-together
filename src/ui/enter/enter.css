@@ -1,0 +1,43 @@
+.enter {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    margin: 20px;
+    padding: 20px;
+    width: 300px;
+}
+
+.enter h1 {
+    color: #ff5e6c;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.enter h2 {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.enter p {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.enter #enter-button {
+    background-color: #ff5e6c;
+    border-radius: 5px;
+    color: #fff;
+    display: block;
+    font-size: 16px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.enter span:hover {
+    background-color: #e24c5c;
+}

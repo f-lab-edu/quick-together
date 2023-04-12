@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.84.0">
+  <title>Quick Together</title>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/blog/">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+  <!-- header 로그인 css -->
+  <link rel="stylesheet" href="css/header-login.css">
+
+  <!-- sidebar css -->
+  <link rel="stylesheet" href="css/sidebar.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dongle:wght@400&display=swap');
+
+    body {
+      /* font-family: 'Dongle', sans-serif;*/
+      font-size: 15px;
+      transition: opacity ease-in 0.2s;
+      display: grid;
+      grid-template-columns: 1fr 6fr;
+      grid-template-rows: 100px auto;
+      grid-template-areas:
+        'header header'
+        'aside main';
+
+    }
+
+    body[unresolved] {
+      opacity: 0;
+      display: block;
+      overflow: hidden;
+      position: relative;
+    }
+
+    main {
+      grid-area: main;
+      display: flex;
+      margin-left: 1em;
+    }
+  </style>
+
+  <!-- Custom styles for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900&amp;display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+
+  <script src='/env.js'></script>
+  <script src="/schedule/plans/plan-form.js"></script>
+  <script src="/schedule/plans/ko.global.min.js"></script>
+</head>
+
+<body>
+  <!-- 로그인 헤더, 정보 추가 -->
+  <span>
+    <script src="login-check/login.js"></script>
+    <script type="module" src="header/login-header.js"></script>
+  </span>
+  <header id="header-login"></header>
+
+  <!-- 사이드 바 -->
+  <script type="module" src="schedule/sidebar/schedule-sidebar.js"></script>
+  <aside id="sidebar-schedule"></aside>
+
+  <main class="main">
+    <section class="signup">
+      <div class="container">
+        <div class="page-description">
+          <h1 class="page-title">스케줄 설정</h1>
+          <div class="description">원하는 스케줄링이 가능하도록 설정해주세요.</div>
+        </div>
+
+        <div class="signup-content">
+          <div class="signup-form">
+            <div class="title-section">
+              <h2 class="form-title">스케줄 우선순위</h2><br>
+              <div class="form-group">
+                <label class="radio-block">
+                  <input type="radio" id="fast" class="radio-select sequence_priority" name="sequence_priority"
+                    value="FAST">
+                  빠른순으로
+                </label>
+                <label class="radio-block">
+                  <input type="radio" id="late" class="radio-select sequence_priority" name="sequence_priority"
+                    value="LATE">
+                  느린순으로
+                </label>
+              </div>
+            </div>
+            <div class="title-section">
+              <h2 class="form-title">분단위</h2>
+              <div class="form-group">
+                <label class="radio-block">
+                  <input type="radio" id="ten" class="radio-select minute_unit" name="minute_unit" value="TEN">
+                  10분
+                </label>
+                <label class="radio-block">
+                  <input type="radio" id="half" class="radio-select minute_unit" name="minute_unit" value="HALF">
+                  30분
+                </label>
+                <label class="radio-block">
+                  <input type="radio" id="hour" class="radio-select minute_unit" name="minute_unit" value="HOUR">
+                  1시간
+                </label>
+              </div>
+            </div>
+            <div class="title-section">
+              <h2 class="form-title">여분시간</h2>
+              <div class="form-group">
+                <input type="text" id="marginal_minutes" name="marginal_minutes"><br><br>
+              </div>
+            </div>
+            <div class="title-section">
+              <h2 class="form-title">추천 최대개수</h2>
+              <div class="form-group">
+                <input type="text" id="limit" name="limit"><br><br>
+              </div>
+            </div>
+
+          </div><br>
+          <button type="submit" id="submit" class="submit-able-plan form-submit">제출하기</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- env 설정 파일 적용 -->
+  <script type="text/javascript" src="env.js"></script>
+
+
+
+</body>
+
+</html>

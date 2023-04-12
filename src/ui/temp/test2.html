@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Summernote Example</title>
+  <!-- Summernote CSS 파일 -->
+  <link href="https://cdn.jsdelivr.net/npm/summernote/dist/summernote-bs4.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Summernote 에디터 -->
+    <textarea id="summernote" name="summernote"></textarea>
+
+    <!-- 저장 버튼 -->
+    <button type="button" class="btn btn-primary" onclick="saveText()">저장</button>
+  </div>
+
+  <!-- Summernote JS 파일 -->
+  <script src="https://cdn.jsdelivr.net/npm/summernote/dist/summernote-bs4.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Summernote 초기화
+      $('#summernote').summernote({
+        height: 300,                 // 에디터 높이
+        minHeight: null,             // 최소 높이
+        maxHeight: null,             // 최대 높이
+        focus: true,                 // 에디터 로딩 후 포커스를 맞출지 여부
+        lang: 'ko-KR',               // 한글 설정
+        placeholder: '내용을 입력해주세요.',  //placeholder 설정
+      });
+    });
+
+    // 텍스트 저장
+    function saveText() {
+      // Summernote에서 입력한 HTML 코드 가져오기
+      var content = $('#summernote').summernote('code');
+
+      // Ajax 요청 보내기
+      $.ajax({
+        url: '/saveText',
+        type: 'POST',
+        data: {
+          content: content
+        },
+        success: function(data) {
+          // 서버에서 받은 결과 출력
+          alert(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.error(textStatus + " " + errorThrown);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

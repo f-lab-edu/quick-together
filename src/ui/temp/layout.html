@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+    <title>Insert title here</title>
+    <link rel="stylesheet" href="css/post.css">
+    <style type="text/css">
+        #mid_content {
+            width: 800px;
+            height: 800px;
+            background-color: green;
+            float: left;
+            margin: 5px;
+        }
+
+        #side_content_box {
+            /*display: inline;*/
+            background-color: white;
+            margin: 5px;
+        }
+
+        #side_content_box_detail {
+            /*display: inline;*/
+            background-color: white;
+            margin: 5px;
+            height: 500px;
+        }
+
+        #side_rigth {
+            width: 600px;
+            height: 800px;
+            background-color: red;
+            float: left;
+            margin: 5px;
+        }
+
+        #side_rigth_box {
+            width: 95%;
+            height: 45%;
+            background-color: skyblue;
+            margin: 5px;
+            float: left;
+            /*margin-top:95%;*/
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="mid_content">
+        <div id="side_content_box">다 함께</div>
+        <div id="side_content_box">일정</div>
+        <div id="side_content_box_detail">상세내용</div>
+    </div>
+    <div id="side_rigth">사이드바 오른쪽
+        <div id="side_rigth_box">구성원
+            <p>승재  <span>BackEnd</span> </p> 
+
+
+        </div>
+        <div id="side_rigth_box">채팅
+
+            <div class="chatbox" id="chatbox">
+                <div class="message">
+                    <span class="name">John:</span>
+                    <span class="text">Hello, how are you?</span>
+                    <span class="time">12:00 PM</span>
+                </div>
+                <div class="message">
+                    <span class="name">Jane:</span>
+                    <span class="text">I'm good, thanks. How about you?</span>
+                    <span class="time">12:05 PM</span>
+                </div>
+            </div>
+            <div class="inputbox">
+                <form onsubmit="return false;">
+                    <input type="text" id="message" placeholder="메시지를 입력하세요...">
+                    <input type="submit" value="전송" onclick="sendMessage()">
+                </form>
+            </div>
+
+
+
+        </div>
+    </div>
+</body>
+
+</html>
