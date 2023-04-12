@@ -32,7 +32,7 @@ logging:
     org:
       springframework:
        core:
-         LocalVariableTableParameterNameDiscoverer:
+         LocalVariableTableParameterNameDiscoverer: error
 
 
 
