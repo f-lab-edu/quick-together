@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>사이드 프로젝트 작성폼</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#start-date").datepicker();
+            $("#end-date").datepicker();
+        });
+
+        $(function () {
+            $('.datepicker').datepicker({
+                dateFormat: "yy-mm-dd", // 날짜 형식 설정
+                // 기타 옵션 설정
+            });
+        });
+    </script>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- 스타일관련 -->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.css" rel="stylesheet">
+    <!-- 자바스크립트관련 -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.js"></script>
+    <!-- 한글관련 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/lang/summernote-ko-KR.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#myEditor').summernote({
+                lang: 'ko-KR',
+                width: 900,
+                height: 300,
+            });
+
+
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        form {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            width: 95%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            height: 50px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+
+
+
+        .checkbox-group input[type="checkbox"],
+        .checkbox-group label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .radio-group input[type="radio"] {
+            float: left;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>사이드 프로젝트 작성폼</h1>
+    <form id="myForm">
+        <label for="projectName">프로젝트명:</label>
+        <input type="text" id="projectName" name="project-name" required><br>
+
+        <label for="projectSummary">프로젝트 간단 요약:</label>
+        <textarea id="projectSummary" name="project-goals" required></textarea><br>
+
+        <label for="project-description">프로젝트 설명:</label>
+        <div id="projectDescription">
+            <textarea name="" id="myEditor" class="form-control" cols="30" rows="10"></textarea>
+        </div>
+
+
+        <label>필요 기술:</label>
+        <div class="checkbox-group">
+            <input type="checkbox" id="checkbox1" name="skill" value="HTML">
+            <label for="checkbox1">HTML</label>
+
+            <input type="checkbox" id="checkbox2" name="skill" value="CSS">
+            <label for="checkbox2">CSS</label>
+
+            <input type="checkbox" id="checkbox3" name="skill" value="JavaScript">
+            <label for="checkbox3">JavaScript</label>
+        </div>
+
+        <label>미팅방법을 선택해주세요:</label>
+        <div class="radio-group">
+            <input type="radio" id="radio1" name="meeting-method" value="SLACK">
+            <label for="radio1">SLACK</label>
+
+            <input type="radio" id="radio2" name="meeting-method" value="DISCORD">
+            <label for="radio2">DISCORD</label>
+        </div>
+
+        <label for="start-date">시작일:</label>
+        <input class="datepicker" type="text" id="start-date" name="start-date" required><br>
+
+        <label for="end-date">종료일:</label>
+        <input class="datepicker" type="text" id="end-date" name="end-date" required><br>
+
+        <input type="submit" value="제출">
+    </form>
+</body>
+<script>
+    let logined = '';
+
+    async function getUserInfo() {
+
+        const response = await fetch('http://localhost:8080/login', {
+            credentials: 'include'  // HttpOnly 쿠키를 함께 전송하도록 설정
+        });
+        if (response.ok) {
+            logined = await response.json();
+            console.log('login memberid : ' + logined.memberId);
+            console.log('login memberName : ' + logined.memberName);
+            // 로그인한 사용자의 정보를 사용하여 UI를 업데이트하는 등의 작업을 수행
+        } else {
+            console.log('login 안됨');
+        }
+
+
+
+    }
+</script>
+</script>
+
+<script>
+    getUserInfo();
+    const form = document.querySelector('#myForm');
+    let project = '';
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+
+        let projectName = document.getElementById('projectName');
+        let projectSummary = document.getElementById('projectSummary');
+        let projectDescription = $('#myEditor').summernote('code');
+
+        const meetingMethod = document.querySelector('input[name="meeting-method"]:checked');
+
+        /*let startDateTime = document.getElementById('start-date');
+        console.log(startDateTime.value);
+
+        let periodDateTime = document.getElementById('end-date');
+        console.log(periodDateTime.value);*/
+
+        var startDateStr = $('#start-date').datepicker('getDate').toISOString().slice(0, 10) + 'T12:00:00';
+        var endDateStr = $('#end-date').datepicker('getDate').toISOString().slice(0, 10) + 'T12:00:00';
+
+        project = {
+            'memberId': logined.memberId,
+            'projectName': projectName.value,
+            'projectSummary': projectSummary.value,
+            'projectDescription': projectDescription,
+            'meetingMethod': meetingMethod.value,
+            'startDateTime': startDateStr,
+            'periodDateTime': endDateStr,
+        };
+
+
+        fetch('http://localhost:8080/projects', {
+            method: 'POST',
+            //credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(project)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    //alert('로그인을 해주세요.');
+                } else {
+                    /* changeLike(buttonId);
+                     const likeText = document.getElementById(`like-text-${buttonId}`);
+                     likeText.textContent = Number(likeText.textContent) + 1;*/
+                }
+            })
+            .catch(error => console.error(error));
+
+    });
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@400&display=swap');
+
+body {
+    font-family: 'Dongle', sans-serif;
+    font-size: 25px;
+}
+
+
+.fs-4 {
+    margin-bottom: 1.5rem;
+}
+
+.detail-button {
+    font-size: 0.8em;
+}
+
+.like-button {
+    background-color: #e91e63;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.like-count {
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+#login-status {
+    display: flex;
+    align-items: center;
+}
+
+#login-status-text {
+    margin-right: 10px;
+}
+
+#logout-button {
+    display: none;
+}

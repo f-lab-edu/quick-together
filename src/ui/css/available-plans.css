@@ -1,0 +1,102 @@
+        .plan-card {
+            position: relative;
+            border-top: 1px gray solid;
+            border-left: 1px gray solid;
+            border-right: 2px gray solid;
+            border-bottom: 2px gray solid;
+            border-radius: 6px;
+            margin: 3px;
+            width: 98%;
+        }
+
+        .range-picker {
+            margin: 1%;
+        }
+
+        .time-picker {
+            margin: 2%;
+        }
+
+        .day-of-week {
+            margin-top: 10px;
+            margin-left: 10px;
+            font-size: 20px;
+        }
+
+        .day-of-week-button {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            margin-left: 2%;
+            border: 0px;
+            border-bottom: 1px rgb(179, 179, 179) solid;
+            border-right: 1px rgb(179, 179, 179) solid;
+            background-color: aliceblue;
+        }
+
+        .day-of-week-button:hover {
+            background-color: #6dabe4;
+            color: white;
+        }
+
+        .description {
+            font-size: 15px;
+        }
+
+        .plan-adder {
+            align-items: center;
+            border-top: 1px gray solid;
+            border-left: 1px gray solid;
+            border-right: 2px gray solid;
+            border-bottom: 2px gray solid;
+            border-radius: 6px;
+            margin: 3px;
+            width: 98%;
+        }
+
+        .button-close {
+            position: absolute;
+            top: 5%;
+            right: 0%;
+
+            border: 0px;
+            border-bottom: 1px rgb(179, 179, 179) solid;
+            border-right: 1px rgb(179, 179, 179) solid;
+            background-color: aliceblue;
+        }
+
+        .button-close:hover {
+            background-color: #6dabe4;
+            color: white;
+        }
+
+        .submit-able-plan {
+            float: right;
+
+        }
+
+        button {
+            border: 0px;
+            width: 200px;
+        }
+
+        .page-title {
+            position: relative;
+            font-size: 50px;
+            margin-left: 60px;
+            margin-top: 60px;
+        }
+
+        .description {
+            margin-left: 65px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+
+        .radio-block {
+            margin-left: 10px;
+        }
+
+        .adder-title {
+            margin: 10px;
+            margin-bottom: 10px;
+        }

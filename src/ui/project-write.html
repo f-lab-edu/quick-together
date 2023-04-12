@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <title>프로젝트 생성</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- header 로그인 css -->
+    <link rel="stylesheet" href="css/header-login.css">
+
+    <!-- write css -->
+    <link rel="stylesheet" href="css/project-write.css">
+
+    <script>
+        $(function () {
+            $("#start-date").datepicker();
+            $("#end-date").datepicker();
+        });
+
+        $(function () {
+            $('.datepicker').datepicker({
+                dateFormat: "yy-mm-dd", // 날짜 형식 설정
+                // 기타 옵션 설정
+            });
+        });
+    </script>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- 스타일관련 -->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.css" rel="stylesheet">
+    <!-- 자바스크립트관련 -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.js"></script>
+    <!-- 한글관련 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/lang/summernote-ko-KR.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#myEditor').summernote({
+                lang: 'ko-KR',
+                width: 900,
+                height: 300,
+            });
+
+        });
+
+
+    </script>
+</head>
+
+<body>
+    <span>
+        <script src="login-check/login.js"></script>
+        <script type="module" src="header/login-header-index.js"></script>
+    </span>
+    <header style="display: flex;" id="header-login"></header>
+
+    <main class="main">
+        <h1>프로젝트 작성</h1>
+        <form id="myForm">
+            <label for="projectName">프로젝트명:</label>
+            <input type="text" id="projectName" name="project-name" required><br>
+
+            <label for="projectSummary">프로젝트 간단 요약:</label>
+            <textarea id="projectSummary" name="project-goals" required></textarea><br>
+
+            <label for="project-description">프로젝트 설명:</label>
+            <div id="projectDescription">
+                <textarea name="" id="myEditor" class="form-control" cols="30" rows="10"></textarea>
+            </div>
+
+
+            <label id="skills">필요 기술:</label>
+            <div id="skillStacks" class="checkbox-group">
+                <input type="checkbox" id="checkbox1" name="skill" value="HTML">
+                <label for="checkbox1">HTML</label>
+
+                <input type="checkbox" id="checkbox2" name="skill" value="CSS">
+                <label for="checkbox2">CSS</label>
+
+                <input type="checkbox" id="checkbox3" name="skill" value="JavaScript">
+                <label for="checkbox3">JavaScript</label>
+            </div>
+
+            <div id="meeting">
+                <label>미팅방법을 선택해주세요:</label>
+                <div class="radio-group">
+                    <input type="radio" id="radio1" name="meeting-method" value="OFFLINE">
+                    <label for="radio1">OFFLINE</label>
+
+                    <input type="radio" id="radio2" name="meeting-method" value="DISCORD">
+                    <label for="radio2">DISCORD</label>
+
+                    <input type="radio" id="radio3" name="meeting-method" value="GOOGLE_MEET">
+                    <label for="radio3">GOOGLE_MEET</label>
+
+                    <input type="radio" id="radio4" name="meeting-method" value="SLACK">
+                    <label for="radio4">SLACK</label>
+
+                    <input type="radio" id="radio5" name="meeting-method" value="UNDEFINED">
+                    <label for="radio5">UNDEFINED</label>
+                </div>
+            </div>
+
+            <label for="start-date">시작일:</label>
+            <input class="datepicker" type="text" id="start-date" name="start-date" required><br>
+
+            <label for="end-date">종료일:</label>
+            <input class="datepicker" type="text" id="end-date" name="end-date" required><br>
+
+            <input type="submit" value="생성">
+        </form>
+    </main>
+</body>
+<!-- env 설정 파일 적용 -->
+<script type="text/javascript" src="env.js"></script>
+
+<!-- 프로젝트 생성 기능 -->
+<script src="project-js/project-write.js"></script>
+
+</html>

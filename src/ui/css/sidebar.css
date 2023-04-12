@@ -1,0 +1,24 @@
+aside {
+    grid-area: aside;
+    font-family: 'Dongle', sans-serif;
+    font-size: 25px;
+    background-color: #dadada;
+    color: #fff;
+    display: flex;
+    height: 100vh;
+    /* justify-content: space-between; */
+}
+
+.button-sidebar {
+    border: 0;
+    background-color: transparent;
+    padding: 10px;
+    margin: 12px;
+    text-decoration: none;
+    color: black;
+}
+
+#list-sidebar {
+    list-style-type: none;
+    padding: 0;
+}

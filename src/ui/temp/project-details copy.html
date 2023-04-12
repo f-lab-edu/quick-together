@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>project Details</title>
+</head>
+
+<body>
+  <h1>project Details</h1>
+  <div>
+    <label for="name">projectName:</label>
+    <span id="name"></span>
+  </div>
+  <div>
+    <label for="founder">founder:</label>
+    <span id="founder"></span>
+  </div>
+  <div>
+    <label for="projectDescriptionInfo">projectDescriptionInfo:</label>
+    <span id="projectDescriptionInfo"></span>
+  </div>
+
+  <div>
+    <label for="member">member:</label>
+    <span id="member"></span>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+    console.log(userId);
+
+    fetch('http://localhost:8080/projects/' + userId + '/detail', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+        //'withCredentials': 'true'
+      },
+    })
+      .then(response => response.json())
+      .then(project => {
+        const nameSpan = document.getElementById('name');
+        const founderSpan = document.getElementById('founder');
+        const projectDescriptionInfoSpan = document.getElementById('projectDescriptionInfo');
+        const memberSpan = document.getElementById('member');
+
+        nameSpan.textContent = project.projectName;
+        founderSpan.textContent = project.founderName;
+        projectDescriptionInfoSpan.textContent = project.projectDescriptionInfo.projectSummary;
+
+
+        const members = project.participants;
+        //console.log(members);
+
+        let memberNameStr = '';
+
+        members.forEach(member => {
+
+          const memberName = member.memberName;
+          console.log(memberName);
+
+          memberNameStr += memberName + " ";
+        });
+
+        memberSpan.textContent = memberNameStr;
+
+      });
+
+  </script>
+</body>
+
+</html>

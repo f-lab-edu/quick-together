@@ -1,0 +1,92 @@
+#header {
+    display: flex;
+}
+
+.main body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+}
+
+.main form {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.main h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.main label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.main input[type="text"],
+.main input[type="email"],
+.main input[type="tel"],
+.main textarea {
+    width: 95%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.main textarea {
+    height: 50px;
+}
+
+.main input[type="number"] {
+    width: 60px;
+}
+
+.main input[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.main input[type="submit"]:hover {
+    background-color: #3e8e41;
+}
+
+.main .error {
+    color: red;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#skills {
+    margin-top: 20px;
+}
+
+
+.main .checkbox-group input[type="checkbox"] {
+    display: inline-block;
+    margin-right: 3px;
+}
+
+.main .checkbox-group label {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+#meeting {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.main .radio-group input[type="radio"] {
+    float: left;
+    margin-right: 10px;
+}

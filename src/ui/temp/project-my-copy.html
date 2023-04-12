@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>project Details</title>
+  <style>
+    label {
+      display: inline-block;
+      width: 200px;
+      font-weight: bold;
+    }
+
+    span {
+      display: inline-block;
+      width: 300px;
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>project Details</h1>
+
+
+
+  <div id="some-div">
+
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+    console.log(userId);
+    const someDiv = document.querySelector('#some-div');
+
+    fetch('http://localhost:8080/projects/' + userId + '/detail', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+        //'withCredentials': 'true'
+      },
+    })
+      .then(response => {
+        if (response.status == 401) { // HTTP 상태 코드가 200 이상 299 미만이 아닐 경우
+          alert('로그인을 해주세요.');
+        }
+        return response.json()
+      })
+      .then(project => {
+        let projectsString = `
+            <div>
+              <label for="name">projectName:</label>
+              <span id="name">${project.projectName}</span>
+            </div>
+
+            <div>
+              <label for="founder">founder:</label>
+              <span id="founder">${project.founderName}</span>
+            </div>
+
+            <div>
+              <label for="projectSummary">projectSummary:</label>
+              <span id="projectSummary">${project.projectDescriptionInfo.projectSummary}</span>
+            </div>
+
+            <div>
+              <label for="projectDescriptionInfo">projectDescriptionInfo:</label>
+              <span id="projectDescriptionInfo">${project.projectDescriptionInfo.projectDescription}</span>
+            </div>
+
+            <div>
+              <label for="projectStatus">projectStatus:</label>
+              <span id="projectStatus">${project.projectStatus}</span>
+            </div>
+
+            <div>
+              <label for="meetingMethod">meetingMethod:</label>
+              <span id="meetingMethod">${project.meetingMethod}</span>
+            </div>
+
+            <div>
+              <label for="startDateTime">startDateTime:</label>
+              <span id="startDateTime">${project.startDateTime}</span>
+            </div>
+
+            <div>
+              <label for="periodDateTime">periodDateTime:</label>
+              <span id="periodDateTime">${project.periodDateTime}</span>
+            </div>
+
+        `;
+
+
+        //프로젝트 스킬스택 출력
+        let tempSkillStacks = '';
+
+        project.projectSkillStacks.forEach(stack => {
+          tempSkillStacks += stack + ' ';
+
+        });
+
+        projectsString += `<div>
+              <label for="skillStacks">skillStacks:</label>
+              <span id="skillStacks">${tempSkillStacks}</span>
+            </div>`;
+
+
+        // 프로젝트 구인포지션 출력
+        let tempRecruitPostions = '';
+
+        project.recruitPositions.forEach(postion => {
+          tempRecruitPostions += postion + ' ';
+
+        });
+
+        projectsString += `<div>
+      <label for="RecruitPostions">RecruitPostions:</label>
+      <span id="RecruitPostions">${tempRecruitPostions}</span>
+    </div>`;
+
+
+        //member 출력
+        let memberNameStr = '';
+
+        const members = project.participants;
+        members.forEach(member => {
+
+          const memberName = member.memberName;
+          memberNameStr += memberName + " ";
+
+        });
+
+        projectsString += `<div>
+      <label for="memberName">memberName:</label>
+      <span id="memberName">${memberNameStr}</span>
+    </div>`;
+
+
+        //post 출력
+        let tempPosts = '';
+        const projectPosts = project.posts;
+
+        projectPosts.forEach(post => {
+          tempPosts += post.memberName + ' : ' + post.content + ' ';
+        });
+
+        projectsString += `<div>
+          <label for="posts">posts:</label>
+          <span id="posts">${tempPosts}</span>
+          </div>`;
+
+        someDiv.innerHTML += projectsString;
+      });
+
+  </script>
+</body>
+
+</html>
