@@ -8,6 +8,9 @@
 
 또한, 미팅 일정을 예약할 때 구성원들의 일정 정보를 이용하여 자동으로 **미팅 일정을 추천**을 해줍니다.
 
+## 기능
+![ezgif com-resize](https://user-images.githubusercontent.com/41093183/231824173-75b58069-a745-4b5c-897e-221c4ed3b2f0.gif)
+
 
 ## ci/cd 구성도
 <img width="745" alt="image" src="https://user-images.githubusercontent.com/41093183/231686691-5fdb947b-716c-46fa-b6e4-70ceffa29a8c.png">
