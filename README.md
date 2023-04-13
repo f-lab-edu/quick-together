@@ -30,6 +30,3 @@
 
 
 
-
-
-![image-20221201201631062](/Users/sewon/Library/Application%20Support/typora-user-images/image-20221201201631062.png)
