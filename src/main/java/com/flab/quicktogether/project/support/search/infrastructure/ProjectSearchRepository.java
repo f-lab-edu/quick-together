@@ -54,6 +54,8 @@ public interface ProjectSearchRepository extends JpaRepository<Project, Long> {
      */
     @Query("select new com.flab.quicktogether.project.support.search.presentation.dto.ProjectSimpleDto(p,count(l)) from Project p " +
             "left outer join Likes l on l.project = p " +
+            "LEFT JOIN fetch p.skillStacks " +
+            "LEFT JOIN fetch p.recruitmentPositions " +
             "where p.Id = :projectId " +
             "group by p"
     )
