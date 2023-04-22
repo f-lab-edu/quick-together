@@ -9,10 +9,12 @@
 또한, 미팅 일정을 예약할 때 구성원들의 일정 정보를 이용하여 자동으로 **미팅 일정을 추천**을 해줍니다.
 
 ## 기능
-* 내 프로젝트
+내 프로젝트
+
 ![ezgif com-resize](https://user-images.githubusercontent.com/41093183/231824173-75b58069-a745-4b5c-897e-221c4ed3b2f0.gif)
 
-* 채팅
+채팅 기능
+
 ![chat](https://user-images.githubusercontent.com/41093183/233783541-2ea37d7b-e58e-47d9-bedf-a61b4f8fd031.gif)
 
 ## ci/cd 구성도
