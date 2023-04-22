@@ -14,9 +14,19 @@
 ![all](https://user-images.githubusercontent.com/41093183/233784743-0e821bbc-2b3b-4f27-986f-0b838a5baf74.gif)
 
 
+</br>
+
+**프로젝트 생성**
+
+![createProject](https://user-images.githubusercontent.com/41093183/233788871-5d3d6818-8b1b-4b5d-a890-441a8d721900.gif)
+
+</br>
+
 **채팅 기능**
 
 ![chat](https://user-images.githubusercontent.com/41093183/233783541-2ea37d7b-e58e-47d9-bedf-a61b4f8fd031.gif)
+
+</br>
 
 **초대 기능**
 
