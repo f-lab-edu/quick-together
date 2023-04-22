@@ -18,6 +18,8 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
+        System.out.println("redisHost = " + redisHost);
+        System.out.println("redisPort = " + redisPort);
         return new LettuceConnectionFactory(redisHost, redisPort);
     }
 
