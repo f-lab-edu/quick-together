@@ -53,6 +53,18 @@ public class ProjectInviteController {
     }
 
     /**
+     * 프로젝트 멤버 이름으로 초대
+     */
+    @PostMapping("/projects/{projectId}/invitesMemberName")
+    public ResponseEntity inviteMemberName(@PathVariable("projectId") Long projectId,
+                                           @RequestBody @Valid InviteMemberNameRequest inviteMemberRequest,
+                                           @Login Long requestMemberId) {
+        projectInviteService.inviteMemberName(projectId, requestMemberId, inviteMemberRequest.getInvitedMemberName());
+        URI location = URI.create(String.format("/projects/%d/members/%s/invites", projectId, inviteMemberRequest.getInvitedMemberName()));
+        return ResponseEntity.created(location).build();
+    }
+
+    /**
      * 프로젝트 초대 수락
      */
     @PostMapping("/projects/{projectId}/members/invites")
@@ -78,7 +90,7 @@ public class ProjectInviteController {
 
     @Data
     @AllArgsConstructor
-    static class Result<T>{
+    static class Result<T> {
         private T data;
     }
 }
