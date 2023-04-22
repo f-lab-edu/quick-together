@@ -10,6 +10,7 @@ header {
     justify-content: space-between;
     align-items: center;
     grid-area: header;
+    margin-bottom:3rem;
 }
 
 header h1 {
@@ -29,7 +30,7 @@ header h1 {
 }
 
 nav {
-    display: flex;
+    display: flex !important;
 }
 
 nav ul {

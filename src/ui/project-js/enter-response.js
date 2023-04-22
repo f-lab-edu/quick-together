@@ -28,11 +28,12 @@ fetch(`http://${API_IP}:${API_PORT}/projects/` + projectId + '/members/enters', 
             enterStr += `
                     <div id="enter-${enter.projectId}" class="enter" >
                         <span>${enter.enterMemberName}</span>
-                        <button style="border-radius: 5px;" onclick="acceptEnter(${enter.projectId}, ${enter.enterMemberId})" id="enter-button" value="${enter.projectId}">수락 하기</button>
+                        <button id="enter-button" style="border-radius: 5px;" onclick="acceptEnter(${enter.projectId}, ${enter.enterMemberId})" value="${enter.enterMemberName}">수락 하기</button>
                     </div>`;
 
         });
         enterTag.innerHTML += enterStr;
+        
     })
     .catch(error => console.error(error));
 
@@ -68,8 +69,50 @@ function acceptEnter(projectId, memberId) {
             } else {
 
                 alert('입장 신청 수락되었습니다.')
+                var enterButton = document.querySelector(`#enter-button`);
+
                 const targetEnter = document.querySelector(`#enter-${projectId}`);
                 targetEnter.remove();
+
+
+                const participants = document.getElementById('participantsLocation');
+
+                let addPaticipant = `
+                `;
+            
+                // 구성원 출력
+                
+                  addPaticipant += `
+                <div style="display: flex">
+                `;
+            
+                  let memberNameStr = '';
+                  let positionNameStr = '';
+                  let tempPostion = '';
+            
+                  memberNameStr += `
+                  <div style="flex : 1">
+                    <p id="participantName" class="mb-0">${enterButton.value}</p>
+                  </div>`;
+            
+            
+                  /*member.positions.forEach(postion => {
+                    tempPostion += postion + ' ';
+                  });
+                  positionNameStr = `
+                  <div style="flex : 2; margin-left: 15">
+                    <p id="participantPostion" class="mb-0">${tempPostion}</p>
+                  </div>`;*/
+            
+            
+                  addPaticipant += memberNameStr;
+                  addPaticipant += positionNameStr;
+                  addPaticipant += `
+                </div >
+                `;
+            
+            
+                participants.innerHTML += addPaticipant;
 
             }
         })

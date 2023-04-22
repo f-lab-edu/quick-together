@@ -11,11 +11,11 @@ function sendMessage() {
       projectId: projectId
   };
 
-  /*var headers = {
+  var headers = {
     'header1': 'value1',
     'header2': 'value2',
 
-  };*/
+  };
 
   stompClient.send('/app/chat', {}, JSON.stringify(PostRequest));
 
