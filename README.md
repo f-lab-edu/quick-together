@@ -11,7 +11,8 @@
 ## 기능
 **내 프로젝트**
 
-![ezgif com-resize](https://user-images.githubusercontent.com/41093183/231824173-75b58069-a745-4b5c-897e-221c4ed3b2f0.gif)
+![all](https://user-images.githubusercontent.com/41093183/233784743-0e821bbc-2b3b-4f27-986f-0b838a5baf74.gif)
+
 
 **채팅 기능**
 
