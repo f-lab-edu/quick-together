@@ -71,7 +71,7 @@
     }
 
     #leaveBtn {
-      background-color: #d11515;
+      background-color: #bd1111;
       border-radius: 5px;
       color: #fff;
       margin-top: 10px;
@@ -127,9 +127,13 @@
       <div class="popup-content">
         <span class="close">&times;</span>
         <h2>Invite Member</h2>
-        <p>Select a member:</p>
-        <select id="members"></select>
+        <p>Enter the members to invite:</p>
+        <!-- 초대할 멤버를 고를 수 있게하려면 아래 주석해제-->
+        <!--select id="members"></select-->
+        <input type="text" id="inviteTextBox" name="inviteTextBox" placeholder="초대할 멤버 이름">
         <button id="invite">Invite</button>
+        
+  
       </div>
     </div>
 

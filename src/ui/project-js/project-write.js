@@ -1,32 +1,67 @@
 const someDiv = document.querySelector('#skillStacks');
 
-let skills = [
+let backend = [
+    //백엔드
     "JAVA",
     "KOTLIN",
     "SPRING",
     "JPA",
-    "JAVA_SCRIPT",
-    "NODE_JS",
-    "EXPRESS_JS",
-    "NEST_JS",
-    "REACT_JS",
-    "VUE_JS",
-    "SVELTE_JS",
-    "ANGULAR_JS",
     "PYTHON",
     "DJANGO",
     "FLASK",
-    "TENSOR_FLOW"
+    "TENSOR_FLOW",
   ];
 
-let addSkills = '';
+  let front =[
+      //프론트
+      "JAVA_SCRIPT",
+      "VUE_JS",
+      "SVELTE_JS",
+      "ANGULAR_JS",
+  ]
 
-skills.forEach(function(skill) {
+  let serverside_js =[
+        // 서버사이드 자바스크립트
+        "NODE_JS",
+        "EXPRESS_JS",
+        "NEST_JS",
+        "REACT_JS"
+  ]
+
+  
+      
+
+let addSkills = '';
+addSkills += `
+<p style="font-weight: bold;" id="skills">백엔드 </p>
+`;
+backend.forEach(function(skill) {
     addSkills += `
     <input type="checkbox" id="checkbox1" name="skill-stack" value="${skill}">
     <label for="checkbox1">${skill}</label>
     `;
   });
+
+  addSkills += `
+<p style="font-weight: bold;" id="skills">프론트엔드 </p>
+`;
+front.forEach(function(skill) {
+    addSkills += `
+    <input type="checkbox" id="checkbox1" name="skill-stack" value="${skill}">
+    <label for="checkbox1">${skill}</label>
+    `;
+  });
+
+  addSkills += `
+  <p style="font-weight: bold;" id="skills">서버사이드 자바스크립트 </p>
+  `;
+  serverside_js.forEach(function(skill) {
+      addSkills += `
+      <input type="checkbox" id="checkbox1" name="skill-stack" value="${skill}">
+      <label for="checkbox1">${skill}</label>
+      `;
+    });
+
 
 someDiv.innerHTML = addSkills;
 

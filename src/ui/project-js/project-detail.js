@@ -83,9 +83,17 @@ fetch(`http://${API_IP}:${API_PORT}/projects/` + projectId + '/detail', {
     let addPaticipant = `
     `;
 
+   
 
     // 구성원 출력
     const members = project.participants;
+
+    // 방장은 맨위로 1순위 ROLE_ADMIN 2순위 ROLE_USER
+    // 일단 문자열 비교로 정렬
+    members.sort(function(memberA, memberB) {
+      return memberA.participantRole.localeCompare(memberB.participantRole);
+    });
+
     members.forEach(member => {
       addPaticipant += `
     <div style="display: flex">
@@ -97,9 +105,20 @@ fetch(`http://${API_IP}:${API_PORT}/projects/` + projectId + '/detail', {
 
       const memberName = member.memberName;
       memberNameStr += `
-      <div style="flex : 1">
-        <p id="participantName" class="mb-0">${memberName}</p>
+      <div style="flex : 1">`;
+
+      if(member.participantRole == 'ROLE_ADMIN') {
+        memberNameStr += `
+        <p id="participantName" class="mb-0"><img src="img/admin.png" style="width: 20px; height: 20px" alt="My Image"> ${memberName}</p>
       </div>`;
+      } else{
+        memberNameStr += `
+        <p id="participantName" class="mb-0"> ${memberName}</p>
+      </div>`;
+      }
+
+      
+
 
 
       member.positions.forEach(postion => {
@@ -120,7 +139,6 @@ fetch(`http://${API_IP}:${API_PORT}/projects/` + projectId + '/detail', {
     });
 
     participants.innerHTML += addPaticipant;
-
 
 
     //post 출력

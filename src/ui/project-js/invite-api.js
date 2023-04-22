@@ -61,13 +61,18 @@
     // 팝업에서 초대 버튼에 클릭 이벤트를 추가함
     $("#invite").click(function () {
         // 선택한 멤버의 ID를 가져옴
-        const memberId = $("#members").val();
+        //const memberId = $("#members").val();
+        //console.log(memberId + " invite");
+
+        var inviteTextBox = document.getElementById("inviteTextBox");
+        var invitedMemberName = inviteTextBox.value;
+        //console.log(invitedMemberName + " invite2");
 
         invite = {
-            'invitedMemberId': memberId,
+            'invitedMemberName': invitedMemberName,
         };
 
-        fetch(`http://${API_IP}:${API_PORT}/projects/` + projectId + '/invites', {
+        fetch(`http://${API_IP}:${API_PORT}/projects/` + projectId + '/invitesMemberName', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -90,7 +95,7 @@
 
     });
 
-function inviteMember() {
+/*function inviteMember() {
     invite = {
         'invitedMemberId': invitedMemberId,
     };
@@ -116,4 +121,4 @@ function inviteMember() {
         })
         .catch(error => console.error(error));
 
-}
+}*/
