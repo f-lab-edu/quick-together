@@ -3,6 +3,8 @@ server:
   tomcat.max-threads: ${SERVER_THREAD}
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true
@@ -24,16 +26,18 @@ spring:
     init:
       mode: always
 
+  redis:
+    host: ${REDIS_HOST}
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 2
+
+
 logging:
   level:
     root: INFO
     org.springframework.web: INFO
 
-  redis:
-    lettuce:
-      pool:
-        max-active: 5
-        max-idle: 5
-        min-idle: 2
-    host: localhost
-    port: 6379
