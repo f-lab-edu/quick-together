@@ -67,7 +67,7 @@ public class ProjectDetailResponse {
         }
 
         for (Participant participant : p.getParticipants().participantsInfo()) {
-            participants.add(new ParticipantInfoDto(participant.getMember().getMemberName(), participant.getSkillStacks(), participant.getPositions()));
+            participants.add(new ParticipantInfoDto(participant.getMember().getMemberName(), participant.getParticipantRole(), participant.getSkillStacks(), participant.getPositions()));
         }
 
     }

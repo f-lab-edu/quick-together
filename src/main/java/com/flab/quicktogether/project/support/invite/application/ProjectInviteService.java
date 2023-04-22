@@ -63,6 +63,23 @@ public class ProjectInviteService {
         Events.raise(new ProjectInviteEvent(projectId, invitedMemberId));
     }
 
+    @Transactional
+    public void inviteMemberName(Long projectId, Long requestMemberId, String invitedMemberName) {
+        Project project = findProject(projectId);
+        Member invitedMember = findMemberByName(invitedMemberName);
+        Long invitedMemberId = invitedMember.getId();
+
+        project.getParticipants().checkParticipantNot(invitedMemberId);
+        project.getParticipants().checkAdminAuth(requestMemberId);
+
+        checkInvitedNot(projectId, invitedMemberId);
+
+        Member requestMember = findMember(requestMemberId);
+        inviteRepository.save(Invite.inviteMember(project, requestMember, invitedMember));
+
+        Events.raise(new ProjectInviteEvent(projectId, invitedMemberId));
+    }
+
     private void checkInvitedNot(Long projectId, Long invitedMemberId) {
         inviteRepository.findByProjectIdAndInvitedMemberIdWithWait(projectId, invitedMemberId)
                 .ifPresent(invitedMember -> {
@@ -97,6 +114,11 @@ public class ProjectInviteService {
 
     private Member findMember(Long memberId) {
         return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
+    private Member findMemberByName(String memberName) {
+        return memberRepository.findByMemberName(memberName)
                 .orElseThrow(MemberNotFoundException::new);
     }
 }
