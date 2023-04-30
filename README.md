@@ -8,6 +8,29 @@
 
 또한, 미팅 일정을 예약할 때 구성원들의 일정 정보를 이용하여 자동으로 **미팅 일정을 추천**을 해줍니다.
 
+## 기술스택
+#### 프론트엔드
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<img src="https://img.shields.io/badge/bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white">
+
+#### 백엔드
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> <img src="https://img.shields.io/badge/JPA-59666C?style=for-the-badge&logo=#59666C&logoColor=white"/>
+<img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white">
+<img src="https://img.shields.io/badge/websocket-010101?style=for-the-badge&logo=socket.io&logoColor=white">
+<img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+
+
+#### 인프라
+<img src="https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=aws&logoColor=white"> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white"/>
+<img src="https://img.shields.io/badge/apache tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=white">
+<img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white">
+
+## ci/cd 구성도
+<img width="745" alt="image" src="https://user-images.githubusercontent.com/41093183/231686691-5fdb947b-716c-46fa-b6e4-70ceffa29a8c.png">
+
 ## 기능
 **내 프로젝트**
 
@@ -31,10 +54,6 @@
 **초대 기능**
 
 ![invite](https://user-images.githubusercontent.com/41093183/233783778-1d998e37-0088-405d-b148-587d66684acd.gif)
-
-
-## ci/cd 구성도
-<img width="745" alt="image" src="https://user-images.githubusercontent.com/41093183/231686691-5fdb947b-716c-46fa-b6e4-70ceffa29a8c.png">
 
 
 ## 주요 이슈
