@@ -57,17 +57,20 @@
 
 
 ## 주요 이슈
-* 부하테스트를 통하여 로그인 성능 이슈 해결 (https://hong-good.tistory.com/2)
+* **부하테스트를 통하여 로그인 성능 이슈 해결**
   - Artillery를 통해 Latency 측정 및 쓰레드 덤프를 통해 어떤 클래스가 쓰레드를 점유하고 있는지 확인
   - 해시 연산  횟수를 줄여서 성능 향상
+  - https://hong-good.tistory.com/2
 
-* JPA에서 발생하는 N+1 문제 해결 (https://hong-good.tistory.com/3)
+* **JPA에서 발생하는 N+1 문제 해결**
   - 모임 상세조회 과정 중 N+1 문제가 발생했고, fetch join으로 문제 해결
   - 다중 컬렉션 fetch join시 발생하는 문제 해결
+  - https://hong-good.tistory.com/3
 
-* 알람 기능 추상화 (https://hong-good.tistory.com/4)
+* **알람 기능 추상화**
   - FCM을 이용하여 알람 기능 추가
   - FCM 플랫폼에서 카카오 플랫폼으로 바뀔 경우 유연한 변경이 가능하게 추상화
+  - https://hong-good.tistory.com/4
 
 
 
